@@ -6,31 +6,54 @@ using TMPro;
 
 public class PlayFabManager : MonoBehaviour
 {
-    public  TMP_InputField idInput, passwordInput, userNameInput;
+    public static PlayFabManager Instance;
+    public  TMP_InputField emailInput, passwordInput, userNameInput; // ui작업시 삭제
 
-    public void Login()
+
+    private void Awake()
     {
-        var request = new LoginWithEmailAddressRequest { Email = idInput.text, Password = passwordInput.text};
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+            Destroy(this.gameObject);
+    }
+
+    public void Login(/*string email, string password*/) // 로그인
+    {
+        var request = new LoginWithEmailAddressRequest { Email = emailInput.text, Password = passwordInput.text};
         PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnLoginFailure);
     }
 
-    public void Register()
+    public void Register(/*string email, string password, string useName*/) //회원가입
     {
-        var request = new RegisterPlayFabUserRequest { Email = idInput.text, Password = passwordInput.text, Username = userNameInput.text };
+        var request = new RegisterPlayFabUserRequest { Email = emailInput.text, Password = passwordInput.text, Username = userNameInput.text };
         PlayFabClientAPI.RegisterPlayFabUser(request, OnRegusterSuccess, OnRegusterFailure);
     }
 
-    private void OnLoginSuccess(LoginResult result) => Debug.Log("로그인성공");
-    private void OnLoginFailure(PlayFabError error) => Debug.LogError("로그인실패");
+    private void OnLoginSuccess(LoginResult result)
+    {
+        Debug.Log("로그인성공");
+        NetworkManager.Instance.Connect();
+    }
+
+    private void OnLoginFailure(PlayFabError error)
+    {
+        Debug.LogError("로그인실패");
+
+        string userMassge = PlayFabErrorHandler.GetErrorMessage(error.Error);
+        Debug.Log(userMassge); // 이부분 나중에 ui text로 띄울것
+    }
+
     private void OnRegusterSuccess(RegisterPlayFabUserResult result) => Debug.Log("회원가입 성공");
     private void OnRegusterFailure(PlayFabError error)
     {
         Debug.LogError("회원가입 실패");
 
-        if (error.Error == PlayFabErrorCode.InvalidEmailAddress)
-            Debug.Log("이메일을 정확히 입력해주세요");
-        else if(error.Error == PlayFabErrorCode.EmailAddressNotAvailable)
-            Debug.Log("이미 사용중인 이메일 입니다");
+        string userMassge = PlayFabErrorHandler.GetErrorMessage(error.Error);
+        Debug.Log(userMassge); // 이부분 나중에 ui text로 띄울것
     }
 
 
