@@ -22,6 +22,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         JoinLobby();
         Debug.Log("로비접속 성공");
+        //로비 팝업
     }
     public void Disconnect() => PhotonNetwork.Disconnect();
     public void JoinLobby() => PhotonNetwork.JoinLobby();
