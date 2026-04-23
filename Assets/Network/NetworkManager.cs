@@ -1,5 +1,4 @@
 using UnityEngine;
-using Photon.Realtime;
 using Photon.Pun;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
@@ -14,7 +13,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             DontDestroyOnLoad(gameObject);
         }
         else
-            Destroy(this.gameObject);  
+            Destroy(this.gameObject);
+
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     public void Connect() => PhotonNetwork.ConnectUsingSettings();

@@ -10,6 +10,8 @@ public class RoomMaker : MonoBehaviourPunCallbacks
     public TMP_InputField roomNameInput;
     public TMP_InputField passwordInput;
 
+    int maxCount = 2;
+
     public void CreateRoom()
     {
         if (string.IsNullOrEmpty(roomNameInput.text)) return;
@@ -30,8 +32,17 @@ public class RoomMaker : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        Debug.Log("방 입장 성공");
+        Debug.Log("플레이어 기다리는중..");
         //꺼야하는 ui
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount == maxCount)
+        {
+            Debug.Log("인원이 다 찼음! 게임 씬으로 이동");
+            PhotonNetwork.LoadLevel("GameScene"); //오목게임씬으로 이동
+        }
     }
 
     public override void OnCreatedRoom() => Debug.Log("방 생성 요청 성공");
