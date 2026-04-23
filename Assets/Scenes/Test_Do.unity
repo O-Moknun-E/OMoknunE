@@ -119,6 +119,50 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &1622385
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1622387}
+  - component: {fileID: 1622386}
+  m_Layer: 0
+  m_Name: Test_Connector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1622386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1622385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1df5c4e12e33aa4eb4a0d7e4b6f962b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Test_PhotonConnector
+--- !u!4 &1622387
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1622385}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.84069, y: -0.08535, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &502780393
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,6 +173,7 @@ GameObject:
   m_Component:
   - component: {fileID: 502780395}
   - component: {fileID: 502780394}
+  - component: {fileID: 502780396}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -149,8 +194,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OmokManager
   _boardInteraction: {fileID: 1148098105}
-  _player1Skin: {fileID: 3464937461407787306, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
-  _player2Skin: {fileID: -4700881041670402784, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  _stoneSkins:
+  - {fileID: -8101529176862264964, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: 2415830498647671058, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: -4566300494430230089, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: -4700881041670402784, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: 3464937461407787306, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: -3500603621866437359, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: -484765293064342697, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: -8118041438486466186, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: 7660890058260747858, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
 --- !u!4 &502780395
 Transform:
   m_ObjectHideFlags: 0
@@ -166,6 +219,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &502780396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502780393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonUnityNetworking::Photon.Pun.PhotonView
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &968334361
 GameObject:
   m_ObjectHideFlags: 0
@@ -320,9 +395,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821eb565eb5b19b4ebc7bf2a75ecf57d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoardInteraction
-  _lineCount: 16
-  _borderMargin: 0.65
+  _gridSize: 15
+  _spacing: 0.563
+  _gridOffset: {x: 0, y: 0}
   _baseStonePrefab: {fileID: 1672987080683482776, guid: f021af88338578a46bce244ca7466b28, type: 3}
+--- !u!114 &1148098108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148098104}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6c12d2f2ec96d24aa2b0e2cbffd147c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoardGridVisualizer
+  gridSize: 15
+  spacing: 0.563
+  offset: {x: 0, y: 0}
+  showGridLines: 1
+  showClickPoints: 1
 --- !u!1001 &1664072390058460833
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -332,8 +425,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2094360398617990814, guid: 49bdaaaf878796a4bbfc879d4f6e422a, type: 3}
+      propertyPath: m_Size.x
+      value: 2.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094360398617990814, guid: 49bdaaaf878796a4bbfc879d4f6e422a, type: 3}
+      propertyPath: m_Size.y
+      value: 2.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094360398617990814, guid: 49bdaaaf878796a4bbfc879d4f6e422a, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 8047483149409759377, guid: 7b2d778501c6ffc40a7de8bc2f6f2218, type: 3}
+    - target: {fileID: 2094360398617990814, guid: 49bdaaaf878796a4bbfc879d4f6e422a, type: 3}
       propertyPath: m_SortingOrder
       value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094360398617990814, guid: 49bdaaaf878796a4bbfc879d4f6e422a, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3062480228395158325, guid: 49bdaaaf878796a4bbfc879d4f6e422a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -386,6 +495,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3849769465234785040, guid: 49bdaaaf878796a4bbfc879d4f6e422a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1148098105}
+    - targetCorrespondingSourceObject: {fileID: 3849769465234785040, guid: 49bdaaaf878796a4bbfc879d4f6e422a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1148098108}
   m_SourcePrefab: {fileID: 100100000, guid: 49bdaaaf878796a4bbfc879d4f6e422a, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -394,3 +506,4 @@ SceneRoots:
   - {fileID: 968334364}
   - {fileID: 1664072390058460833}
   - {fileID: 502780395}
+  - {fileID: 1622387}

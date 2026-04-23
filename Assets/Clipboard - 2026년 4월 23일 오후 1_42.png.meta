@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7eaa0362b3853c14e9e061cd5d6f1ceb
+guid: 7b2d778501c6ffc40a7de8bc2f6f2218
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7499393263235886556
-    second: "\uBC14\uB451\uD310\uAE30\uBCF8 \uD53D\uC2A4\uBCF8_0"
+      213: 8047483149409759377
+    second: "Clipboard - 2026\uB144 4\uC6D4 23\uC77C \uC624\uD6C4 1_42_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\uBC14\uB451\uD310\uAE30\uBCF8 \uD53D\uC2A4\uBCF8_0"
+      name: "Clipboard - 2026\uB144 4\uC6D4 23\uC77C \uC624\uD6C4 1_42_0"
       rect:
         serializedVersion: 2
-        x: 28
-        y: 21
-        width: 312
-        height: 312
+        x: 5
+        y: 16
+        width: 294
+        height: 294
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4221ed18f8dcce790800000000000000
-      internalID: -7499393263235886556
+      spriteID: 190b28879476eaf60800000000000000
+      internalID: 8047483149409759377
       vertices: []
       indices: 
       edges: []
@@ -174,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "\uBC14\uB451\uD310\uAE30\uBCF8 \uD53D\uC2A4\uBCF8_0": -7499393263235886556
+      "Clipboard - 2026\uB144 4\uC6D4 23\uC77C \uC624\uD6C4 1_42_0": 8047483149409759377
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
