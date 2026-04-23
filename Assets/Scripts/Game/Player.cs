@@ -22,8 +22,9 @@ public class Player
         UsedMagicThisTurn = false;
         _magics = new();
 
-        // 돌이 놓일 때마다 턴 초기화할 이벤트 등록
-        OmokManager.Instance.OnStonePlaced += ResetTurn;
+        //==============NetworkOmokManager를 구독하도록 수정==============
+        // 어떤 돌이 놓이든 서버에서 확정 신호가 오면 마법 사용 턴을 리셋함
+        NetworkOmokManager.OnStonePlaced += (x, y, type) => ResetTurn();
     }
 
     // 마법 사용 시도 메서드

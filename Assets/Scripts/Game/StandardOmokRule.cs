@@ -56,7 +56,7 @@ public class StandardOmokRule : IOmokRule
         int size = board.GetLength(0);
 
         // 보드판 범위 내에서 연속된 돌의 개수 카운트
-        while (curRow >= 0 && curRow < size && curCol >= 0 && curCol < size && board[row, col] == type)
+        while (curRow >= 0 && curRow < size && curCol >= 0 && curCol < size && board[curRow, curCol] == type)
         {
             count++;
             curRow += dir.y;
