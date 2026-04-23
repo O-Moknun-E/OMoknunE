@@ -36,13 +36,13 @@ public class BoardInteraction : MonoBehaviour
     {
         if (_boardRenderer == null || _currentStoneSprite == null) return;
 
-        if (_isGameOver) { ClearPreview(); return; }
-
-        // 내 턴일 때만 마우스 감지 실행
-        if (_canIPlace)
-            HandleBoardInteraction();
-        else
-            ClearPreview(); // 내 턴 아니면 미리보기 숨김
+        if (_isGameOver || !_canIPlace)
+        {
+            ClearPreview();
+            return;
+        }
+        // 내 턴일 때만 마우스 감지 및 미리보기 실행
+        HandleBoardInteraction();
     }
 
     // 턴 권한 설정 

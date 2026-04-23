@@ -64,9 +64,21 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         _boardInteraction.ChangeStoneSkin(_stoneSkins[_mySkinIndex]);
         CheckAndApplyTurn();
     }
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+    {
+        // 상대방이 들어오면 인원수가 2명이 되므로 다시 체크해서 입력을 열어줌
+        Debug.Log("새 플레이어 입장! 게임을 준비합니다.");
+        CheckAndApplyTurn();
+    }
 
     private void CheckAndApplyTurn()
     {
+        // 방에 2명이 안 모였다면 내 턴 권한을 주지 않음
+        if (PhotonNetwork.CurrentRoom.PlayerCount < 2)
+        {
+            _boardInteraction.SetMyTurn(false);
+            return;
+        }
         // 턴 확인은 스킨 번호가 아니라 진영 번호(PlayerType)로 계산
         bool isMyTurnNow = (_isMasterTurn && _myPlayerType == 1) || (!_isMasterTurn && _myPlayerType == 2);
 
@@ -75,9 +87,12 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
 
     private void SendStoneToServer(int x, int y)
     {
-        if (!PhotonNetwork.InRoom) return;
+        if (!PhotonNetwork.InRoom || PhotonNetwork.CurrentRoom.PlayerCount < 2)
+        {
+            Debug.LogWarning("상대방이 아직 입장하지 않았습니다.");
+            return;
+        }
 
-        // 통신 발송: 좌표(x, y), 진영(흑/백), 그리고 내가 고른 스킨 번호를 전송
         photonView.RPC("RPC_ReceiveAndDrawStone", RpcTarget.All, x, y, _myPlayerType, _mySkinIndex);
     }
 
