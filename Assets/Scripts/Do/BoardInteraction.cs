@@ -22,6 +22,8 @@ public class BoardInteraction : MonoBehaviour
 
     // 2. 내 턴일 때만 클릭이 작동하도록 제어하는 변수
     private bool _canIPlace = false;
+    private bool _isGameOver = false;
+    public void SetGameOver() => _isGameOver = true;
 
     private void Start()
     {
@@ -33,6 +35,8 @@ public class BoardInteraction : MonoBehaviour
     private void Update()
     {
         if (_boardRenderer == null || _currentStoneSprite == null) return;
+
+        if (_isGameOver) { ClearPreview(); return; }
 
         // 내 턴일 때만 마우스 감지 실행
         if (_canIPlace)

@@ -25,10 +25,19 @@ public class OmokManager : Singleton<OmokManager>
     private float[] _manaIncomeTimer;   // 마나 획득 타이머 (0: 흑, 1: 백)
     private bool _isGameOver;           // 게임 종료 여부
 
-    public event Action OnStonePlaced;          // 돌이 놓였을 때 발생하는 이벤트
     public event Action OnUsedMagic;            // 마법이 사용되었을 때 발생하는 이벤트
     public event Action OnManaChanged;          // 마나가 변경되었을 때 발생하는 이벤트
     public event Action<StoneType> OnGameOver;  // 게임이 종료되었을 때 발생하는 이벤트(승리한 돌 전달)
+
+    private void OnEnable()
+    { 
+        NetworkOmokManager.OnStonePlaced += UpdateBoardFromServer;
+    }
+
+    private void OnDisable()
+    {
+        NetworkOmokManager.OnStonePlaced -= UpdateBoardFromServer;
+    }
 
     protected override void Awake()
     {
@@ -71,23 +80,24 @@ public class OmokManager : Singleton<OmokManager>
         _manaIncomeTimer = new float[2] { 0f, 0f };
     }
 
-    // 돌을 놓을 수 있는지 여부
-    // 놓을 수 있다면 ture, 놓을 수 없다면 false 반환
-    public bool TryPlaceStone(int row, int col)
-    {
-        // 게임이 종료된 상태에선 안되게
-        if (_isGameOver) return false;
 
-        // 정한 규칙대로 돌을 놓을 수 있는지 체크
-        if (_rule.CanPlaceStone(_board, row, col, _currentTurn))
-        {
-            // 가능하다면 실제로 돌을 놓기
-            ExecutePlacement(row, col);
-            return true;
-        }
+    //// 돌을 놓을 수 있는지 여부
+    //// 놓을 수 있다면 ture, 놓을 수 없다면 false 반환
+    //public bool TryPlaceStone(int row, int col)
+    //{
+    //    // 게임이 종료된 상태에선 안되게
+    //    if (_isGameOver) return false;
 
-        return false;
-    }
+    //    // 정한 규칙대로 돌을 놓을 수 있는지 체크
+    //    if (_rule.CanPlaceStone(_board, row, col, _currentTurn))
+    //    {
+    //        // 가능하다면 실제로 돌을 놓기
+    //        ExecutePlacement(row, col);
+    //        return true;
+    //    }
+
+    //    return false;
+    //}
 
     // 마법을 사용할 수 있는지 여부
     // 사용할 수 있다면 true, 사용할 수 없다면 false 반환
@@ -113,25 +123,50 @@ public class OmokManager : Singleton<OmokManager>
         return false;
     }
 
-    // 돌을 실제로 놓는 메서드
-    private void ExecutePlacement(int row, int col)
+    //// 돌을 실제로 놓는 메서드
+    //private void ExecutePlacement(int row, int col)
+    //{
+    //    _board[row, col] = _currentTurn;
+
+    //    // 돌을 놓고 난 뒤의 이벤트
+    //    OnStonePlaced?.Invoke();
+
+    //    // 승리조건 만족하는지 확인 후 게임 종료 여부 결정
+    //    if (_rule.CheckWin(_board, row, col, _currentTurn))
+    //    {
+    //        _isGameOver = true;
+
+    //        // 게임 종료 이벤트
+    //        OnGameOver?.Invoke(_currentTurn);
+    //    }
+    //    else
+    //    {
+    //        // 턴 변경
+    //        ChangeTurn();
+    //    }
+    //}
+    // ===============>>서버에서 돌이 놓였다는 정보를 받았을 때 보드 업데이트================
+    private void UpdateBoardFromServer(int x, int y, int playerType)
     {
-        _board[row, col] = _currentTurn;
+        if (_isGameOver) return;
+        // 통신으로 받은 타입을 효빈님 타입으로 변환
+        StoneType placedStone = (playerType == 1) ? StoneType.Black : StoneType.White;
 
-        // 돌을 놓고 난 뒤의 이벤트
-        OnStonePlaced?.Invoke();
+        // 이 시점에 배열을 채우고 승패를 판정
+        _board[y, x] = placedStone;
 
-        // 승리조건 만족하는지 확인 후 게임 종료 여부 결정
-        if (_rule.CheckWin(_board, row, col, _currentTurn))
+        if (_rule.CheckWin(_board, y, x, placedStone))
         {
             _isGameOver = true;
-
+            FindObjectOfType<BoardInteraction>().SetGameOver();
+            string winnerName = (placedStone == StoneType.Black) ? "흑(플레이어1)" : "백(플레이어2)";
+            Debug.Log($"<color=yellow><b>[SERVER INFO] {winnerName} 승리 모든 착수가 금지됩니다.</b></color>");
             // 게임 종료 이벤트
-            OnGameOver?.Invoke(_currentTurn);
+            OnGameOver?.Invoke(placedStone);
         }
         else
         {
-            // 턴 변경
+            //턴 변경
             ChangeTurn();
         }
     }
