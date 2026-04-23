@@ -26,7 +26,5 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     public void Disconnect() => PhotonNetwork.Disconnect();
     public void JoinLobby() => PhotonNetwork.JoinLobby();
-    
-    //public void CreatRoom() => PhotonNetwork.CreateRoom()
 
 }

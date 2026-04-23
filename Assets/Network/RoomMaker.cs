@@ -28,8 +28,13 @@ public class RoomMaker : MonoBehaviourPunCallbacks
         PhotonNetwork.CreateRoom(roomNameInput.text, roomOptions);
     }
 
-    public override void OnCreatedRoom() => Debug.Log("规 积己 夸没 己傍");
+    public override void OnJoinedRoom()
+    {
+        Debug.Log("规 涝厘 己傍");
+        //波具窍绰 ui
+    }
 
+    public override void OnCreatedRoom() => Debug.Log("规 积己 夸没 己傍");
     public override void OnCreateRoomFailed(short returnCode, string message) => Debug.LogError($"规 积己 角菩: {message}");
 
 }
