@@ -6,47 +6,41 @@ using Photon.Pun;
 
 public class Room : MonoBehaviourPunCallbacks
 {
+    [Header("UI References")]
     public Button enterBtn;
     public TextMeshProUGUI roomNameText;
     public TextMeshProUGUI playerCountText;
     public GameObject lockIcon;
 
     private RoomInfo roomInfo;
-
-    private int currentPlayers;
-    private int maxPlayers;
     private string targetRoomName;
 
-    private void Start()
-    {
-        enterBtn.onClick.AddListener(OnClickJoin);
-    }
+    private void Start() => enterBtn.onClick.AddListener(OnClickJoin);
 
-    public void SetRoom(RoomInfo info)
+    public void SetRoom(RoomInfo info) //룸 셋팅
     {
         roomInfo = info;
-
         targetRoomName = info.Name;
-        currentPlayers = info.PlayerCount;
-        maxPlayers = info.MaxPlayers;
 
         roomNameText.text = info.Name;
         playerCountText.text = $"{info.PlayerCount} / {info.MaxPlayers}";
 
-        bool isPrivateRoom = info.CustomProperties.ContainsKey("Password");
-        lockIcon.SetActive(isPrivateRoom);
+        bool isRandomRoom = info.CustomProperties.ContainsKey(RoomKeys.IsRandomMatch) && (bool)info.CustomProperties[RoomKeys.IsRandomMatch];
+
+        if (isRandomRoom)
+        {
+            roomNameText.text = "[Quick] " + info.Name;
+            enterBtn.interactable = false; // 랜덤매칭방은 방 버튼을 눌러서 들어갈 수 없음
+        }
+
+        lockIcon.SetActive(info.CustomProperties.ContainsKey(RoomKeys.Password));
     }
 
     public void OnClickJoin()
     {
+        if (roomInfo.PlayerCount >= roomInfo.MaxPlayers) return;
 
-        if (currentPlayers >= maxPlayers) return;
-
-        if (!lockIcon.activeSelf)
-            PhotonNetwork.JoinRoom(targetRoomName);
-        else
-            RoomManager.Instance.OpenPasswordPanel(roomInfo);
+        if (!lockIcon.activeSelf) PhotonNetwork.JoinRoom(targetRoomName);
+        else RoomManager.Instance.OpenPasswordPanel(roomInfo);
     }
-
-    public override void OnJoinedRoom() => Debug.Log("방 입장 성공!");
 }
