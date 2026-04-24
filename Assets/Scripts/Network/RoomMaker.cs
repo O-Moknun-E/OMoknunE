@@ -36,7 +36,7 @@ public class RoomMaker : MonoBehaviourPunCallbacks
         //²¨¾ßÇÏ´Â ui
     }
 
-    public override void OnPlayerEnteredRoom(Player newPlayer)
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
         if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount == maxCount)
         {
