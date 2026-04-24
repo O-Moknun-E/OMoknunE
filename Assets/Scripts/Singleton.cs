@@ -1,6 +1,8 @@
 using UnityEngine;
 
-// MonoBehaviour 기반 싱글톤 클래스
+/// <summary>
+/// MonoBehaviour 기반 싱글톤 클래스
+/// </summary>
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
