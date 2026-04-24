@@ -52,7 +52,7 @@ public class RoomMaker : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom() => Debug.Log("방 입장 성공! 플레이어 대기 중...");
 
-    public override void OnPlayerEnteredRoom(Player newPlayer) => CheckAndStartGame();
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) => CheckAndStartGame();
 
     public void CheckAndStartGame() //방상태 체크
     {
