@@ -198,7 +198,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     public void UseSkill(string skillName, int x, int y)
     {
         // 1. 본인의 PlayerType 결정 (서버에 저장된 _myPlayerType이 1이면 Black, 2이면 White)
-        PlayerType myType = (_myPlayerType == 1) ? PlayerType.Black : PlayerType.White;
+        PlayerType myType = (_myPlayerType == StoneType.Black) ? PlayerType.Black : PlayerType.White;
 
         // 2. Resources/Skills/ 폴더 내의 에셋 경로 생성
         string path = "Skills/" + skillName;
