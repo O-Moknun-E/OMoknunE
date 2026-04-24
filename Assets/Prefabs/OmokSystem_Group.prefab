@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8742999655628740913}
   - component: {fileID: 7724846474104089670}
   - component: {fileID: 7070411724715356131}
-  - component: {fileID: 703615786711688886}
   m_Layer: 0
   m_Name: BoardManager
   m_TagString: Untagged
@@ -79,18 +78,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &703615786711688886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1100472407700476498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1df5c4e12e33aa4eb4a0d7e4b6f962b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Test_PhotonConnector
 --- !u!1 &1944076992777281138
 GameObject:
   m_ObjectHideFlags: 0

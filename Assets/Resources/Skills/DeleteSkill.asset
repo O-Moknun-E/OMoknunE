@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 7156d39803f9d4847a13bb3f82c54207, type: 3}
   m_Name: DeleteSkill
   m_EditorClassIdentifier: Assembly-CSharp::SkillBase
-  _skillName: "\uB3CC \uBFCC\uC2DC\uAE30"
-  _description: "Test\uC6A9 \uC2A4\uD0AC\uC785\uB2C8\uB2E4. \uB3CC \uBFCC\uC2DC\uAE30"
+  _skillName: 
+  _description: 
   _cost: 0
   _effects:
   - {fileID: 11400000, guid: be6199384634d2140bf59c27900341c8, type: 2}
