@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2658414794616664226
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5977508321513634753}
+  - component: {fileID: 4653648914224303798}
+  - component: {fileID: 5313713165361843475}
+  m_Layer: 0
+  m_Name: BoardManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5977508321513634753
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2658414794616664226}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4653648914224303798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2658414794616664226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20608105ad4f51a4f82d0ccab93d3f24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OmokManager
+  _boardInteraction: {fileID: 5496616157342155110, guid: 49bdaaaf878796a4bbfc879d4f6e422a, type: 3}
+  _stoneSkins:
+  - {fileID: -3500603621866437359, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: 7660890058260747858, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: -4566300494430230089, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: -4700881041670402784, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: 3464937461407787306, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: -3500603621866437359, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: -484765293064342697, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: -8118041438486466186, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: 7660890058260747858, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+--- !u!114 &5313713165361843475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2658414794616664226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonUnityNetworking::Photon.Pun.PhotonView
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
