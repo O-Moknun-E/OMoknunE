@@ -21,7 +21,7 @@ public class ForcePlaceStoneEffect : SkillEffect
 
         // 4. 시각적 강제 업데이트 (BoardInteraction 활용)
         // NetworkOmokManager에 등록된 스킨 정보를 가져와서 뿌려줍니다.
-        BoardInteraction bi = FindObjectOfType<BoardInteraction>();
+        BoardInteraction bi = FindFirstObjectByType<BoardInteraction>();
         if (bi != null)
         {
             // 실제 프로젝트에서는 시전자의 스킨 ID를 Context에 포함하거나 

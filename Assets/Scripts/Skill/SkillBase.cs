@@ -21,6 +21,7 @@ public abstract class SkillEffect : ScriptableObject
 public class SkillBase : ScriptableObject, IMagic
 {
     [Header("스킬 기본 정보")]
+    [SerializeField] private int _id;
     [SerializeField] private string _skillName;
     [SerializeField][TextArea] private string _description;
     [SerializeField] private int _cost;
@@ -29,6 +30,7 @@ public class SkillBase : ScriptableObject, IMagic
     [SerializeField] private List<SkillEffect> _effects = new List<SkillEffect>();
 
     // IMagic 인터페이스 구현
+    public int ID => _id;
     public string Name => _skillName;
     public string Description => _description;
     public int Cost => _cost;

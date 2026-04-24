@@ -9,7 +9,7 @@ public class RemoveStoneEffect : SkillEffect
         OmokManager.Instance.SetBoardData(context.TargetX, context.TargetY, StoneType.Empty);
 
         // 2. 시각적 삭제 (BoardInteraction에 직접 명령)
-        BoardInteraction bi = FindObjectOfType<BoardInteraction>();
+        BoardInteraction bi = FindFirstObjectByType<BoardInteraction>();
         if (bi != null)
         {
             bi.RemoveStoneVisual(context.TargetX, context.TargetY);

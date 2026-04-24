@@ -8,6 +8,7 @@ public class Player
     [Tooltip("최대 마나")]
     [SerializeField] private int MaxMana = 100;
 
+    public string Name { get; private set; }            // 플레이어 이름
     public int CurrentMana { get; private set; }        // 현재 마나
     public int UsedMagicCount { get; private set; }     // 사용한 마법 갯수
     public bool UsedMagicThisTurn { get; private set; } // 이번 턴에 마법을 사용했는지 여부
@@ -15,8 +16,9 @@ public class Player
     private List<IMagic> _magics; // 보유한 마법 리스트
 
     // 초기 마나를 지정하는 생성자
-    public Player(int initialMana)
+    public Player(string name, int initialMana)
     {
+        Name = name;
         CurrentMana = initialMana;
         UsedMagicCount = 0;
         UsedMagicThisTurn = false;
@@ -24,7 +26,7 @@ public class Player
 
         //==============NetworkOmokManager를 구독하도록 수정==============
         // 어떤 돌이 놓이든 서버에서 확정 신호가 오면 마법 사용 턴을 리셋함
-        NetworkOmokManager.OnStonePlaced += (x, y, type) => ResetTurn();
+        NetworkOmokManager.OnStonePlaced += (row, col, type) => ResetTurn();
     }
 
     // 마법 사용 시도 메서드
