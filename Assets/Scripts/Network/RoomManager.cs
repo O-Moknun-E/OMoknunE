@@ -8,71 +8,68 @@ public class RoomManager : MonoBehaviourPunCallbacks
 {
     public static RoomManager Instance;
 
-    public TMP_InputField roomPasswordInput;
+    [Header("Password UI")]
     public GameObject passwordPanel;
+    public TMP_InputField passwordInput;
+
+    [Header("Room List UI")]
     public GameObject roomPrefab;
     public Transform contentParent;
 
-    
-    private Dictionary<string, GameObject> rooms = new Dictionary<string, GameObject>();
-    private RoomInfo currntRoom;
+    private Dictionary<string, GameObject> roomDict = new Dictionary<string, GameObject>();
+    private RoomInfo selectedRoom;
 
     private void Awake()
     {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(this.gameObject);
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
-
-    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    public override void OnRoomListUpdate(List<RoomInfo> roomList) //방 추가시 ui에 보여주는부분
     {
         foreach (RoomInfo info in roomList)
         {
             if (info.RemovedFromList)
             {
-                if (rooms.ContainsKey(info.Name))
+                if (roomDict.ContainsKey(info.Name))
                 {
-                    Destroy(rooms[info.Name]);
-                    rooms.Remove(info.Name);
+                    Destroy(roomDict[info.Name]);
+                    roomDict.Remove(info.Name);
                 }
                 continue;
             }
 
-            if (!rooms.ContainsKey(info.Name))
+            if (!roomDict.ContainsKey(info.Name))
             {
-                GameObject roomObj = Instantiate(roomPrefab, contentParent);
-                Room newRoom = roomObj.GetComponent<Room>();
-                newRoom.SetRoom(info);
-                rooms.Add(info.Name, roomObj);
+                GameObject obj = Instantiate(roomPrefab, contentParent);
+                obj.GetComponent<Room>().SetRoom(info);
+                roomDict.Add(info.Name, obj);
             }
-            else
-            {
-                rooms[info.Name].GetComponent<Room>().SetRoom(info);
-            }
+            else roomDict[info.Name].GetComponent<Room>().SetRoom(info);
         }
     }
 
     public void OpenPasswordPanel(RoomInfo info)
     {
+        selectedRoom = info;
         passwordPanel.SetActive(true);
-        currntRoom = info; 
+
     }
 
     public void OnClickConfirmPassword()
     {
-        string input = roomPasswordInput.text; 
-        string actual = currntRoom.CustomProperties["Password"].ToString();
 
-        if (input == actual)
+        if (selectedRoom == null)
         {
-            PhotonNetwork.JoinRoom(currntRoom.Name);
+            Debug.Log("비어있음");
+            return;
+        }
+
+            if (passwordInput.text == selectedRoom.CustomProperties[RoomKeys.Password].ToString())
+        {
+            PhotonNetwork.JoinRoom(selectedRoom.Name);
             passwordPanel.SetActive(false);
         }
-        else
-        {
-            Debug.Log("비밀번호가 틀렸음!");
-        }
+        else Debug.LogWarning("비밀번호 틀림!");
     }
 }

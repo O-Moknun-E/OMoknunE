@@ -5,57 +5,72 @@ using Photon.Realtime;
 using ExitGames.Client.Photon;
 using TMPro;
 
+
+public static class RoomKeys
+{
+    public const string Password = "Password";
+    public const string IsRandomMatch = "IsRandomMatch";
+    public const string GameScene = "GameScene";
+}
+
 public class RoomMaker : MonoBehaviourPunCallbacks
 {
+
+    public static RoomMaker Instance;
+
+    [Header("UI References")]
     public TMP_InputField roomNameInput;
     public TMP_InputField passwordInput;
 
-    int maxCount = 2;
+    [Header("Settings")]
+    private int maxCount = 2;
+    private bool isSceneLoading = false;
 
-    public void CreateRoom()
+   private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+    }
+
+
+    public void CreateRoom() //방만들기
     {
         if (string.IsNullOrEmpty(roomNameInput.text)) return;
 
-        RoomOptions roomOptions = new RoomOptions { MaxPlayers = 2 };
+        RoomOptions roomOptions = new RoomOptions { MaxPlayers = (byte)maxCount };
+        Hashtable customProps = new Hashtable { { RoomKeys.IsRandomMatch, false } };
 
         if (!string.IsNullOrEmpty(passwordInput.text))
-        {
-            Hashtable customProps = new Hashtable();
-            customProps.Add("Password", passwordInput.text);
+            customProps.Add(RoomKeys.Password, passwordInput.text);
 
-            roomOptions.CustomRoomProperties = customProps;
-            roomOptions.CustomRoomPropertiesForLobby = new string[] { "Password" };
-        }
+
+        roomOptions.CustomRoomProperties = customProps;
+        roomOptions.CustomRoomPropertiesForLobby = new string[] { RoomKeys.Password, RoomKeys.IsRandomMatch };
 
         PhotonNetwork.CreateRoom(roomNameInput.text, roomOptions);
     }
 
-    public override void OnJoinedRoom()
-    {
-        Debug.Log("플레이어 기다리는중..");
-        //꺼야하는 ui
-    }
+    public override void OnJoinedRoom() => Debug.Log("방 입장 성공! 플레이어 대기 중...");
 
-    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+    public override void OnPlayerEnteredRoom(Player newPlayer) => CheckAndStartGame();
+
+    public void CheckAndStartGame() //방상태 체크
     {
-        if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount == maxCount)
+        if (!PhotonNetwork.IsMasterClient || isSceneLoading) return;
+
+        if (PhotonNetwork.CurrentRoom.PlayerCount == maxCount)
         {
-            Debug.Log("인원이 다 찼음! 게임 씬으로 이동");
-            PhotonNetwork.LoadLevel("GameScene"); //오목게임씬으로 이동
+            isSceneLoading = true;
+            Debug.Log("모든 조건 충족: 게임 씬으로 이동함");
+            PhotonNetwork.LoadLevel(RoomKeys.GameScene);
         }
     }
 
-    public void OnClickExit()
-    {
-        PhotonNetwork.LeaveRoom();
-    }
+    public void OnClickExit() => PhotonNetwork.LeaveRoom();
 
-    public override void OnLeftRoom()
-    {
-        Debug.Log("로비로 돌아감");
-    }
-
-    public override void OnCreatedRoom() => Debug.Log("방 생성 요청 성공");
-    public override void OnCreateRoomFailed(short returnCode, string message) => Debug.LogError($"방 생성 실패: {message}");
-
+    public override void OnLeftRoom() => isSceneLoading = false;
+    
 }
+
+  
+
