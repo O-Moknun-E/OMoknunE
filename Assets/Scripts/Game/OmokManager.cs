@@ -29,6 +29,15 @@ public class OmokManager : Singleton<OmokManager>
     public event Action OnManaChanged;          // 마나가 변경되었을 때 발생하는 이벤트
     public event Action<StoneType> OnGameOver;  // 게임이 종료되었을 때 발생하는 이벤트(승리한 돌 전달)
 
+    ///////////////////////////////////////////////////////////////////////////////////
+    // OmokManager 내부에 추가된 부분
+    public void SetBoardData(int x, int y, StoneType type) => _board[y, x] = type;
+    public StoneType GetBoardData(int x, int y) => _board[y, x];
+    public Player GetPlayer(PlayerType type) => _players[(int)type];
+
+    ///////////////////////////////////////////////////////////////////////////////////
+
+
     private void OnEnable()
     { 
         NetworkOmokManager.OnStonePlaced += UpdateBoardFromServer;
@@ -53,7 +62,11 @@ public class OmokManager : Singleton<OmokManager>
 
         IncomeMana();
         CheckTurnTimer();
-    }
+
+
+
+
+}
 
     // 게임 초기화
     private void InitGame()
