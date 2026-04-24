@@ -1,12 +1,18 @@
 using Photon.Pun;
 using UnityEngine;
+using ExitGames.Client.Photon;
 
 public class GameMatcher : MonoBehaviourPunCallbacks
 {
+
+    int maxCount = 2;
+
     public void OnClickQuickMatch()
     {
         Debug.Log("¸ÅÄª ½ÃÀÛ...");
-        PhotonNetwork.JoinRandomRoom();
+        Hashtable expectedCustomProps = new Hashtable { { "IsLocked", false } };
+
+        PhotonNetwork.JoinRandomRoom(expectedCustomProps, maxCount);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
