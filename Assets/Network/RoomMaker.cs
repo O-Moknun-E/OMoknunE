@@ -45,6 +45,16 @@ public class RoomMaker : MonoBehaviourPunCallbacks
         }
     }
 
+    public void OnClickExit()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnLeftRoom()
+    {
+        Debug.Log("로비로 돌아감");
+    }
+
     public override void OnCreatedRoom() => Debug.Log("방 생성 요청 성공");
     public override void OnCreateRoomFailed(short returnCode, string message) => Debug.LogError($"방 생성 실패: {message}");
 
