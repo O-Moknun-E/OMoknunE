@@ -8,7 +8,7 @@ public class Mainmenu : MonoBehaviour
 {
   public void PlayGame()
     {
-        SceneManager.LoadSceneAsync("Selectmode");
+        SceneManager.LoadSceneAsync("Loginscene");
     }
 
     public void QuitGame()

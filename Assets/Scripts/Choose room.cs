@@ -17,6 +17,6 @@ public class Chooseroom : MonoBehaviour
     }
     public void back()
     {
-        SceneManager.LoadSceneAsync("Selectmode");
+        SceneManager.LoadSceneAsync("Loginscene");
     }
 }
