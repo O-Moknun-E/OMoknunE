@@ -1,7 +1,9 @@
 using System;
 using UnityEngine;
 
-// 오목 게임의 전반적인 관리를 담당하는 싱글톤 클래스
+/// <summary>
+/// 오목 게임의 전반적인 관리를 담당하는 싱글톤 클래스
+/// </summary>
 public class OmokManager : Singleton<OmokManager>
 {
     [Tooltip("마나 획득에 걸리는 시간(초)")]
@@ -78,8 +80,9 @@ public class OmokManager : Singleton<OmokManager>
         _rule = new StandardOmokRule();
 
         // 플레이어 초기화
-        _players[0] = new Player(_manaBlack);
-        _players[1] = new Player(_manaWhite);
+        // 나중에 닉네임 추가(임시로 "흑", "백")
+        _players[0] = new Player("흑", _manaBlack);
+        _players[1] = new Player("백", _manaWhite);
 
         // 게임 상태 초기화
         _isGameOver = false;
@@ -158,12 +161,13 @@ public class OmokManager : Singleton<OmokManager>
     //        ChangeTurn();
     //    }
     //}
+
     // ===============>>서버에서 돌이 놓였다는 정보를 받았을 때 보드 업데이트================
-    private void UpdateBoardFromServer(int x, int y, int playerType)
+    private void UpdateBoardFromServer(int x, int y, StoneType playerType)
     {
         if (_isGameOver) return;
         // 통신으로 받은 타입을 효빈님 타입으로 변환
-        StoneType placedStone = (playerType == 1) ? StoneType.Black : StoneType.White;
+        StoneType placedStone = (playerType == StoneType.Black) ? StoneType.Black : StoneType.White;
 
         // 이 시점에 배열을 채우고 승패를 판정
         _board[y, x] = placedStone;
@@ -171,7 +175,7 @@ public class OmokManager : Singleton<OmokManager>
         if (_rule.CheckWin(_board, y, x, placedStone))
         {
             _isGameOver = true;
-            FindObjectOfType<BoardInteraction>().SetGameOver();
+            FindFirstObjectByType<BoardInteraction>().SetGameOver();
             string winnerName = (placedStone == StoneType.Black) ? "흑(플레이어1)" : "백(플레이어2)";
             Debug.Log($"<color=yellow><b>[SERVER INFO] {winnerName} 승리 모든 착수가 금지됩니다.</b></color>");
             // 게임 종료 이벤트

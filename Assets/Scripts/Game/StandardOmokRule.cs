@@ -1,9 +1,13 @@
 using UnityEngine;
 
-// 오목 게임의 표준 규칙을 구현하는 클래스
+/// <summary>
+/// 오목 게임의 표준 규칙을 구현하는 클래스
+/// </summary>
 public class StandardOmokRule : IOmokRule
 {
-    // 승리 조건을 판단할 때 사용할 방향 벡터 배열
+    /// <summary>
+    /// 승리 조건을 판단할 때 사용할 방향 벡터 배열
+    /// </summary>
     private Vector2Int[] _directions =
     {
         new (1, 0), // 가로
@@ -12,8 +16,14 @@ public class StandardOmokRule : IOmokRule
         new (1, -1) // 우하향 대각선
     };
 
-    // 오목판에 돌을 놓을 수 있는지 여부를 판단하는 메서드
-    // 비어 있으면 true, 이미 돌이 놓여 있으면 false를 반환
+    /// <summary>
+    /// 오목판에 돌을 놓을 수 있는지 여부를 판단하는 메서드
+    /// </summary>
+    /// <param name="board">오목판 배열</param>
+    /// <param name="row">행 인덱스</param>
+    /// <param name="col">열 인덱스</param>
+    /// <param name="type">돌의 종류</param>
+    /// <returns>돌을 놓을 수 있으면 true, 아니면 false</returns>
     public bool CanPlaceStone(StoneType[,] board, int row, int col, StoneType type)
     {
         // 해당 위치에 돌이 이미 놓여 있는지 확인

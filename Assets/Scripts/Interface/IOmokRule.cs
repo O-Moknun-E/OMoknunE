@@ -1,6 +1,8 @@
 using UnityEngine;
 
-// 오목 게임의 규칙을 정의하는 인터페이스
+/// <summary>
+/// 오목 게임의 규칙을 정의하는 인터페이스
+/// </summary>
 public interface IOmokRule
 {
     // 오목판에 돌을 놓을 수 있는지 여부를 판단하는 메서드
