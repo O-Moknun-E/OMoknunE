@@ -8,6 +8,7 @@ public class PlayFabManager : MonoBehaviour
     public static PlayFabManager Instance;
     public  TMP_InputField emailInput, passwordInput, userNameInput; // ui작업시 삭제
 
+    private string currntUserID;
 
     private void Awake()
     {
@@ -39,9 +40,15 @@ public class PlayFabManager : MonoBehaviour
         PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnRegusterFailure);
     }
 
+    public string GetCurrntUserID()
+    {
+        return currntUserID;
+    }
+
+
     private void OnLoginSuccess(LoginResult result)
     {
-        Debug.Log("로그인성공");
+        currntUserID = result.PlayFabId;
         NetworkManager.Instance.Connect();
     }
 
