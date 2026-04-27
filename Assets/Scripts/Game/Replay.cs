@@ -1,5 +1,8 @@
+using PlayFab;
+using PlayFab.ClientModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -209,7 +212,8 @@ public class Replay : MonoBehaviour
     /// <summary>
     /// 게임 종료 시 리플레이 기록을 마무리
     /// </summary>
-    public void EndRecording(PlayerType winner) {
+    public void EndRecording(PlayerType winner)
+    {
         // 기록 중이 아니면 무시
         if (!_isRecording) return;
 
@@ -231,9 +235,9 @@ public class Replay : MonoBehaviour
         int rows = before.GetLength(0);
         int cols = before.GetLength(1);
 
-        for(int r = 0; r < rows; r++)
+        for (int r = 0; r < rows; r++)
         {
-            for(int c = 0; c < cols; c++)
+            for (int c = 0; c < cols; c++)
             {
                 if (before[r, c] != after[r, c])
                 {
@@ -252,9 +256,10 @@ public class Replay : MonoBehaviour
     /// <summary>
     /// 리플레이 시작
     /// </summary>
-    public void StartReplay(ReplayData replayData) { 
+    public void StartReplay(ReplayData replayData)
+    {
         // 리플레이 데이터가 유효한지 확인
-        if(replayData == null)
+        if (replayData == null)
         {
             Debug.LogError("리플레이 데이터가 없습니다.");
             return;
@@ -287,7 +292,7 @@ public class Replay : MonoBehaviour
         currentPlayer = turn.playerType;
 
         // 현재 턴에 남은 행동이 있으면 꺼내서 반환
-        if(_currentActionIndex < turn.actions.Count)
+        if (_currentActionIndex < turn.actions.Count)
         {
             // 행동 가져온 후 인덱스 증가 및 행동 반환
             ActionData action = turn.actions[_currentActionIndex];
@@ -333,7 +338,7 @@ public class Replay : MonoBehaviour
         if (_currentReplay == null) return;
 
         // 이전 턴이 존재 할때만
-        if(_currentTurnIndex > 0)
+        if (_currentTurnIndex > 0)
         {
             _currentTurnIndex--;
             _currentActionIndex = 0;
@@ -386,7 +391,331 @@ public class Replay : MonoBehaviour
 
     #region Save/Load Methods
 
-    // 플레이팹 연동해서 하기
+    /// <summary>
+    /// 리플레이 메타데이터 (목록 표시용)
+    /// </summary>
+    [Serializable]
+    public class ReplayMetadata
+    {
+        public string replayID;          // 리플레이 고유 ID
+        public string blackPlayerName;   // 흑 플레이어 이름
+        public string whitePlayerName;   // 백 플레이어 이름
+        public string winner;            // 게임 승자
+        public float totalGameTime;      // 게임 전체 시간(초)
+        public string gameDate;          // 게임이 진행된 날짜 및 시간
+        public long createdAt;          // 리플레이가 PlayFab에 저장된 시간
+    }
+
+    /// <summary>
+    /// 리플레이 목록 데이터(PlayFab에서 다른 데이터와 구별하기 위해 사용)
+    /// </summary>
+    [Serializable]
+    public class ReplayListData
+    {
+        public List<ReplayMetadata> replays = new List<ReplayMetadata>();
+    }
+
+    [SerializeField] private int _maxReplayCount = 10; // 저장 가능한 최대 리플레이 수
+
+    /// <summary>
+    /// PlayFab에 리플레이 저장
+    /// </summary>
+    /// <param name="onSuccess">저장 성공 시 호출될 콜백</param>
+    /// <param name="onError">저장 실패 시 호출될 콜백</param>
+    public void SaveReplayToPlayFab(Action onSuccess = null, Action<string> onError = null)
+    {
+        // 리플레이가 없으면 무시
+        if (_currentReplay == null)
+        {
+            onError?.Invoke("저장할 리플레이 데이터가 없습니다.");
+            return;
+        }
+
+        // 리플레이 목록 가져오기
+        GetReplayListFromPlayFab(
+            onSuccess: (list) =>
+            {
+                // 저장 가능한 최대 리플레이 수 이상이면 가장 오래된 리플레이 삭제하기
+                if (list.Count >= _maxReplayCount)
+                {
+                    // 생성 시간 기준으로 정렬해서 가장 오래된 항목 찾기
+                    var oldestReplay = list.OrderBy(x => x.createdAt).First();
+
+                    Debug.Log($"리플레이 개수 초과. 가장 오래된 리플레이 삭제: {oldestReplay.replayID}");
+
+                    // 가장 오래된 리플레이 삭제 후 새 리플레이 저장
+                    DeleteReplayFromPlayFab(oldestReplay.replayID,
+                        onSuccess: () => SaveNewReplay(onSuccess, onError),
+                        onError: (error) => SaveNewReplay(onSuccess, onError)); // 삭제 실패해도 일단 저장
+                }
+                else
+                {
+                    // 10개 미만이면 바로 저장
+                    SaveNewReplay(onSuccess, onError);
+                }
+            },
+            onError: (error) =>
+            {
+                // 리플레이 목록 가져오기 실패해도 일단 저장
+                Debug.LogWarning($"리플레이 목록 가져오기 실패, 리플레이 저장 시도: {error}");
+                SaveNewReplay(onSuccess, onError);
+            });
+    }
+
+    /// <summary>
+    /// 새 리플레이 저장
+    /// </summary>
+    /// <param name="onSuccess">저장 성공 시 호출될 콜백</param>
+    /// <param name="onError">저장 실패 시 호출될 콜백</param>
+    private void SaveNewReplay(Action onSuccess, Action<string> onError)
+    {
+        // JSON으로 직렬화
+        string json = JsonUtility.ToJson(_currentReplay);
+
+        // 리플레이 ID 생성(PlayFab ID + 타임스탬프 + 랜덤값)
+        string playerID = PlayFabSettings.staticPlayer.PlayFabId;
+        string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+        string randomSuffix = UnityEngine.Random.Range(1000, 9999).ToString();
+        string replayID = $"replay_{playerID}_{timestamp}_{randomSuffix}";
+
+        // PlayFab Player Data에 저장
+        var request = new UpdateUserDataRequest
+        {
+            Data = new Dictionary<string, string>
+            {
+                { replayID, json }
+            },
+            Permission = UserDataPermission.Private // 본인만 볼 수 있게
+        };
+
+        // PlayFab으로 요청한 사용자 데이터 업데이트
+        PlayFabClientAPI.UpdateUserData(request,
+            result =>
+            {
+                Debug.Log($"리플레이 저장 성공: {replayID}");
+
+                // 메타데이터 목록에 추가
+                AddToReplayList(replayID, onSuccess, onError);
+            },
+            error =>
+            {
+                Debug.LogError($"리플레이 저장 실패: {error.ErrorMessage}");
+                onError?.Invoke(error.ErrorMessage);
+            });
+    }
+
+    /// <summary>
+    /// PlayFab에서 본인의 모든 리플레이 목록 메타데이터 가져오기
+    /// </summary>
+    /// <param name="onSuccess">성공 시 호출될 콜백</param>
+    /// <param name="onError">실패 시 호출될 콜백</param>
+    public void GetReplayListFromPlayFab(Action<List<ReplayMetadata>> onSuccess = null, Action<string> onError = null)
+    {
+        // 요청 리스트
+        var request = new GetUserDataRequest
+        {
+            Keys = new List<string> { "replay_list" }
+        };
+
+        // PlayFab에서 요청한 사용자 데이터 가져오기
+        PlayFabClientAPI.GetUserData(request,
+            result =>
+            {
+                // 리플레이 목록이 존재하는 경우
+                if (result.Data.ContainsKey("replay_list"))
+                {
+                    // JSON 문자열로 저장된 리플레이 목록을 객체로 역직렬화
+                    string json = result.Data["replay_list"].Value;
+                    ReplayListData listData = JsonUtility.FromJson<ReplayListData>(json);
+
+                    Debug.Log($"리플레이 목록 메타데이터 불러오기 성공: {listData.replays.Count}개");
+
+                    // 성공 콜백 호출
+                    onSuccess?.Invoke(listData.replays);
+                }
+                else
+                {
+                    // 리플레이 목록이 없는 경우 빈 리스트 반환
+                    Debug.Log($"리플레이 목록 메타데이터가 없습니다.");
+                    onSuccess?.Invoke(new List<ReplayMetadata>());
+                }
+            },
+            error =>
+            {
+                Debug.LogError($"리플레이 목록 메타데이터 불러오기 실패: {error.ErrorMessage}");
+                onError?.Invoke(error.ErrorMessage);
+            });
+    }
+
+    /// <summary>
+    /// PlayFab에서 특정 리플레이 데이터 불러오기
+    /// </summary>
+    /// <param name="replayID">리플레이 ID</param>
+    /// <param name="onSuccess">성공 시 호출될 콜백</param>
+    /// <param name="onError">실패 시 호출될 콜백</param>
+    public void LoadReplayFromPlayFab(string replayID, Action<ReplayData> onSuccess = null, Action<string> onError = null)
+    {
+        // 요청 리스트
+        var request = new GetUserDataRequest
+        {
+            Keys = new List<string> { replayID }
+        };
+
+        // PlayFab에서 요청한 사용자 데이터 가져오기
+        PlayFabClientAPI.GetUserData(request,
+            result =>
+            {
+                // 해당 리플레이가 존재하는 경우
+                if(result.Data.ContainsKey(replayID))
+                {
+                    // JSON 문자열로 저장된 리플레이 데이터를 객체로 역직렬화
+                    string json = result.Data[replayID].Value;
+                    ReplayData replayData = JsonUtility.FromJson<ReplayData>(json);
+
+                    Debug.Log($"리플레이 불러오기 성공: {replayID}");
+
+                    // 성공 콜백 호출
+                    onSuccess?.Invoke(replayData);
+                } else
+                {
+                    // 리플레이 데이터가 없는 경우
+                    string errorMsg = $"리플레이를 찾을 수 없습니다: {replayID}";
+
+                    Debug.LogError(errorMsg);
+                    onError?.Invoke(errorMsg);
+                }
+            },
+            error =>
+            {
+                Debug.LogError($"리플레이 불러오기 실패: {error.ErrorMessage}");
+                onError?.Invoke(error.ErrorMessage);
+            });
+    }
+
+    /// <summary>
+    /// 리플레이 목록에 메타데이터 추가
+    /// </summary>
+    private void AddToReplayList(string replayID, Action onSuccess, Action<string> onError)
+    {
+        GetReplayListFromPlayFab(
+            onSuccess: (list) =>
+            {
+                // 새 메타데이터 추가
+                var metadata = new ReplayMetadata
+                {
+                    replayID = replayID,
+                    blackPlayerName = _currentReplay.blackPlayerName,
+                    whitePlayerName = _currentReplay.whitePlayerName,
+                    winner = _currentReplay.winner.ToString(),
+                    totalGameTime = _currentReplay.totalGameTime,
+                    gameDate = _currentReplay.gameDate,
+                    createdAt = DateTime.Now.Ticks
+                };
+
+                // 기존 목록에 새 메타데이터 추가
+                list.Add(metadata);
+
+                // 메타데이터 목록 저장
+                SaveReplayList(list, onSuccess, onError);
+            },
+            onError: (error) =>
+            {
+                // 목록 가져오기 실패해도 일단 새 메타데이터로 생성
+                var newList = new List<ReplayMetadata>
+                {
+                    new ReplayMetadata
+                    {
+                        replayID = replayID,
+                        blackPlayerName = _currentReplay.blackPlayerName,
+                        whitePlayerName = _currentReplay.whitePlayerName,
+                        winner = _currentReplay.winner.ToString(),
+                        totalGameTime = _currentReplay.totalGameTime,
+                        gameDate = _currentReplay.gameDate,
+                        createdAt = DateTime.Now.Ticks
+                    }
+                };
+
+                // 메타데이터 목록 저장
+                SaveReplayList(newList, onSuccess, onError);
+            });
+    }
+
+    /// <summary>
+    /// 리플레이 목록 메타데이터 저장
+    /// </summary>
+    /// <param name="list">리플레이 메타데이터 목록</param>
+    private void SaveReplayList(List<ReplayMetadata> list, Action onSuccess, Action<string> onError)
+    {
+        var listData = new ReplayListData { replays = list };
+        string json = JsonUtility.ToJson(listData);
+
+        // 요청 리스트
+        var request = new UpdateUserDataRequest
+        {
+            Data = new Dictionary<string, string>
+            {
+                { "replay_list", json }
+            },
+            Permission = UserDataPermission.Private // 본인만 볼 수 있게
+        };
+
+        PlayFabClientAPI.UpdateUserData(request,
+            result =>
+            {
+                Debug.Log("리플레이 목록 메타데이터 저장 성공");
+                onSuccess?.Invoke();
+            },
+            error =>
+            {
+                Debug.LogError($"리플레이 목록 저장 실패: {error.ErrorMessage}");
+                onError?.Invoke(error.ErrorMessage);
+            });
+    }
+
+    /// <summary>
+    /// PlayFab에서 리플레이 삭제
+    /// </summary>
+    /// <param name="replayID">리플레이 ID</param>
+    /// <param name="onSuccess">성공 시 호출될 콜백</param>
+    /// <param name="onError">실패 시 호출될 콜백</param>
+    public void DeleteReplayFromPlayFab(string replayID, Action onSuccess = null, Action<string> onError = null)
+    {
+        // 요청 리스트
+        var request = new UpdateUserDataRequest
+        {
+            KeysToRemove = new List<string> { replayID }
+        };
+
+        // PlayFab에서 요청한 사용자 데이터 삭제
+        PlayFabClientAPI.UpdateUserData(request,
+            result =>
+            {
+                Debug.Log($"리플레이 삭제 성공: {replayID}");
+
+                // 메타데이터 목록에서도 제거
+                RemoveFromReplayList(replayID, onSuccess, onError);
+            },
+            error =>
+            {
+                Debug.LogError($"리플레이 삭제 실패: {error.ErrorMessage}");
+                onError?.Invoke(error.ErrorMessage);
+            });
+    }
+
+    /// <summary>
+    /// 리플레이 목록에서 메타데이터 제거
+    /// </summary>
+    private void RemoveFromReplayList(string replayID, Action onSuccess, Action<string> onError)
+    {
+        GetReplayListFromPlayFab(
+            onSuccess: (list) =>
+            {
+                // 일치하는 replayID를 가진 메타데이터 제거
+                list.RemoveAll(x => x.replayID == replayID);
+                SaveReplayList(list, onSuccess, onError);
+            },
+            onError: onError);
+    }
 
     #endregion
 }

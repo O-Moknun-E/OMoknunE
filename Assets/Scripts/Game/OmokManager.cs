@@ -16,6 +16,8 @@ public class OmokManager : Singleton<OmokManager>
     [SerializeField] private int _manaWhite = 0;
     [Tooltip("착수 제한시간")]
     [SerializeField] private float _turnTimeLimit = 30f;
+    [Tooltip("리플레이 시스템")]
+    [SerializeField] private Replay _replay;
 
     private const int BoardSize = 15;   // 오목판의 크기 (15x15)
 
@@ -41,20 +43,17 @@ public class OmokManager : Singleton<OmokManager>
 
 
     private void OnEnable()
-    { 
+    {
+        InitGame();
+
         NetworkOmokManager.OnStonePlaced += UpdateBoardFromServer;
+        OnGameOver += EndGame;
     }
 
     private void OnDisable()
     {
         NetworkOmokManager.OnStonePlaced -= UpdateBoardFromServer;
-    }
-
-    protected override void Awake()
-    {
-        base.Awake();
-
-        InitGame();
+        OnGameOver -= EndGame;
     }
 
     private void Update()
@@ -64,11 +63,7 @@ public class OmokManager : Singleton<OmokManager>
 
         IncomeMana();
         CheckTurnTimer();
-
-
-
-
-}
+    }
 
     // 게임 초기화
     private void InitGame()
@@ -94,6 +89,12 @@ public class OmokManager : Singleton<OmokManager>
         // 타이머 초기화
         _turnTimer = 0f;
         _manaIncomeTimer = new float[2] { 0f, 0f };
+
+        // 리플레이 기록 시작
+        _replay.StartRecording(_players[0].Name, _players[1].Name);
+
+        // 첫 턴은 바로 기록
+        _replay.StartTurn(_currentTurn == StoneType.Black ? PlayerType.Black : PlayerType.White);
     }
 
 
@@ -126,7 +127,7 @@ public class OmokManager : Singleton<OmokManager>
         Player player = _players[pIndex];
 
         // 해당 플레이어가 마법 사용 가능하면
-        if(player.TryUseMagic(magic.Cost))
+        if (player.TryUseMagic(magic.Cost))
         {
             // 마법 실제 사용
             magic.Execute();
@@ -166,18 +167,18 @@ public class OmokManager : Singleton<OmokManager>
     private void UpdateBoardFromServer(int x, int y, StoneType playerType)
     {
         if (_isGameOver) return;
+
         // 통신으로 받은 타입을 효빈님 타입으로 변환
         StoneType placedStone = (playerType == StoneType.Black) ? StoneType.Black : StoneType.White;
 
         // 이 시점에 배열을 채우고 승패를 판정
         _board[y, x] = placedStone;
 
+        // 리플레이 - 착수 기록
+        _replay.RecordPlaceStone(y, x, _currentTurn);
+
         if (_rule.CheckWin(_board, y, x, placedStone))
         {
-            _isGameOver = true;
-            FindFirstObjectByType<BoardInteraction>().SetGameOver();
-            string winnerName = (placedStone == StoneType.Black) ? "흑(플레이어1)" : "백(플레이어2)";
-            Debug.Log($"<color=yellow><b>[SERVER INFO] {winnerName} 승리 모든 착수가 금지됩니다.</b></color>");
             // 게임 종료 이벤트
             OnGameOver?.Invoke(placedStone);
         }
@@ -227,6 +228,10 @@ public class OmokManager : Singleton<OmokManager>
         _currentTurn = _currentTurn == StoneType.Black ? StoneType.White : StoneType.Black;
 
         _turnTimer = 0f;
+
+        // 리플레이 - 현재 턴 종료 및 시작
+        _replay.EndTurn();
+        _replay.StartTurn(_currentTurn == StoneType.Black ? PlayerType.Black : PlayerType.White);
     }
 
     // 플레이어 인덱스 반환
@@ -237,5 +242,20 @@ public class OmokManager : Singleton<OmokManager>
             return _currentTurn == StoneType.Black ? (int)PlayerType.Black : (int)PlayerType.White;
 
         return _currentTurn == StoneType.Black ? (int)PlayerType.White : (int)PlayerType.Black;
+    }
+
+    // 게임 종료 이벤트
+    private void EndGame(StoneType winner)
+    {
+        _isGameOver = true;
+        FindFirstObjectByType<BoardInteraction>().SetGameOver();
+        string winnerName = (winner == StoneType.Black) ? "흑(플레이어1)" : "백(플레이어2)";
+        Debug.Log($"<color=yellow><b>[SERVER INFO] {winnerName} 승리 모든 착수가 금지됩니다.</b></color>");
+
+        // 리플레이 - 기록 종료
+        _replay.EndRecording(winner == StoneType.Black ? PlayerType.Black : PlayerType.White);
+
+        // PlayFab에 리플레이 저장
+        _replay.SaveReplayToPlayFab();
     }
 }

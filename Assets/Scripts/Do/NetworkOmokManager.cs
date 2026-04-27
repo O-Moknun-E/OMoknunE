@@ -68,6 +68,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     {
         // 상대방이 들어오면 인원수가 2명이 되므로 다시 체크해서 입력을 열어줌
         Debug.Log("새 플레이어 입장! 게임을 준비합니다.");
+
         CheckAndApplyTurn();
     }
 
