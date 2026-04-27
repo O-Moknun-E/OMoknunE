@@ -8,7 +8,7 @@ public class RankingManager : MonoBehaviour
 
     private const string stateHighScore = "HighScore";
 
-    public void UpdateScore(int score)
+    public void UpdateScore(int score) //점수 추가시 사용할 메서드
     {
         var request = new UpdatePlayerStatisticsRequest
         {
