@@ -8,7 +8,9 @@ public class PlayFabManager : MonoBehaviour
     public static PlayFabManager Instance;
     public  TMP_InputField emailInput, passwordInput, userNameInput; // ui작업시 삭제
 
-    private string currntUserID;
+    private string userID;
+    private string userNickName;
+
 
     private void Awake()
     {
@@ -23,12 +25,26 @@ public class PlayFabManager : MonoBehaviour
 
     public void Login(/*string email, string password*/) // 로그인
     {
-        var request = new LoginWithEmailAddressRequest { Email = emailInput.text, Password = passwordInput.text};
+        var request = new LoginWithEmailAddressRequest 
+        {
+            Email = emailInput.text, 
+            Password = passwordInput.text,
+
+            InfoRequestParameters = new GetPlayerCombinedInfoRequestParams
+            {
+                GetUserAccountInfo = true
+            }
+        };
+
         PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnLoginFailure);
     }
+    
 
     public void Register(/*string email, string password, string useName*/) //회원가입
     {
+        if (!IsValidInput())
+            return; 
+
         var request = new RegisterPlayFabUserRequest
         {
             Email = emailInput.text,
@@ -40,16 +56,32 @@ public class PlayFabManager : MonoBehaviour
         PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnRegusterFailure);
     }
 
-    public string GetCurrntUserID()
+    public string GetUserNickName()
     {
-        return currntUserID;
+        return userNickName;
+    }
+
+    public string GetUserID()
+    {
+        return userID;
+    }
+
+    private bool IsValidInput()
+    {
+        if (string.IsNullOrWhiteSpace(userNameInput.text) ||
+            string.IsNullOrWhiteSpace(emailInput.text) ||
+            string.IsNullOrWhiteSpace(passwordInput.text))
+            return false;
+
+        return true;
     }
 
     #region 콜백메서드
 
     private void OnLoginSuccess(LoginResult result)
     {
-        currntUserID = result.PlayFabId;
+        userID = result.PlayFabId;
+        userNickName = result.InfoResultPayload.AccountInfo.TitleInfo.DisplayName;
         RankingManager.Instance.GetScore();
         NetworkManager.Instance.Connect();
     }
