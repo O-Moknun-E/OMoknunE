@@ -45,10 +45,12 @@ public class PlayFabManager : MonoBehaviour
         return currntUserID;
     }
 
+    #region 콜백메서드
 
     private void OnLoginSuccess(LoginResult result)
     {
         currntUserID = result.PlayFabId;
+        RankingManager.Instance.GetScore();
         NetworkManager.Instance.Connect();
     }
 
@@ -70,9 +72,9 @@ public class PlayFabManager : MonoBehaviour
         };
 
         PlayFabClientAPI.UpdateUserTitleDisplayName(updateRequest, onUpdateSuccess => {
-            Debug.Log($"리더보드 닉네임 설정 완료: {onUpdateSuccess.DisplayName}");
+            Debug.Log($"리더보드 닉네임 설정 완료");
         }, error => {
-            Debug.LogWarning("회원가입은 됐으나 닉네임 설정 실패: " + error.GenerateErrorReport());
+            Debug.LogWarning("닉네임 설정 실패: " + error.GenerateErrorReport());
         });
     }
 
@@ -84,5 +86,5 @@ public class PlayFabManager : MonoBehaviour
         Debug.Log(userMassge); // 이부분 나중에 ui text로 띄울것
     }
 
-
+    #endregion
 }
