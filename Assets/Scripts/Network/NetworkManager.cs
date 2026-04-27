@@ -1,5 +1,4 @@
 using UnityEngine;
-using Photon.Realtime;
 using Photon.Pun;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
@@ -14,7 +13,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             DontDestroyOnLoad(gameObject);
         }
         else
-            Destroy(this.gameObject);  
+            Destroy(this.gameObject);
+
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     public void Connect() => PhotonNetwork.ConnectUsingSettings();
@@ -22,10 +23,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         JoinLobby();
         Debug.Log("로비접속 성공");
+        //로비 팝업
     }
     public void Disconnect() => PhotonNetwork.Disconnect();
     public void JoinLobby() => PhotonNetwork.JoinLobby();
-    
-    //public void CreatRoom() => PhotonNetwork.CreateRoom()
 
 }
