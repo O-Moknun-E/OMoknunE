@@ -2540,7 +2540,7 @@ GameObject:
   - component: {fileID: 1543261796}
   - component: {fileID: 1543261795}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: LoginUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
