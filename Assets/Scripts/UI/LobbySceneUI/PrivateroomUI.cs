@@ -19,15 +19,15 @@ public class PrivateroomUI : MonoBehaviour
 
     int roomCount = 1;
 
+    
     public void CreatePrivateRoom()
     {
         string roomName = "Room" + roomCount;
 
-        Roomlistmanager.CreateRoom(roomName, 1); // ⭐ 여기서 리스트 추가
+        Roomlistmanager.CreateRoom(roomName, 1);
 
         roomCount++;
         panel.SetActive(false);
-
     }
     // 2. 실제 방 생성 (확인 버튼용)
     public void ConfirmPrivateRoom()
