@@ -40,7 +40,12 @@ public class CreateroomUI : MonoBehaviour
 
         int type = isPrivateToggle.isOn ? 1 : 0;
 
-        Roomlistmanager.CreateRoom(roomName, type);
+        string password = passwordInput.text;
+
+        Roomlistmanager.CreateRoom(roomName, type,password );
+
+        
+
 
         // 나중에 password도 같이 넘길 수 있음
 

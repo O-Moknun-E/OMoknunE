@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,6 +8,10 @@ public class Roomlistmanager : MonoBehaviour
 {
     public GameObject roomItemPrefab; // 방 하나 UI
     public Transform content; // ScrollView Content
+    public GameObject passwordPanel;
+    public TMP_InputField passwordInput;
+
+    
 
     public void QuickMatch()
     {
@@ -18,7 +23,7 @@ public class Roomlistmanager : MonoBehaviour
     int currentFilter = -1; // -1 = All, 0 = Public, 1 = Private
 
     // 방 생성
-    public void CreateRoom(string roomName, int type)
+    public void CreateRoom(string roomName, int type, string password)
     {
         roomList.Add(new RoomData(roomName, type));
         RefreshUI();
