@@ -4,11 +4,15 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Mainmenu : MonoBehaviour
+public class mainmenu : MonoBehaviour
 {
-  public void PlayGame()
+    public GameObject mainMenuPanel;
+    public GameObject loginPanel;
+
+    public void PlayGame()
     {
-        SceneManager.LoadSceneAsync("Loginscene");
+        mainMenuPanel.SetActive(false);
+        loginPanel.SetActive(true);
     }
 
     public void QuitGame()
