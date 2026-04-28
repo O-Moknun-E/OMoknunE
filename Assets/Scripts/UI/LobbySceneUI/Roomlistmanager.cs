@@ -31,6 +31,7 @@ public class Roomlistmanager : MonoBehaviour
         // 나중에 서버 붙이면 여기서 처리
         SceneManager.LoadScene("GameSceneUI");
     }
+
     // 필터 버튼용
     public void ShowAll()
     {
