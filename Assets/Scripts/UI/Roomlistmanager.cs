@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Roomlistmanager : MonoBehaviour
@@ -16,6 +17,11 @@ public class Roomlistmanager : MonoBehaviour
     public GameObject roomItemPrefab;    // RoomItem 프리팹
 
     public List<Roomdata> roomList = new List<Roomdata>();
+
+    public void QuickMatch()
+    {
+        SceneManager.LoadScene("GameSceneUI"); // 씬 이름 정확히 맞춰요
+    }
 
     void Start()
     {
