@@ -244,7 +244,10 @@ public class OmokManager : Singleton<OmokManager>
         return _currentTurn == StoneType.Black ? (int)PlayerType.White : (int)PlayerType.Black;
     }
 
-    // 게임 종료 이벤트
+    /// <summary>
+    /// 게임 종료 이벤트
+    /// </summary>
+    /// <param name="winner">게임 승리한 플레이어의 돌</param>
     private void EndGame(StoneType winner)
     {
         _isGameOver = true;
