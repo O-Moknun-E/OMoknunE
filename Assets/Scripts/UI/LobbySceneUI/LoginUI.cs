@@ -2,9 +2,16 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LoginUI : MonoBehaviour
+public class LoginUI : MonoBehaviour //¹ÎÁ¤¼öÁ¤
 {
     public TMP_InputField emailInput, passwordInput, userNameInput;
+    public Button loginBtn, registerBtn;
+
+    private void Start()
+    {
+        loginBtn.onClick.AddListener(TryLogin);
+        registerBtn.onClick.AddListener(TryRegister);
+    }
 
     public void TryLogin()
     {

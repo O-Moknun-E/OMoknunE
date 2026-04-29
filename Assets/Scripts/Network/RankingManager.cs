@@ -62,7 +62,7 @@ public class RankingManager : MonoBehaviour
         var request = new GetLeaderboardAroundPlayerRequest
         {
             StatisticName = stateHighScore,
-            PlayFabId = PlayFabManager.Instance.GetUserID(),
+            PlayFabId = PlayFabManager.Instance.UserID,
             MaxResultsCount = 1
         };
 

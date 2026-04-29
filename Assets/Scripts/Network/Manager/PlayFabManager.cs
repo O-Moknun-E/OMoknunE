@@ -67,15 +67,8 @@ public class PlayFabManager : MonoBehaviour
         }, OnRegusterFailure); 
     }
 
-    public string GetUserNickName()
-    {
-        return userNickName;
-    }
-
-    public string GetUserID()
-    {
-        return userID;
-    }
+    public string UserNickName => userNickName;
+    public string UserID => userID;
 
     #region 콜백메서드
 
@@ -86,6 +79,7 @@ public class PlayFabManager : MonoBehaviour
         RankingManager.Instance.GetScore();
         NetworkManager.Instance.Connect();
         RewardManager.Instance.GrantDailyBonus();
+        UImanager.Instance.ShowLobby();
     }
 
     private void OnLoginFailure(PlayFabError error)

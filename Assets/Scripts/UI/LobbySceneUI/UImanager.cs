@@ -2,6 +2,16 @@ using UnityEngine;
 
 public class UImanager : MonoBehaviour
 {
+    public static UImanager Instance;//πŒ¡§√ﬂ∞°
+
+    private void Awake() //πŒ¡§√ﬂ∞°
+    {
+        if(Instance == null)
+            Instance = this;
+        else
+            Destroy(this.gameObject);
+    }
+
     public GameObject mainMenuPanel;
     public GameObject loginPanel;
     public GameObject lobbyPanel;
