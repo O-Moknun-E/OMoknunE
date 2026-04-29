@@ -255,7 +255,8 @@ public class OmokManager : Singleton<OmokManager>
         string winnerName = (winner == StoneType.Black) ? "흑(플레이어1)" : "백(플레이어2)";
         Debug.Log($"<color=yellow><b>[SERVER INFO] {winnerName} 승리 모든 착수가 금지됩니다.</b></color>");
 
-        // 리플레이 - 기록 종료
+        // 리플레이 - 현재 턴 종료 및 기록 종료
+        _replay.EndTurn();
         _replay.EndRecording(winner == StoneType.Black ? PlayerType.Black : PlayerType.White);
 
         // PlayFab에 리플레이 저장

@@ -110,14 +110,19 @@ public class Replay : MonoBehaviour
         }
     }
 
-    private ReplayData _currentReplay; // 현재 리플레이
-    private TurnData _currentTurn;     // 현재 리플레이의 현재 턴 데이터
-    private int _currentTurnIndex;     // 현재 리플레이의 턴 인덱스
-    private int _currentActionIndex;   // 현재 리플레이의 특정 턴의 현재 행동 인덱스
-    private bool _isRecording;         // 리플레이 기록 여부
-    private bool _isReplaying;         // 리플레이 재생 여부
-    private float _replaySpeed = 1f;   // 리플레이 재생 속도(배속)
-    private float _gameStartTime;      // 게임 시작 시간
+    private ReplayData _currentReplay;  // 현재 리플레이
+    private TurnData _currentTurn;      // 현재 리플레이의 현재 턴 데이터
+    private int _currentTurnIndex;      // 현재 리플레이의 턴 인덱스
+    private int _currentActionIndex;    // 현재 리플레이의 특정 턴의 현재 행동 인덱스
+    private bool _isRecording;          // 리플레이 기록 여부
+    private bool _isReplaying;          // 리플레이 재생 여부
+    private float _replayInterval = 1f; // 리플레이 재생 간격(턴 당 초)
+    private float _gameStartTime;       // 게임 시작 시간
+
+    public int CurrentTurnIndex => _currentTurnIndex;
+    public int TotalTurns => _currentReplay?.turns.Count ?? 0;
+    public float ReplayInterval => _replayInterval;
+    public bool IsReplaying => _isReplaying;
 
     #region Recording Methods
 
@@ -368,13 +373,13 @@ public class Replay : MonoBehaviour
     }
 
     /// <summary>
-    /// 리플레이 속도 설정
+    /// 리플레이 간격 설정
     /// </summary>
-    /// <param name="speed"></param>
-    public void SetReplaySpeed(float speed)
+    /// <param name="interval"></param>
+    public void SetReplayInterval(float interval)
     {
-        // 0.25 ~ 4배속으로 제한
-        _replaySpeed = Mathf.Clamp(speed, 0.25f, 4f);
+        // 0.25 ~ 4초로 제한
+        _replayInterval = Mathf.Clamp(interval, 0.25f, 4f);
     }
 
     /// <summary>
