@@ -1,15 +1,32 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LoginUI : MonoBehaviour
 {
-    public Button loginButton;
+    public TMP_InputField emailInput, passwordInput, userNameInput;
 
-    void Update()
+    public void TryLogin()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            loginButton.onClick.Invoke();
-        }
+        PlayFabManager.Instance.Login(emailInput.text, passwordInput.text);
     }
+
+    public void TryRegister()
+    {
+        if (!IsValidInput())
+            return;
+        PlayFabManager.Instance.Register(emailInput.text, passwordInput.text, userNameInput.text);
+    }
+
+
+    private bool IsValidInput()
+    {
+        if (string.IsNullOrWhiteSpace(userNameInput.text) ||
+            string.IsNullOrWhiteSpace(emailInput.text) ||
+            string.IsNullOrWhiteSpace(passwordInput.text))
+            return false;
+
+        return true;
+    }
+
 }

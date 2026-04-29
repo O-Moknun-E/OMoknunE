@@ -6,7 +6,6 @@ using TMPro;
 public class PlayFabManager : MonoBehaviour
 {
     public static PlayFabManager Instance;
-    public  TMP_InputField emailInput, passwordInput, userNameInput; // ui작업시 삭제
 
     private string userID;
     private string userNickName;
@@ -23,12 +22,12 @@ public class PlayFabManager : MonoBehaviour
             Destroy(this.gameObject);
     }
 
-    public void Login(/*string email, string password*/) // 로그인
+    public void Login(string email, string password) // 로그인
     {
         var request = new LoginWithEmailAddressRequest 
         {
-            Email = emailInput.text, 
-            Password = passwordInput.text,
+            Email = email, 
+            Password = password,
 
             InfoRequestParameters = new GetPlayerCombinedInfoRequestParams
             {
@@ -40,20 +39,32 @@ public class PlayFabManager : MonoBehaviour
     }
     
 
-    public void Register(/*string email, string password, string useName*/) //회원가입
+    public void Register(string email, string password, string useName) //회원가입
     {
-        if (!IsValidInput())
-            return; 
-
         var request = new RegisterPlayFabUserRequest
         {
-            Email = emailInput.text,
-            Password = passwordInput.text,
-            Username = userNameInput.text,
-            DisplayName = userNameInput.text 
+            Email = email,
+            Password = password,
+            Username = useName,
+            DisplayName = useName
         };
 
-        PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnRegusterFailure);
+        PlayFabClientAPI.RegisterPlayFabUser(request, result =>
+        {
+            Debug.Log("회원가입 성공!");
+
+            var updateRequest = new UpdateUserTitleDisplayNameRequest
+            {
+                DisplayName = useName 
+            };
+
+            PlayFabClientAPI.UpdateUserTitleDisplayName(updateRequest, onUpdateSuccess => {
+                Debug.Log($"리더보드 닉네임 설정 완료");
+            }, error => {
+                Debug.LogWarning("닉네임 설정 실패: " + error.GenerateErrorReport());
+            });
+
+        }, OnRegusterFailure); 
     }
 
     public string GetUserNickName()
@@ -64,16 +75,6 @@ public class PlayFabManager : MonoBehaviour
     public string GetUserID()
     {
         return userID;
-    }
-
-    private bool IsValidInput()
-    {
-        if (string.IsNullOrWhiteSpace(userNameInput.text) ||
-            string.IsNullOrWhiteSpace(emailInput.text) ||
-            string.IsNullOrWhiteSpace(passwordInput.text))
-            return false;
-
-        return true;
     }
 
     #region 콜백메서드
@@ -95,7 +96,7 @@ public class PlayFabManager : MonoBehaviour
         Debug.Log(userMassge); // 이부분 나중에 ui text로 띄울것
     }
 
-    private void OnRegisterSuccess(RegisterPlayFabUserResult result)
+/*    private void OnRegisterSuccess(RegisterPlayFabUserResult result)
     {
         Debug.Log("회원가입 성공!");
 
@@ -109,7 +110,7 @@ public class PlayFabManager : MonoBehaviour
         }, error => {
             Debug.LogWarning("닉네임 설정 실패: " + error.GenerateErrorReport());
         });
-    }
+    }*/
 
     private void OnRegusterFailure(PlayFabError error)
     {
