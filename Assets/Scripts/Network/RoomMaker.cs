@@ -60,7 +60,10 @@ public class RoomMaker : MonoBehaviourPunCallbacks
         PhotonNetwork.CreateRoom(roomNameInput.text, roomOptions);
     }
 
-    public override void OnJoinedRoom() => Debug.Log("방 입장 성공! 플레이어 대기 중...");
+    public override void OnJoinedRoom()
+    {
+        Debug.Log("방 입장 성공! 플레이어 대기 중...");
+    }
 
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) => CheckAndStartGame();
 

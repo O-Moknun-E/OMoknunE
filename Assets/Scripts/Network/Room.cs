@@ -22,10 +22,22 @@ public class Room : MonoBehaviourPunCallbacks
     {
         roomInfo = info;
         targetRoomName = info.Name;
-
         roomNameText.text = info.Name;
-        roonManagerText.text = info.CustomProperties[RoomKeys.HostName].ToString();
         playerCountText.text = $"{info.PlayerCount} / {info.MaxPlayers}";
+
+
+        if (info.CustomProperties.TryGetValue(RoomKeys.HostName, out object hostNameObj))
+        {
+            if (hostNameObj != null)
+            {
+                roonManagerText.text = hostNameObj.ToString();
+            }
+            else
+            {
+                roonManagerText.text = "Unknown Host";
+            }
+        }
+
 
         bool isRandomRoom = info.CustomProperties.ContainsKey(RoomKeys.IsRandomMatch) && (bool)info.CustomProperties[RoomKeys.IsRandomMatch];
 
