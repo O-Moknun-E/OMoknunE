@@ -11,6 +11,7 @@ public static class RoomKeys
     public const string Password = "Password";
     public const string IsRandomMatch = "IsRandomMatch";
     public const string GameScene = "GameScene";
+    public const string HostName = "HostName";
 }
 
 public class RoomMaker : MonoBehaviourPunCallbacks
@@ -26,7 +27,7 @@ public class RoomMaker : MonoBehaviourPunCallbacks
     private int maxCount = 2;
     private bool isSceneLoading = false;
 
-   private void Awake()
+    private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
@@ -38,14 +39,23 @@ public class RoomMaker : MonoBehaviourPunCallbacks
         if (string.IsNullOrEmpty(roomNameInput.text)) return;
 
         RoomOptions roomOptions = new RoomOptions { MaxPlayers = (byte)maxCount };
-        Hashtable customProps = new Hashtable { { RoomKeys.IsRandomMatch, false } };
+        Hashtable customProps = new Hashtable
+        {
+            { RoomKeys.IsRandomMatch, false },
+            { RoomKeys.HostName, PlayFabManager.Instance.UserNickName } // 현재 플레이어의 닉네임 저장
+        };
 
         if (!string.IsNullOrEmpty(passwordInput.text))
             customProps.Add(RoomKeys.Password, passwordInput.text);
 
 
         roomOptions.CustomRoomProperties = customProps;
-        roomOptions.CustomRoomPropertiesForLobby = new string[] { RoomKeys.Password, RoomKeys.IsRandomMatch };
+        roomOptions.CustomRoomPropertiesForLobby = new string[]
+        {
+            RoomKeys.Password,
+            RoomKeys.IsRandomMatch,
+            RoomKeys.HostName
+        };
 
         PhotonNetwork.CreateRoom(roomNameInput.text, roomOptions);
     }
@@ -69,8 +79,8 @@ public class RoomMaker : MonoBehaviourPunCallbacks
     public void OnClickExit() => PhotonNetwork.LeaveRoom();
 
     public override void OnLeftRoom() => isSceneLoading = false;
-    
+
 }
 
-  
+
 

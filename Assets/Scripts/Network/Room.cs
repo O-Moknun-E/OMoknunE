@@ -9,6 +9,7 @@ public class Room : MonoBehaviourPunCallbacks
     [Header("UI References")]
     public Button enterBtn;
     public TextMeshProUGUI roomNameText;
+    public TextMeshProUGUI roonManagerText;
     public TextMeshProUGUI playerCountText;
     public GameObject lockIcon;
 
@@ -23,6 +24,7 @@ public class Room : MonoBehaviourPunCallbacks
         targetRoomName = info.Name;
 
         roomNameText.text = info.Name;
+        roonManagerText.text = info.CustomProperties[RoomKeys.HostName].ToString();
         playerCountText.text = $"{info.PlayerCount} / {info.MaxPlayers}";
 
         bool isRandomRoom = info.CustomProperties.ContainsKey(RoomKeys.IsRandomMatch) && (bool)info.CustomProperties[RoomKeys.IsRandomMatch];
