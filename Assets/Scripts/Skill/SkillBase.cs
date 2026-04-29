@@ -6,7 +6,8 @@ public struct SkillContext
 {
     public int TargetX;
     public int TargetY;
-    public PlayerType Caster; 
+    public PlayerType Caster;
+    public int SkinID;
 }
 
 //SkillEffect 상속받아서 스킬 효과 구현하기
@@ -38,9 +39,9 @@ public class SkillBase : ScriptableObject, IMagic
     // 내부 상태 저장용
     private SkillContext _currentContext;
 
-    public void SetTarget(int x, int y,PlayerType caster)
+    public void SetTarget(int x, int y, PlayerType caster, int skinId)
     {
-        _currentContext = new SkillContext { TargetX = x, TargetY = y };
+        _currentContext = new SkillContext { TargetX = x, TargetY = y, Caster = caster, SkinID = skinId };
     }
 
     // 인터페이스의 Execute를 구현
@@ -48,7 +49,7 @@ public class SkillBase : ScriptableObject, IMagic
     {
         if (_effects == null || _effects.Count == 0)
         {
-            Debug.LogWarning($"{_skillName} 스킬에 등록된 효과가 없습니다!");
+            Debug.LogWarning($"{_skillName} 스킬에 등록된 효과가 없습니다");
             return;
         }
 
