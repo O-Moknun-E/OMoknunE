@@ -15,7 +15,7 @@ public class Roomlistmanager : MonoBehaviour
 
     public void QuickMatch()
     {
-        SceneManager.LoadScene("GameSceneUI"); // 씬 이름 정확히
+        SceneManager.LoadScene("GameSceneUI"); // 씬 이름 정확히 맞춰요
     }
 
     List<RoomData> roomList = new List<RoomData>();
