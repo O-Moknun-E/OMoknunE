@@ -84,6 +84,7 @@ public class PlayFabManager : MonoBehaviour
         userNickName = result.InfoResultPayload.AccountInfo.TitleInfo.DisplayName;
         RankingManager.Instance.GetScore();
         NetworkManager.Instance.Connect();
+        RewardManager.Instance.GrantDailyBonus();
     }
 
     private void OnLoginFailure(PlayFabError error)
