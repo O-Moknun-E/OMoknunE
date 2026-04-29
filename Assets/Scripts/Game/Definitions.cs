@@ -7,7 +7,8 @@ public enum StoneType
 {
     Empty,
     Black,
-    White
+    White,
+    Fake // 가짜 돌 / 검사 로직에서 판정 x
 }
 
 /// <summary>
