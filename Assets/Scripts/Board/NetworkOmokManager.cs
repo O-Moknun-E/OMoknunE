@@ -235,9 +235,9 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
             if (_resultText != null)
             {
                 if (winner == StoneType.Black)
-                    _resultText.text = "흑돌 승리 / 백돌 패배";
+                    _resultText.text = "Black Win / White Lose";
                 else if (winner == StoneType.White)
-                    _resultText.text = "백돌 승리 / 흑돌 패배";
+                    _resultText.text = "White Win / Black Lose";
             }
         }
     }
