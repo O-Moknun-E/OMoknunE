@@ -28,6 +28,6 @@ public class RoomItemUI : MonoBehaviour
 
     void OnClickRoom()
     {
-        manager.JoinRoom(data);
+       // manager.JoinRoom(data);
     }
 }
