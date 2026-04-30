@@ -8,10 +8,6 @@ public class PlayFabManager : MonoBehaviour
     public static PlayFabManager Instance;
     public  TMP_InputField emailInput, passwordInput, userNameInput; // ui작업시 삭제
 
-    [Header("UI 패널 연결")]
-    public GameObject loginUIPanel; // 로그인/회원가입 화면 그룹
-    public GameObject lobbyUIPanel; // 로비(방 만들기/입장) 화면 그룹
-
     private void Awake()
     {
         if (Instance == null)
