@@ -64,10 +64,14 @@ public class OmokManager : Singleton<OmokManager>
 
         IncomeMana();
         CheckTurnTimer();
+
+
+
+
 }
 
     // 게임 초기화
-    public void InitGame()
+    private void InitGame()
     {
         _board = new StoneType[BoardSize, BoardSize];
         _players = new Player[2];

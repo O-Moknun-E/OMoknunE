@@ -47,20 +47,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OmokManager
   _boardInteraction: {fileID: 5496616157342155110, guid: 49bdaaaf878796a4bbfc879d4f6e422a, type: 3}
   _stoneSkins:
-  - {fileID: 1572739284480575744, guid: d267b72e3768eb64fae8890b062613ad, type: 3}
-  - {fileID: 1555695727865631640, guid: 108454687532b284ab5b9159fe37b1d4, type: 3}
-  - {fileID: 4582806900247545062, guid: ab74b751567b0e14594273294dbe82e7, type: 3}
-  - {fileID: 2879135618502370335, guid: 627c2c660712a9741bf3890bcb52146e, type: 3}
-  - {fileID: 5275952812963398122, guid: 1cdf6ad85383d344b8350d54b3b8b6b5, type: 3}
-  - {fileID: -3851723516642818330, guid: d154f39492cca6c408c583b317a4c15d, type: 3}
-  - {fileID: -3396013953647934848, guid: 928f590eb6038254487fedf6002700a3, type: 3}
-  - {fileID: 6689351981377106716, guid: edf624b6e7d70fb40962fe1bcc70fba8, type: 3}
-  - {fileID: -8286694971105976662, guid: 4447cd7698bd4de46969058adc592cd5, type: 3}
-  - {fileID: 6003057123245913516, guid: 8ab454e099b46c14cbb73aaaafcce35e, type: 3}
-  - {fileID: 2574722035660519353, guid: 0770fd75d5b051f4186e148ff436df06, type: 3}
-  - {fileID: 8342956090228926552, guid: 93a3687dbb03c5d42afee05108ba4a4d, type: 3}
-  - {fileID: -6836955150861472661, guid: f87088b53fae4464aa61f65a320b3638, type: 3}
-  - {fileID: 8620691911285456427, guid: d0cba4ad25d467544a51a608aab69003, type: 3}
+  - {fileID: -3500603621866437359, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: 7660890058260747858, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: -4566300494430230089, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: -4700881041670402784, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: 3464937461407787306, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: -3500603621866437359, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: -484765293064342697, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: -8118041438486466186, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
+  - {fileID: 7660890058260747858, guid: 1ff969a093666af4ba3fb5592e4ca320, type: 3}
 --- !u!114 &5313713165361843475
 MonoBehaviour:
   m_ObjectHideFlags: 0
