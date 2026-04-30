@@ -3,16 +3,23 @@ using PlayFab.ClientModels;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RankingManager : Singleton<RankingManager>
+public class RankingManager : MonoBehaviour
 {
+    public static RankingManager Instance;
 
     private List<StatisticUpdate> statUpdateBuffer = new List<StatisticUpdate>(1);
     private const string stateHighScore = "HighScore";
 
-    private int victoryScore = 20;
-    private int loseScore = -10;
-
     public int CachedMyHighScore { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(this.gameObject);
+    }
+
 
     public void GetRanking() //현재 랭킹 확인
     {
@@ -24,14 +31,12 @@ public class RankingManager : Singleton<RankingManager>
             ProfileConstraints = new PlayerProfileViewConstraints() { ShowLocations = true, ShowDisplayName = true }
         };
 
-        PlayFabClientAPI.GetLeaderboard(request, OnGetUserRankingSuccess, OnGetRankingFailure);
+        PlayFabClientAPI.GetLeaderboard(request,OnGetUserRankingSuccess,OnGetRankingFailure);
 
     }
 
-    public void AddScoreAndSync(bool isVictory) //현재 플레이어 점수 추가시 사용 메서드 (로컬점수 먼저올림)
+    public void AddScoreAndSync(int amount) //현재 플레이어 점수 추가시 사용 메서드 (로컬점수 먼저올림)
     {
-        int amount = isVictory ? victoryScore : loseScore;
-
         CachedMyHighScore += amount;
 
         UpdateScore(CachedMyHighScore);
@@ -41,20 +46,15 @@ public class RankingManager : Singleton<RankingManager>
     public void UpdateScore(int score) //서버에 점수를 올림
     {
 
-        statUpdateBuffer.Clear();
+        statUpdateBuffer.Clear(); 
         statUpdateBuffer.Add(new StatisticUpdate { StatisticName = stateHighScore, Value = score });
 
         var request = new UpdatePlayerStatisticsRequest
         {
-            Statistics = statUpdateBuffer
+            Statistics = statUpdateBuffer 
         };
 
-        PlayFabClientAPI.UpdatePlayerStatistics(request,
-            result => {
-                Debug.Log($"점수 갱신 성공! 갱신된 점수: {score}");
-            },
-            OnUpdateFailure
-        );
+        PlayFabClientAPI.UpdatePlayerStatistics(request, OnUpdateSuccess, OnUpdateFailure);
     }
 
     public void GetScore() //현재 플레이어의 스코어를 가지고 오고 싶을때
@@ -83,7 +83,7 @@ public class RankingManager : Singleton<RankingManager>
             }
 
             string name = string.IsNullOrEmpty(player.DisplayName) ? player.PlayFabId : player.DisplayName;
-            int rank = player.Position + 1;
+            int rank = player.Position + 1; 
             int score = player.StatValue;
 
             Debug.Log($"{rank}위: {country} / {name} (점수: {score})");
@@ -108,6 +108,8 @@ public class RankingManager : Singleton<RankingManager>
     }
 
     private void OnGetPlayerScoreFailure(PlayFabError error) => Debug.LogError($"플레이어 점수 조회 실패: {error.GenerateErrorReport()}");
+
+    private void OnUpdateSuccess(UpdatePlayerStatisticsResult result) => Debug.Log("점수 갱신 성공");
 
     private void OnUpdateFailure(PlayFabError error) => Debug.LogError(error.GenerateErrorReport());
 

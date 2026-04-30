@@ -2,16 +2,29 @@ using PlayFab.ClientModels;
 using PlayFab;
 using UnityEngine;
 using TMPro;
-using Photon.Pun;
 
-public class PlayFabManager : Singleton<PlayFabManager>
+public class PlayFabManager : MonoBehaviour
 {
+    public static PlayFabManager Instance;
+
     private string userID;
     private string userNickName;
 
-    public void Login(string email, string password) // å ì‹¸ê¹ì˜™å ì™ì˜™
+
+    private void Awake()
     {
-        var request = new LoginWithEmailAddressRequest
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+            Destroy(this.gameObject);
+    }
+
+    public void Login(string email, string password) // ·Î±×ÀÎ
+    {
+        var request = new LoginWithEmailAddressRequest 
         {
             Email = email, 
             Password = password,
@@ -24,9 +37,9 @@ public class PlayFabManager : Singleton<PlayFabManager>
 
         PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnLoginFailure);
     }
+    
 
-
-    public void Register(string email, string password, string useName) //íšŒå ì™ì˜™å ì™ì˜™å ì™ì˜™
+    public void Register(string email, string password, string useName) //È¸¿ø°¡ÀÔ
     {
         var request = new RegisterPlayFabUserRequest
         {
@@ -38,7 +51,7 @@ public class PlayFabManager : Singleton<PlayFabManager>
 
         PlayFabClientAPI.RegisterPlayFabUser(request, result =>
         {
-            Debug.Log("íšŒå ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™!");
+            Debug.Log("È¸¿ø°¡ÀÔ ¼º°ø!");
 
             var updateRequest = new UpdateUserTitleDisplayNameRequest
             {
@@ -46,9 +59,9 @@ public class PlayFabManager : Singleton<PlayFabManager>
             };
 
             PlayFabClientAPI.UpdateUserTitleDisplayName(updateRequest, onUpdateSuccess => {
-                Debug.Log($"å ì™ì˜™å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì‹»ë†‚ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì‹¹ë¤„ì˜™");
+                Debug.Log($"¸®´õº¸µå ´Ğ³×ÀÓ ¼³Á¤ ¿Ï·á");
             }, error => {
-                Debug.LogWarning("å ì‹»ë†‚ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™: " + error.GenerateErrorReport());
+                Debug.LogWarning("´Ğ³×ÀÓ ¼³Á¤ ½ÇÆĞ: " + error.GenerateErrorReport());
             });
 
         }, OnRegusterFailure); 
@@ -57,14 +70,12 @@ public class PlayFabManager : Singleton<PlayFabManager>
     public string UserNickName => userNickName;
     public string UserID => userID;
 
-    #region å ìŒ¥ë±„ì˜™æ°·å ì™ì˜™å ï¿½
+    #region Äİ¹é¸Ş¼­µå
 
     private void OnLoginSuccess(LoginResult result)
     {
         userID = result.PlayFabId;
         userNickName = result.InfoResultPayload.AccountInfo.TitleInfo.DisplayName;
-        PhotonNetwork.NickName = userNickName;
-
         RankingManager.Instance.GetScore();
         NetworkManager.Instance.Connect();
         RewardManager.Instance.GrantDailyBonus();
@@ -73,34 +84,34 @@ public class PlayFabManager : Singleton<PlayFabManager>
 
     private void OnLoginFailure(PlayFabError error)
     {
-        Debug.LogError("å ì‹¸ê¹ì˜™å ì‹¸ì™ì˜™å ì™ì˜™");
+        Debug.LogError("·Î±×ÀÎ½ÇÆĞ");
 
         string userMassge = PlayFabErrorHandler.GetErrorMessage(error.Error);
-        Debug.Log(userMassge); // å ì‹±ë¶€ë¸ì˜™ å ì™ì˜™å ìŒ©ìš¸ì˜™ ui textå ì™ì˜™ å ì™ì˜™å ì™ì˜™
+        Debug.Log(userMassge); // ÀÌºÎºĞ ³ªÁß¿¡ ui text·Î ¶ç¿ï°Í
     }
 
 /*    private void OnRegisterSuccess(RegisterPlayFabUserResult result)
     {
-        Debug.Log("íšŒå ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™!");
+        Debug.Log("È¸¿ø°¡ÀÔ ¼º°ø!");
 
         var updateRequest = new UpdateUserTitleDisplayNameRequest
         {
-            DisplayName = userNameInput.text
+            DisplayName = userNameInput.text 
         };
 
         PlayFabClientAPI.UpdateUserTitleDisplayName(updateRequest, onUpdateSuccess => {
-            Debug.Log($"å ì™ì˜™å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì‹»ë†‚ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì‹¹ë¤„ì˜™");
+            Debug.Log($"¸®´õº¸µå ´Ğ³×ÀÓ ¼³Á¤ ¿Ï·á");
         }, error => {
-            Debug.LogWarning("å ì‹»ë†‚ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™: " + error.GenerateErrorReport());
+            Debug.LogWarning("´Ğ³×ÀÓ ¼³Á¤ ½ÇÆĞ: " + error.GenerateErrorReport());
         });
     }*/
 
     private void OnRegusterFailure(PlayFabError error)
     {
-        Debug.LogError("íšŒå ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™");
+        Debug.LogError("È¸¿ø°¡ÀÔ ½ÇÆĞ");
 
         string userMassge = PlayFabErrorHandler.GetErrorMessage(error.Error);
-        Debug.Log(userMassge); // å ì‹±ë¶€ë¸ì˜™ å ì™ì˜™å ìŒ©ìš¸ì˜™ ui textå ì™ì˜™ å ì™ì˜™å ì™ì˜™
+        Debug.Log(userMassge); // ÀÌºÎºĞ ³ªÁß¿¡ ui text·Î ¶ç¿ï°Í
     }
 
     #endregion
