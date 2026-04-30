@@ -2,7 +2,6 @@ using PlayFab.ClientModels;
 using PlayFab;
 using UnityEngine;
 using TMPro;
-using Photon.Pun;
 
 public class PlayFabManager : MonoBehaviour
 {
@@ -57,8 +56,15 @@ public class PlayFabManager : MonoBehaviour
         PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnRegusterFailure);
     }
 
-    public string UserNickName => userNickName;
-    public string UserID => userID;
+    public string GetUserNickName()
+    {
+        return userNickName;
+    }
+
+    public string GetUserID()
+    {
+        return userID;
+    }
 
     private bool IsValidInput()
     {
@@ -76,8 +82,6 @@ public class PlayFabManager : MonoBehaviour
     {
         userID = result.PlayFabId;
         userNickName = result.InfoResultPayload.AccountInfo.TitleInfo.DisplayName;
-        PhotonNetwork.NickName = userNickName;
-
         RankingManager.Instance.GetScore();
         NetworkManager.Instance.Connect();
         RewardManager.Instance.GrantDailyBonus();

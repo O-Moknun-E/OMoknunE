@@ -1,4 +1,3 @@
-using Photon.Pun;
 using System;
 using UnityEngine;
 
@@ -82,22 +81,8 @@ public class OmokManager : Singleton<OmokManager>
 
         // 플레이어 초기화
         // 나중에 닉네임 추가(임시로 "흑", "백")
-
-        int index = 0;
-        foreach (Photon.Realtime.Player photonPlayer in PhotonNetwork.PlayerList) // 민정추가 유저닉네임 저장
-        {
-
-            if (index >= _players.Length) break;
-
-            int playerColor = (index == 0) ? _manaBlack : _manaWhite;
-
-            _players[index] = new Player(photonPlayer.NickName, playerColor);
-
-            index++;
-        }
-
-/*        _players[0] = new Player("흑", _manaBlack);
-        _players[1] = new Player("백", _manaWhite);*/
+        _players[0] = new Player("흑", _manaBlack);
+        _players[1] = new Player("백", _manaWhite);
 
         // 게임 상태 초기화
         _isGameOver = false;
@@ -191,13 +176,9 @@ public class OmokManager : Singleton<OmokManager>
         {
             _isGameOver = true;
             FindFirstObjectByType<BoardInteraction>().SetGameOver();
-            string winnerName = (placedStone == StoneType.Black) ? _players[0].Name : _players[1].Name; //민정수정_닉네임으로 수정함
+            string winnerName = (placedStone == StoneType.Black) ? "흑(플레이어1)" : "백(플레이어2)";
             Debug.Log($"<color=yellow><b>[SERVER INFO] {winnerName} 승리 모든 착수가 금지됩니다.</b></color>");
             // 게임 종료 이벤트
-
-            RankingManager.Instance.AddScoreAndSync(winnerName == PlayFabManager.Instance.UserNickName); //민정추가
-
-
             OnGameOver?.Invoke(placedStone);
         }
         else
