@@ -6,6 +6,7 @@ public class SkipLoginHelper : MonoBehaviour
     [Header("UI 연결")]
     public GameObject loginPanel;
     public GameObject lobbyPanel;
+    public GameObject startPanel; //민정추가
 
     void Start()
     {
@@ -21,6 +22,7 @@ public class SkipLoginHelper : MonoBehaviour
         // 게임을 끝내고 돌아온 상태라면 즉시 로비로 이동
         if (NetworkOmokManager.IsReturningFromGame)
         {
+            if (startPanel != null) loginPanel.SetActive(false);//민정추가
             if (loginPanel != null) loginPanel.SetActive(false);
             if (lobbyPanel != null) lobbyPanel.SetActive(true);
 

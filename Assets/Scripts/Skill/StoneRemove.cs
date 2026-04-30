@@ -12,7 +12,7 @@ public class RemoveStoneEffect : SkillEffect
         BoardInteraction bi = FindFirstObjectByType<BoardInteraction>();
         if (bi != null)
         {
-            bi.RemoveStoneVisual(context.TargetX, context.TargetY);
+           // bi.RemoveStoneVisual(context.TargetX, context.TargetY);
         }
         Debug.Log("해당 좌표 돌 삭제 완료");
         

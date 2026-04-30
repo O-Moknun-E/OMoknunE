@@ -294,7 +294,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        SceneManager.LoadScene("MJTest");// 후에 메인메뉴 씬으로 수정 필요 
+        SceneManager.LoadScene("LobbyScene");// 후에 메인메뉴 씬으로 수정 필요 
     }
 
 }
