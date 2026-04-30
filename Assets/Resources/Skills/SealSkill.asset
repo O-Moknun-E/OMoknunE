@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7156d39803f9d4847a13bb3f82c54207, type: 3}
-  m_Name: FakeStoneSkill
+  m_Name: SealSkill
   m_EditorClassIdentifier: Assembly-CSharp::SkillBase
-  _id: 0
-  _skillName: "\uAC00\uC9DC\uB3CC"
+  _id: 2
+  _skillName: "\uBD09\uC778\uACB0\uACC4 \uC0DD\uC131"
   _description: 
   _cost: 0
   _effects:
-  - {fileID: 11400000, guid: fd42c665396e16b4189a48b1b251384a, type: 2}
+  - {fileID: 11400000, guid: 1ed38ac84b2a4be4ba963aacea72148d, type: 2}
