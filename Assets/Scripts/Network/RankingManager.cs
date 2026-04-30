@@ -3,23 +3,15 @@ using PlayFab.ClientModels;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RankingManager : MonoBehaviour
+public class RankingManager : Singleton<RankingManager>
 {
-    public static RankingManager Instance;
-
     private List<StatisticUpdate> statUpdateBuffer = new List<StatisticUpdate>(1);
     private const string stateHighScore = "HighScore";
 
+    private int victoryScore = 20;
+    private int loseScore = -10;
+
     public int CachedMyHighScore { get; private set; }
-
-    private void Awake()
-    {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(this.gameObject);
-    }
-
 
     public void GetRanking() //현재 랭킹 확인
     {
@@ -35,8 +27,10 @@ public class RankingManager : MonoBehaviour
 
     }
 
-    public void AddScoreAndSync(int amount) //현재 플레이어 점수 추가시 사용 메서드 (로컬점수 먼저올림)
+    public void AddScoreAndSync(bool isVictory) //현재 플레이어 점수 추가시 사용 메서드 (로컬점수 먼저올림)
     {
+        int amount = isVictory ? victoryScore : loseScore;
+
         CachedMyHighScore += amount;
 
         UpdateScore(CachedMyHighScore);
@@ -62,7 +56,7 @@ public class RankingManager : MonoBehaviour
         var request = new GetLeaderboardAroundPlayerRequest
         {
             StatisticName = stateHighScore,
-            PlayFabId = PlayFabManager.Instance.GetUserID(),
+            PlayFabId = PlayFabManager.Instance.UserID,
             MaxResultsCount = 1
         };
 
