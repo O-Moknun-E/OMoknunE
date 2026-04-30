@@ -2,32 +2,20 @@ using PlayFab.ClientModels;
 using PlayFab;
 using UnityEngine;
 using TMPro;
+using Photon.Pun;
 
-public class PlayFabManager : MonoBehaviour
+public class PlayFabManager : Singleton<PlayFabManager>
 {
-    public static PlayFabManager Instance;
-    public  TMP_InputField emailInput, passwordInput, userNameInput; // ui작업시 삭제
+    public TMP_InputField emailInput, passwordInput, userNameInput; // ui작업시 삭제
 
     private string userID;
     private string userNickName;
 
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-            Destroy(this.gameObject);
-    }
-
     public void Login(/*string email, string password*/) // 로그인
     {
-        var request = new LoginWithEmailAddressRequest 
+        var request = new LoginWithEmailAddressRequest
         {
-            Email = emailInput.text, 
+            Email = emailInput.text,
             Password = passwordInput.text,
 
             InfoRequestParameters = new GetPlayerCombinedInfoRequestParams
@@ -38,33 +26,26 @@ public class PlayFabManager : MonoBehaviour
 
         PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnLoginFailure);
     }
-    
+
 
     public void Register(/*string email, string password, string useName*/) //회원가입
     {
         if (!IsValidInput())
-            return; 
+            return;
 
         var request = new RegisterPlayFabUserRequest
         {
             Email = emailInput.text,
             Password = passwordInput.text,
             Username = userNameInput.text,
-            DisplayName = userNameInput.text 
+            DisplayName = userNameInput.text
         };
 
         PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnRegusterFailure);
     }
 
-    public string GetUserNickName()
-    {
-        return userNickName;
-    }
-
-    public string GetUserID()
-    {
-        return userID;
-    }
+    public string UserNickName => userNickName;
+    public string UserID => userID;
 
     private bool IsValidInput()
     {
@@ -82,6 +63,8 @@ public class PlayFabManager : MonoBehaviour
     {
         userID = result.PlayFabId;
         userNickName = result.InfoResultPayload.AccountInfo.TitleInfo.DisplayName;
+        PhotonNetwork.NickName = userNickName;
+
         RankingManager.Instance.GetScore();
         NetworkManager.Instance.Connect();
         RewardManager.Instance.GrantDailyBonus();
@@ -101,7 +84,7 @@ public class PlayFabManager : MonoBehaviour
 
         var updateRequest = new UpdateUserTitleDisplayNameRequest
         {
-            DisplayName = userNameInput.text 
+            DisplayName = userNameInput.text
         };
 
         PlayFabClientAPI.UpdateUserTitleDisplayName(updateRequest, onUpdateSuccess => {
