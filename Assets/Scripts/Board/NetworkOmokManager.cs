@@ -25,7 +25,10 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
 
     [Header("게임 오버 UI")]
     [SerializeField] private GameObject _gameOverPanel;
-    [SerializeField] private TextMeshProUGUI _resultText;          
+    [SerializeField] private TextMeshProUGUI _resultText;
+
+    public static bool IsReturningFromGame = false;
+
     public override void OnEnable()
     {
         base.OnEnable();
@@ -46,12 +49,28 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        if (OmokManager.Instance != null)
+        {
+            OmokManager.Instance.InitGame();
+        }
+
         _mySkinIndex = PlayerPrefs.GetInt("MySkinID", 0);
 
         if (PhotonNetwork.InRoom) SetupGame();
         else
         {
             if (_boardInteraction != null) _boardInteraction.SetMyTurn(false);
+        }
+        // 방장(MasterClient) 한 명만 이 명령을 서버에 내림
+        if (PhotonNetwork.InRoom && PhotonNetwork.IsMasterClient)
+        {
+            // 1. IsOpen = false : 아무도 이 방에 들어올 수 없음
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+
+            // 2. IsVisible = false : 로비 목록에서 아예 방 이름 지움
+            PhotonNetwork.CurrentRoom.IsVisible = false;
+
+            Debug.Log("게임이 시작되어 방을 비공개로 잠갔습니다");
         }
     }
 
@@ -243,6 +262,8 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     }
     public void ReturnToMainMenu()
     {
+        IsReturningFromGame = true;
+
         PhotonNetwork.LeaveRoom();
     }
 
