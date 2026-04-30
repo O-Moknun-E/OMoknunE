@@ -1,0 +1,962 @@
+fileFormatVersion: 2
+guid: 4b5b3592ce687e34db3aa1256dd6c80b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5150772649342141600
+    second: FakeStone_0
+  - first:
+      213: 433897184394395528
+    second: FakeStone_1
+  - first:
+      213: -6976047504766533129
+    second: FakeStone_2
+  - first:
+      213: 2439379270955328080
+    second: FakeStone_3
+  - first:
+      213: 625008282341293811
+    second: FakeStone_4
+  - first:
+      213: -625315877224239504
+    second: FakeStone_5
+  - first:
+      213: 863939306158317698
+    second: FakeStone_6
+  - first:
+      213: -9178655484824146049
+    second: FakeStone_7
+  - first:
+      213: 8784028669867387307
+    second: FakeStone_8
+  - first:
+      213: 7533807372352375068
+    second: FakeStone_9
+  - first:
+      213: -8081957581508964167
+    second: FakeStone_10
+  - first:
+      213: 314646501609595292
+    second: FakeStone_11
+  - first:
+      213: 5000895185682427892
+    second: FakeStone_12
+  - first:
+      213: 8320019396882873347
+    second: FakeStone_13
+  - first:
+      213: -576776235478067584
+    second: FakeStone_14
+  - first:
+      213: 8558551479237507879
+    second: FakeStone_15
+  - first:
+      213: -8626105648132038196
+    second: FakeStone_16
+  - first:
+      213: -2690678141633630084
+    second: FakeStone_17
+  - first:
+      213: -819021298143388375
+    second: FakeStone_18
+  - first:
+      213: -8535169830739605047
+    second: FakeStone_19
+  - first:
+      213: -6126113476677772715
+    second: FakeStone_20
+  - first:
+      213: -1126075865426165908
+    second: FakeStone_21
+  - first:
+      213: 3820032281745273169
+    second: FakeStone_22
+  - first:
+      213: -5276010836835370009
+    second: FakeStone_23
+  - first:
+      213: 101089830316993302
+    second: FakeStone_24
+  - first:
+      213: 7613783271068236313
+    second: FakeStone_25
+  - first:
+      213: -5577711553926068885
+    second: FakeStone_26
+  - first:
+      213: 8674998060604738589
+    second: FakeStone_27
+  - first:
+      213: -8408068972474353101
+    second: FakeStone_28
+  - first:
+      213: -5451912510747823265
+    second: FakeStone_29
+  - first:
+      213: -9110390978503711657
+    second: FakeStone_30
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 64
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: FakeStone_0
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 6
+        width: 41
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06bf92db097c488b0800000000000000
+      internalID: -5150772649342141600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_1
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 6
+        width: 41
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88fbed8b033850600800000000000000
+      internalID: 433897184394395528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_2
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 6
+        width: 41
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f1042e41c9103f90800000000000000
+      internalID: -6976047504766533129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_3
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 6
+        width: 35
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0526eb5c58a6ad120800000000000000
+      internalID: 2439379270955328080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_4
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 6
+        width: 39
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3fe31aaa8b97ca800800000000000000
+      internalID: 625008282341293811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_5
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 6
+        width: 35
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07e23a1d58e6257f0800000000000000
+      internalID: -625315877224239504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_6
+      rect:
+        serializedVersion: 2
+        x: 286
+        y: 6
+        width: 39
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 280601bb8345dfb00800000000000000
+      internalID: 863939306158317698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_7
+      rect:
+        serializedVersion: 2
+        x: 331
+        y: 6
+        width: 41
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7fad57977dde9080800000000000000
+      internalID: -9178655484824146049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_8
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 6
+        width: 39
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba9ea44198327e970800000000000000
+      internalID: 8784028669867387307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_9
+      rect:
+        serializedVersion: 2
+        x: 427
+        y: 6
+        width: 39
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c19484ba3e57d8860800000000000000
+      internalID: 7533807372352375068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_10
+      rect:
+        serializedVersion: 2
+        x: 472
+        y: 6
+        width: 41
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b01260566e17df80800000000000000
+      internalID: -8081957581508964167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_11
+      rect:
+        serializedVersion: 2
+        x: 521
+        y: 6
+        width: 37
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c91624e7359dd5400800000000000000
+      internalID: 314646501609595292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_12
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 6
+        width: 41
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ffef8decafb66540800000000000000
+      internalID: 5000895185682427892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_13
+      rect:
+        serializedVersion: 2
+        x: 619
+        y: 6
+        width: 37
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30c30936f85a67370800000000000000
+      internalID: 8320019396882873347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_14
+      rect:
+        serializedVersion: 2
+        x: 662
+        y: 6
+        width: 41
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0865179d111eef7f0800000000000000
+      internalID: -576776235478067584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_15
+      rect:
+        serializedVersion: 2
+        x: 707
+        y: 6
+        width: 43
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72b78d7a93516c670800000000000000
+      internalID: 8558551479237507879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_16
+      rect:
+        serializedVersion: 2
+        x: 754
+        y: 6
+        width: 39
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc16918bd9ae94880800000000000000
+      internalID: -8626105648132038196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_17
+      rect:
+        serializedVersion: 2
+        x: 801
+        y: 6
+        width: 41
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c70f40b6c7ac8aad0800000000000000
+      internalID: -2690678141633630084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_18
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 6
+        width: 39
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92d1facf77042a4f0800000000000000
+      internalID: -819021298143388375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_19
+      rect:
+        serializedVersion: 2
+        x: 899
+        y: 6
+        width: 35
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c9822d924cfc8980800000000000000
+      internalID: -8535169830739605047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_20
+      rect:
+        serializedVersion: 2
+        x: 944
+        y: 6
+        width: 39
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55a53e0204cabfaa0800000000000000
+      internalID: -6126113476677772715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_21
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 6
+        width: 37
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6ff12377ff5f50f0800000000000000
+      internalID: -1126075865426165908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_22
+      rect:
+        serializedVersion: 2
+        x: 1036
+        y: 6
+        width: 39
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 151b3ffee1b730530800000000000000
+      internalID: 3820032281745273169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_23
+      rect:
+        serializedVersion: 2
+        x: 1083
+        y: 6
+        width: 41
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ebf05fe818d7c6b0800000000000000
+      internalID: -5276010836835370009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_24
+      rect:
+        serializedVersion: 2
+        x: 1134
+        y: 6
+        width: 37
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61be2724aa4276100800000000000000
+      internalID: 101089830316993302
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_25
+      rect:
+        serializedVersion: 2
+        x: 1181
+        y: 6
+        width: 39
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91a75d4ab8799a960800000000000000
+      internalID: 7613783271068236313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_26
+      rect:
+        serializedVersion: 2
+        x: 1228
+        y: 6
+        width: 39
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6505a8c4ecf792b0800000000000000
+      internalID: -5577711553926068885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_27
+      rect:
+        serializedVersion: 2
+        x: 1271
+        y: 6
+        width: 41
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1c4c8526c8c36870800000000000000
+      internalID: 8674998060604738589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_28
+      rect:
+        serializedVersion: 2
+        x: 1318
+        y: 6
+        width: 39
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33abea041d9805b80800000000000000
+      internalID: -8408068972474353101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_29
+      rect:
+        serializedVersion: 2
+        x: 1371
+        y: 6
+        width: 35
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f533e5af47ae654b0800000000000000
+      internalID: -5451912510747823265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FakeStone_30
+      rect:
+        serializedVersion: 2
+        x: 1416
+        y: 6
+        width: 39
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 754ec598ca3619180800000000000000
+      internalID: -9110390978503711657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      FakeStone_0: -5150772649342141600
+      FakeStone_1: 433897184394395528
+      FakeStone_10: -8081957581508964167
+      FakeStone_11: 314646501609595292
+      FakeStone_12: 5000895185682427892
+      FakeStone_13: 8320019396882873347
+      FakeStone_14: -576776235478067584
+      FakeStone_15: 8558551479237507879
+      FakeStone_16: -8626105648132038196
+      FakeStone_17: -2690678141633630084
+      FakeStone_18: -819021298143388375
+      FakeStone_19: -8535169830739605047
+      FakeStone_2: -6976047504766533129
+      FakeStone_20: -6126113476677772715
+      FakeStone_21: -1126075865426165908
+      FakeStone_22: 3820032281745273169
+      FakeStone_23: -5276010836835370009
+      FakeStone_24: 101089830316993302
+      FakeStone_25: 7613783271068236313
+      FakeStone_26: -5577711553926068885
+      FakeStone_27: 8674998060604738589
+      FakeStone_28: -8408068972474353101
+      FakeStone_29: -5451912510747823265
+      FakeStone_3: 2439379270955328080
+      FakeStone_30: -9110390978503711657
+      FakeStone_4: 625008282341293811
+      FakeStone_5: -625315877224239504
+      FakeStone_6: 863939306158317698
+      FakeStone_7: -9178655484824146049
+      FakeStone_8: 8784028669867387307
+      FakeStone_9: 7533807372352375068
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
