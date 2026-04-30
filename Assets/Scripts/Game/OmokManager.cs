@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using UnityEngine;
 
@@ -41,7 +42,7 @@ public class OmokManager : Singleton<OmokManager>
 
 
     private void OnEnable()
-    { 
+    {
         NetworkOmokManager.OnStonePlaced += UpdateBoardFromServer;
     }
 
@@ -68,10 +69,10 @@ public class OmokManager : Singleton<OmokManager>
 
 
 
-}
+    }
 
     // 게임 초기화
-    private void InitGame()
+    public void InitGame()
     {
         _board = new StoneType[BoardSize, BoardSize];
         _players = new Player[2];
@@ -81,8 +82,22 @@ public class OmokManager : Singleton<OmokManager>
 
         // 플레이어 초기화
         // 나중에 닉네임 추가(임시로 "흑", "백")
-        _players[0] = new Player("흑", _manaBlack);
-        _players[1] = new Player("백", _manaWhite);
+
+        int index = 0;
+        foreach (Photon.Realtime.Player photonPlayer in PhotonNetwork.PlayerList) // 민정추가 유저닉네임 저장
+        {
+
+            if (index >= _players.Length) break;
+
+            int playerColor = (index == 0) ? _manaBlack : _manaWhite;
+
+            _players[index] = new Player(photonPlayer.NickName, playerColor);
+
+            index++;
+        }
+
+        /*        _players[0] = new Player("흑", _manaBlack);
+                _players[1] = new Player("백", _manaWhite);*/
 
         // 게임 상태 초기화
         _isGameOver = false;
@@ -126,7 +141,7 @@ public class OmokManager : Singleton<OmokManager>
         Player player = _players[pIndex];
 
         // 해당 플레이어가 마법 사용 가능하면
-        if(player.TryUseMagic(magic.Cost))
+        if (player.TryUseMagic(magic.Cost))
         {
             // 마법 실제 사용
             magic.Execute();
@@ -176,9 +191,13 @@ public class OmokManager : Singleton<OmokManager>
         {
             _isGameOver = true;
             FindFirstObjectByType<BoardInteraction>().SetGameOver();
-            string winnerName = (placedStone == StoneType.Black) ? "흑(플레이어1)" : "백(플레이어2)";
+            string winnerName = (placedStone == StoneType.Black) ? _players[0].Name : _players[1].Name; //민정수정_닉네임으로 수정함
             Debug.Log($"<color=yellow><b>[SERVER INFO] {winnerName} 승리 모든 착수가 금지됩니다.</b></color>");
             // 게임 종료 이벤트
+
+            RankingManager.Instance.AddScoreAndSync(winnerName == PlayFabManager.Instance.UserNickName); //민정추가
+
+
             OnGameOver?.Invoke(placedStone);
         }
         else
