@@ -13,6 +13,11 @@ public class AudioManager : MonoBehaviour
     public AudioClip sfxaudio;
     public AudioClip moveaudio;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    } //Ãß°¡! ¾À ¹Ù²ãµµ ³ë·¡ ¾È ²¨Áö°Ô
+
     private void Start()
     {
         musicSource.clip = musicaudio;
