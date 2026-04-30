@@ -9,7 +9,8 @@ public class PlayFabManager : Singleton<PlayFabManager>
     private string userID;
     private string userNickName;
 
-    public void Login(string email, string password) // 占싸깍옙占쏙옙
+    private bool successLogin = false;
+    public void Login(string email, string password) // 로그인
     {
         var request = new LoginWithEmailAddressRequest
         {
@@ -26,7 +27,7 @@ public class PlayFabManager : Singleton<PlayFabManager>
     }
 
 
-    public void Register(string email, string password, string useName) //회占쏙옙占쏙옙占쏙옙
+    public void Register(string email, string password, string useName) //회원가입
     {
         var request = new RegisterPlayFabUserRequest
         {
@@ -38,7 +39,7 @@ public class PlayFabManager : Singleton<PlayFabManager>
 
         PlayFabClientAPI.RegisterPlayFabUser(request, result =>
         {
-            Debug.Log("회占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙!");
+            Debug.Log("회원가입 성공!");
 
             var updateRequest = new UpdateUserTitleDisplayNameRequest
             {
@@ -46,9 +47,9 @@ public class PlayFabManager : Singleton<PlayFabManager>
             };
 
             PlayFabClientAPI.UpdateUserTitleDisplayName(updateRequest, onUpdateSuccess => {
-                Debug.Log($"占쏙옙占쏙옙占쏙옙占쏙옙 占싻놂옙占쏙옙 占쏙옙占쏙옙 占싹뤄옙");
+                Debug.Log($"플레이어 닉네임 설정 완료");
             }, error => {
-                Debug.LogWarning("占싻놂옙占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙: " + error.GenerateErrorReport());
+                Debug.LogWarning("닉네임 설정 실패: " + error.GenerateErrorReport());
             });
 
         }, OnRegusterFailure); 
@@ -57,10 +58,14 @@ public class PlayFabManager : Singleton<PlayFabManager>
     public string UserNickName => userNickName;
     public string UserID => userID;
 
-    #region 占쌥뱄옙氷占쏙옙占�
+    public bool SuccessLogin => successLogin;
+
+    #region 콜백 메서드
 
     private void OnLoginSuccess(LoginResult result)
     {
+        successLogin = true;
+
         userID = result.PlayFabId;
         userNickName = result.InfoResultPayload.AccountInfo.TitleInfo.DisplayName;
         PhotonNetwork.NickName = userNickName;
@@ -73,34 +78,18 @@ public class PlayFabManager : Singleton<PlayFabManager>
 
     private void OnLoginFailure(PlayFabError error)
     {
-        Debug.LogError("占싸깍옙占싸쏙옙占쏙옙");
+        Debug.LogError("로그인 실패");
 
         string userMassge = PlayFabErrorHandler.GetErrorMessage(error.Error);
-        Debug.Log(userMassge); // 占싱부븝옙 占쏙옙占쌩울옙 ui text占쏙옙 占쏙옙占쏙옙
+        Debug.Log(userMassge); // 나중에 UI 텍스트로 전달 예정
     }
-
-/*    private void OnRegisterSuccess(RegisterPlayFabUserResult result)
-    {
-        Debug.Log("회占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙!");
-
-        var updateRequest = new UpdateUserTitleDisplayNameRequest
-        {
-            DisplayName = userNameInput.text
-        };
-
-        PlayFabClientAPI.UpdateUserTitleDisplayName(updateRequest, onUpdateSuccess => {
-            Debug.Log($"占쏙옙占쏙옙占쏙옙占쏙옙 占싻놂옙占쏙옙 占쏙옙占쏙옙 占싹뤄옙");
-        }, error => {
-            Debug.LogWarning("占싻놂옙占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙: " + error.GenerateErrorReport());
-        });
-    }*/
 
     private void OnRegusterFailure(PlayFabError error)
     {
-        Debug.LogError("회占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙");
+        Debug.LogError("회원가입 실패");
 
         string userMassge = PlayFabErrorHandler.GetErrorMessage(error.Error);
-        Debug.Log(userMassge); // 占싱부븝옙 占쏙옙占쌩울옙 ui text占쏙옙 占쏙옙占쏙옙
+        Debug.Log(userMassge); // 나중에 UI 텍스트로 전달 예정
     }
 
     #endregion
