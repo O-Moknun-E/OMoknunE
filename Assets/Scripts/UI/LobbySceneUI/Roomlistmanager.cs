@@ -11,12 +11,6 @@ public class Roomlistmanager : MonoBehaviour
     public GameObject passwordPanel;
     public TMP_InputField passwordInput;
 
-    
-
-    public void QuickMatch()
-    {
-        SceneManager.LoadScene("GameSceneUI"); // 씬 이름 정확히
-    }
 
     List<RoomData> roomList = new List<RoomData>();
 
@@ -29,14 +23,7 @@ public class Roomlistmanager : MonoBehaviour
         RefreshUI();
     }
 
-    public void JoinRoom(RoomData room)
-    {
-        Debug.Log("입장: " + room.roomName);
 
-        // 나중에 서버 붙이면 여기서 처리
-        SceneManager.LoadScene("GameSceneUI");
-    }
-    // 필터 버튼용
     public void ShowAll()
     {
         currentFilter = -1;

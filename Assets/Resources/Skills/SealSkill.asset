@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7156d39803f9d4847a13bb3f82c54207, type: 3}
+  m_Name: SealSkill
+  m_EditorClassIdentifier: Assembly-CSharp::SkillBase
+  _id: 2
+  _skillName: "\uBD09\uC778\uACB0\uACC4 \uC0DD\uC131"
+  _description: 
+  _cost: 0
+  _effects:
+  - {fileID: 11400000, guid: 1ed38ac84b2a4be4ba963aacea72148d, type: 2}

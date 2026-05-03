@@ -894,11 +894,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: 84c251d6-ecd2-4417-bfff-91c683fb5da8
+  cloudProjectId: 83123b29-4baa-40bb-b563-a353cf941789
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: OmoknunE_Temp (2)
-  organizationId: halfofhazyl
+  projectName: OmoknunE_Temp
+  organizationId: wkdalswjd1998
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
