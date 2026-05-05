@@ -24,7 +24,13 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
 
     [Header("게임 오버 UI")]
     [SerializeField] private GameObject _gameOverPanel;
-    [SerializeField] private TextMeshProUGUI _resultText;          
+    [SerializeField] private TextMeshProUGUI _resultText;
+
+    public static bool IsReturningFromGame = false;
+
+    //스킬 사용 여부 체크
+    private bool _hasUsedSkillThisTurn = false;
+    
     public override void OnEnable()
     {
         base.OnEnable();
@@ -45,12 +51,28 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        if (OmokManager.Instance != null)
+        {
+            OmokManager.Instance.InitGame();
+        }
+
         _mySkinIndex = PlayerPrefs.GetInt("MySkinID", 0);
 
         if (PhotonNetwork.InRoom) SetupGame();
         else
         {
             if (_boardInteraction != null) _boardInteraction.SetMyTurn(false);
+        }
+        // 방장(MasterClient) 한 명만 이 명령을 서버에 내림
+        if (PhotonNetwork.InRoom && PhotonNetwork.IsMasterClient)
+        {
+            // 1. IsOpen = false : 아무도 이 방에 들어올 수 없음
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+
+            // 2. IsVisible = false : 로비 목록에서 아예 방 이름 지움
+            PhotonNetwork.CurrentRoom.IsVisible = false;
+
+            Debug.Log("게임이 시작되어 방을 비공개로 잠갔습니다");
         }
     }
 
@@ -108,6 +130,8 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
             // 1. 장전된 스킬이 있다면 클릭한 좌표로 생성
             UseSkill(_loadedSkillName, x, y);
 
+            _hasUsedSkillThisTurn = true;
+
             // 2. 쏘고 나면 빈손으로 만들기 (연발 방지)
             _loadedSkillName = "";
             if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(false);
@@ -155,22 +179,40 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
                            (!_isMasterTurn && _myPlayerType == StoneType.White);
         if (!isMyTurnNow) return;
 
-        // 1번 키 : 스킬 장전
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (!_hasUsedSkillThisTurn)
         {
-            _loadedSkillName = "FogSkill"; // 장전
-            if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(true);
-            Debug.Log("<color=cyan>[System] 안개 스킬 장전 오목판을 클릭하세요</color>");
-        }
+            // 1번 키 : 스킬 장전
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                _loadedSkillName = "FogSkill"; // 장전
+                if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(true);
+                Debug.Log("<color=cyan>[System] 안개 스킬 장전 오목판을 클릭하세요</color>");
+            }
 
-        // 2번 키 : 스킬 장전
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+            // 2번 키 : 스킬 장전
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                _loadedSkillName = "FakeStoneSkill";
+                if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(true);
+                Debug.Log("<color=cyan>[System] 가짜 돌 스킬 장전 오목판을 클릭하세요</color>");
+            }
+
+            // 3번 키 : 스킬 장전
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                _loadedSkillName = "SealSkill";
+                if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(true);
+                Debug.Log("<color=cyan>[System] 봉인 결계 스킬 장전 오목판을 클릭하세요</color>");
+            }
+        }
+        else
         {
-            _loadedSkillName = "FakeStoneSkill";
-            if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(true);
-            Debug.Log("<color=cyan>[System] 가짜 돌 스킬 장전 오목판을 클릭하세요</color>");
+            // 유저가 스킬을 썼는데 또 1, 2, 3번을 누를 경우 로그 확인
+            if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                Debug.Log("<color=red>[System] 이미 이번 턴에 스킬을 사용했습니다! 오목을 두어 턴을 넘기세요.</color>");
+            }
         }
-
         // 마우스 우클릭(1)을 누르면 스킬 장전 취소 (일반 돌 두기로 복귀)
         if (Input.GetMouseButtonDown(1) && !string.IsNullOrEmpty(_loadedSkillName))
         {
@@ -198,6 +240,8 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
 
         _isMasterTurn = !_isMasterTurn;
         CheckAndApplyTurn();
+
+        _hasUsedSkillThisTurn = false;
 
         OnStonePlaced?.Invoke(x, y, playerType);
 
@@ -238,12 +282,14 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     }
     public void ReturnToMainMenu()
     {
+        IsReturningFromGame = true;
+
         PhotonNetwork.LeaveRoom();
     }
 
     public override void OnLeftRoom()
     {
-        SceneManager.LoadScene("MJTest");// 후에 메인메뉴 씬으로 수정 필요 
+        SceneManager.LoadScene("LobbyScene");// 후에 메인메뉴 씬으로 수정 필요 
     }
 
 }

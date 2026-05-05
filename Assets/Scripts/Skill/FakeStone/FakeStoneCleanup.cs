@@ -18,6 +18,8 @@ public class FakeStoneCleanup : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (!gameObject.scene.isLoaded) return;
+
         if (OmokManager.Instance != null && OmokManager.Instance.GetBoardData(_targetX, _targetY) == StoneType.Fake)
         {
             OmokManager.Instance.SetBoardData(_targetX, _targetY, StoneType.Empty);
