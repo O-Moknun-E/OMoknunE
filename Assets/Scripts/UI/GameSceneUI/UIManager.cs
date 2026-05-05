@@ -21,7 +21,7 @@ public class UIManager : MonoBehaviour
     // 예 버튼
     public void ConfirmGiveUp()
     {
-        SceneManager.LoadScene("LobbySceneUI");
+        SceneManager.LoadScene("LobbyScene");
     }
     //-----세팅버튼-----
     public GameObject settingsPopup;
@@ -29,6 +29,10 @@ public class UIManager : MonoBehaviour
     public void OpenSettings()
     {
         settingsPopup.SetActive(true);
+    }
+    public void CloseSettings()
+    {
+        settingsPopup.SetActive(false);
     }
 
 }
