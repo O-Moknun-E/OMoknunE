@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2ee5e2cc0d30e814bb52d323ec248ec8
+guid: 4bb2dd0eb2cb5084ba73f5a78f20748a
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -129,13 +129,13 @@ TextureImporter:
       name: Panel for Email_0
       rect:
         serializedVersion: 2
-        x: 1
+        x: 4
         y: 2
-        width: 26
+        width: 20
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 1, y: 1, z: 1, w: 1}
       customData: 
       outline: []
       physicsShape: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: e2173403eba95d54ea4deed67b81e330
     internalID: 0
     vertices: []
     indices: 

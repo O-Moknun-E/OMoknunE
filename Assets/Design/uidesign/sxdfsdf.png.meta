@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 2ee5e2cc0d30e814bb52d323ec248ec8
+guid: 1d88d97dfbe03a14f94242ad7afe8eed
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4670916763117742008
-    second: Panel for Email_0
+      213: -8937086799804836397
+    second: sxdfsdf_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,23 +126,37 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Panel for Email_0
+      name: sxdfsdf_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 2
-        width: 26
-        height: 8
+        x: 14
+        y: 16
+        width: 67
+        height: 28
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 2, y: 2, z: 2, w: 2}
       customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
+      outline:
+      - - {x: 33.5, y: 14}
+        - {x: 33.5, y: -14}
+        - {x: -33.5, y: -14}
+        - {x: -33.5, y: 14}
+        - {x: -33.5, y: 14}
+      - - {x: -31.5, y: -12}
+        - {x: 31.5, y: -12}
+        - {x: 31.5, y: 12}
+        - {x: -31.5, y: 12}
+      physicsShape:
+      - - {x: 33.5, y: 14}
+        - {x: -33.5, y: 14}
+        - {x: -33.5, y: -3}
+        - {x: -33.5, y: -14}
+        - {x: 33.5, y: -14}
+      tessellationDetail: 0
       bones: []
-      spriteID: 84813f693f19d2fb0800000000000000
-      internalID: -4670916763117742008
+      spriteID: 3d5dcc208e619f380800000000000000
+      internalID: -8937086799804836397
       vertices: []
       indices: 
       edges: []
@@ -151,7 +165,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5f8f0dac009229d45ad5224bd5da57bf
     internalID: 0
     vertices: []
     indices: 
@@ -159,9 +173,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Panel for Email_0: -4670916763117742008
+      sxdfsdf_0: -8937086799804836397
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
