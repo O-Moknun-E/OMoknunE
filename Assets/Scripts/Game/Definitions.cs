@@ -28,3 +28,13 @@ public enum ActionType
     UseMagic,   // 마법 사용
     PlaceStone  // 돌 착수
 }
+
+/// <summary>
+/// 오목판 한 칸의 변경 타입
+/// </summary>
+public enum CellChangeType
+{
+    PlaceStone,     // 돌 배치
+    RemoveStone,    // 돌 제거
+    VisualEffect    // 시각 효과만 (실제 돌 변화 없음)
+}

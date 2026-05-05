@@ -8,7 +8,6 @@ using TMPro;
 public class NetworkOmokManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private BoardInteraction _boardInteraction;
-    [SerializeField] private Sprite[] _stoneSkins;
 
     // 전달 데이터: x좌표, y좌표, 진영번호
     public static event Action<int, int, StoneType> OnStonePlaced;
@@ -59,7 +58,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
 
     private void SetupGame()
     {
-        if (_boardInteraction == null || _stoneSkins.Length == 0) return;
+        if (_boardInteraction == null || StoneSkinRegistry.Instance.GetStoneSkinCount() == 0) return;
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -71,7 +70,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
             _myPlayerType = StoneType.White;
             _mySkinIndex = 1;
         }
-        _boardInteraction.ChangeStoneSkin(_stoneSkins[_mySkinIndex]);
+        _boardInteraction.ChangeStoneSkin(StoneSkinRegistry.Instance.GetStoneSkin(_mySkinIndex));
         CheckAndApplyTurn();
     }
 
@@ -118,13 +117,6 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
             // 장전된 스킬이 없다면 평소처럼 돌 두는 통신
             photonView.RPC("RPC_ReceiveAndDrawStone", RpcTarget.All, x, y, _myPlayerType, _mySkinIndex);
         }
-    }
-
-    // 외부(스킬 효과)에서 스킨 이미지를 가져갈 수 있게 해주는 함수
-    public Sprite GetStoneSkin(int index)
-    {
-        if (index >= 0 && index < _stoneSkins.Length) return _stoneSkins[index];
-        return null;
     }
 
     // 나중에 UI 상점 버튼이 누를 함수
@@ -201,13 +193,16 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void RPC_ReceiveAndDrawStone(int x, int y, StoneType playerType, int skinID)
     {
-        Sprite stoneSkin = _stoneSkins[skinID];
+        Sprite stoneSkin = StoneSkinRegistry.Instance.GetStoneSkin(skinID);
         _boardInteraction.PlaceStoneRemote(x, y, stoneSkin);
 
         _isMasterTurn = !_isMasterTurn;
         CheckAndApplyTurn();
 
         OnStonePlaced?.Invoke(x, y, playerType);
+
+        // 전역 이벤트(TurnDuration 등 범용)
+        GameEvents.TriggerStonePlaced(x, y, playerType);
     }
 
     [PunRPC]

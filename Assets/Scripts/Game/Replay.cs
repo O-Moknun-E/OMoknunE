@@ -16,17 +16,20 @@ public class Replay : MonoBehaviour
     [Serializable]
     public struct CellChange
     {
-        public int row;                 // 변경된 행
-        public int col;                 // 변경된 열
-        public StoneType stateBefore;   // 변경 전 상태(돌)
-        public StoneType stateAfter;    // 변경 후 상태(돌)
+        public int row;                     // 변경된 행
+        public int col;                     // 변경된 열
+        public StoneType before;            // 변경 전 상태(돌)
+        public StoneType after;             // 변경 후 상태(돌)
+        public CellChangeType changeType;   // 변경 종류 (착수, 제거, 시각 효과)
 
-        public CellChange(int row, int col, StoneType before, StoneType after)
-        {
+        // row와 col는 필요없을때 -1
+        public CellChange(int row, int col, StoneType before, StoneType after, CellChangeType changeType)
+        {   
             this.row = row;
             this.col = col;
-            this.stateBefore = before;
-            this.stateAfter = after;
+            this.before = before;
+            this.after = after;
+            this.changeType = changeType;
         }
     }
 
@@ -37,21 +40,21 @@ public class Replay : MonoBehaviour
     public struct ActionData
     {
         public ActionType actionType;         // 행동 종류 (마법 사용, 돌 착수)
-        public int magicId;                   // 사용한 마법 ID (마법 사용 시에만 유효)
-        public int targetRow;                 // 대상 행
-        public int targetCol;                 // 대상 열
+        public int magicID;                   // 사용한 마법 ID (마법 사용 시에만 유효)
+        public int targetRow;                 // 대상 행 (마법은 skillContext 안에)
+        public int targetCol;                 // 대상 열 (마법은 skillContext 안에)
+        public SkillContext skillContext;     // 마법 사용 시의 스킬 컨텍스트 (타겟 행열, 시전자, 스킨 ID)
         public List<CellChange> boardChanges; // 행동으로 인한 보드 변화
 
         /// <summary>
         /// 마법 사용 행동 생성
         /// </summary>
-        public static ActionData CreateMagicAction(int magicId, int targetRow, int targetCol, List<CellChange> changes, float timestamp) =>
+        public static ActionData CreateMagicAction(int magicID, SkillContext skillContext, List<CellChange> changes, float timestamp) =>
             new ActionData
             {
                 actionType = ActionType.UseMagic,
-                magicId = magicId,
-                targetRow = targetRow,
-                targetCol = targetCol,
+                magicID = magicID,
+                skillContext = skillContext,
                 boardChanges = changes ?? new List<CellChange>() // 만약 보드판에 변화가 없는 마법일 수 있으니 null 일경우 빈 리스트로 초기화
             };
 
@@ -62,11 +65,11 @@ public class Replay : MonoBehaviour
             new ActionData
             {
                 actionType = ActionType.PlaceStone,
-                magicId = -1, // 착수는 마법이 아니므로 -1로 설정
+                magicID = -1, // 착수는 마법이 아니므로 -1로 설정
                 targetRow = row,
                 targetCol = col,
                 boardChanges = new List<CellChange> {
-                    new CellChange(row, col, StoneType.Empty, stoneType) // 빈 공간 -> 착수된 돌
+                    new CellChange(row, col, StoneType.Empty, stoneType, CellChangeType.PlaceStone) // 빈 공간 -> 착수된 돌
                 }
             };
     }
@@ -155,24 +158,28 @@ public class Replay : MonoBehaviour
     /// <summary>
     /// 사용한 마법을 기록
     /// </summary>
-    /// <param name="magicId">사용된 마법의 ID</param>
-    /// <param name="targetRow">마법이 적용된 행</param>
-    /// <param name="targetCol">마법이 적용된 열</param>
+    /// <param name="magicID">사용된 마법의 ID</param>
+    /// <param name="skillContext">마법 컨텍스트</param>
     /// <param name="boardBefore">마법 사용 전 보드 상태</param>
     /// <param name="boardAfter">마법 사용 후 보드 상태</param>
-    public void RecordUseMagic(int magicId, int targetRow, int targetCol, StoneType[,] boardBefore, StoneType[,] boardAfter)
+    public void RecordUseMagic(int magicID, SkillContext skillContext, StoneType[,] boardBefore, StoneType[,] boardAfter)
     {
         // 기록 중이 아니면 무시
         if (!_isRecording) return;
 
+        // 마법 정보 가져오기
+        IMagic magic = MagicRegistry.Instance.GetMagicByID(magicID);
+
+        // 마법 정보가 없으면 시각 효과로 간주
+        CellChangeType changeType = magic != null ? magic.ChangeType : CellChangeType.VisualEffect;
+
         // 보드 변화 감지
-        var changes = DetectBoardChanges(boardBefore, boardAfter);
+        var changes = DetectBoardChanges(skillContext.TargetY, skillContext.TargetX, boardBefore, boardAfter, changeType);
 
         // 마법 사용 데이터 기록 후 행동 리스트에 추가
         ActionData action = ActionData.CreateMagicAction(
-            magicId,
-            targetRow,
-            targetCol,
+            magicID,
+            skillContext,
             changes,
             Time.time - _gameStartTime
         );
@@ -233,7 +240,7 @@ public class Replay : MonoBehaviour
     /// <param name="before">행동 전 보드 상태</param>
     /// <param name="after">행동 후 보드 상태</param>
     /// <returns>변화된 칸 정보 반환</returns>
-    private List<CellChange> DetectBoardChanges(StoneType[,] before, StoneType[,] after)
+    private List<CellChange> DetectBoardChanges(int targetRow, int targetCol, StoneType[,] before, StoneType[,] after, CellChangeType changeType)
     {
         List<CellChange> changes = new();
 
@@ -246,9 +253,15 @@ public class Replay : MonoBehaviour
             {
                 if (before[r, c] != after[r, c])
                 {
-                    changes.Add(new CellChange(r, c, before[r, c], after[r, c]));
+                    changes.Add(new CellChange(r, c, before[r, c], after[r, c], changeType));
                 }
             }
+        }
+
+        // 보드 변화 없이 시각 효과만 있는 마법
+        if(changes.Count == 0 && changeType == CellChangeType.VisualEffect)
+        {
+            changes.Add(new CellChange(targetRow, targetCol, StoneType.Empty, StoneType.Empty, changeType));
         }
 
         return changes;

@@ -163,23 +163,24 @@ public class BoardInteraction : MonoBehaviour
         if (_previewStone != null) { Destroy(_previewStone); _previewStone = null; }
     }
 
-    // 화면을 잠시 가려주는 스위치 함수
-    public void ShowBlindEffect(float duration)
-    {
-        if (_blindPanel != null)
-        {
-            _blindPanel.SetActive(true);
-            Debug.Log($"[UI] {duration}초 동안 화면이 가려집니다!");
+    // 따로 Blind 프리팹 만들어서 적용했습니다
+    //// 화면을 잠시 가려주는 스위치 함수
+    //public void ShowBlindEffect(float duration)
+    //{
+    //    if (_blindPanel != null)
+    //    {
+    //        _blindPanel.SetActive(true);
+    //        Debug.Log($"[UI] {duration}초 동안 화면이 가려집니다!");
 
-            // 지정된 시간(duration) 뒤에 화면을 다시 밝히는 함수를 예약합니다.
-            Invoke(nameof(HideBlindEffect), duration);
-        }
-    }
-    private void HideBlindEffect()
-    {
-        if (_blindPanel != null)
-        {
-            _blindPanel.SetActive(false);
-        }
-    }
+    //        // 지정된 시간(duration) 뒤에 화면을 다시 밝히는 함수를 예약합니다.
+    //        Invoke(nameof(HideBlindEffect), duration);
+    //    }
+    //}
+    //private void HideBlindEffect()
+    //{
+    //    if (_blindPanel != null)
+    //    {
+    //        _blindPanel.SetActive(false);
+    //    }
+    //}
 }

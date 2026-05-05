@@ -15,10 +15,10 @@ public class ReplayManager : MonoBehaviour
     [SerializeField] private int _gridSize = 15;                 // 보드 크기 (15x15)
     [SerializeField] private float _spacing = 1.0f;              // 격자 간격
     [SerializeField] private Vector2 _gridOffset = Vector2.zero; // 격자 오프셋
+    [SerializeField] private Transform _effectsContainer;        // 마법 효과들을 자식으로 둘 컨테이너
 
-    [Header("돌 프리팹 및 스프라이트(돌 스킨)")]
-    [SerializeField] private GameObject _stonePrefab;   // 돌 프리팹(BoardInteraction의 프리팹과 동일하게 맞추기)
-    [SerializeField] private Sprite[] _stoneSkins;      // 돌 스킨 배열(NetworkOmokManager의 스킨과 동일하게 맞추기)
+    [Header("돌 프리팹")]
+    [SerializeField] private GameObject _stonePrefab;       // 돌 프리팹(BoardInteraction의 프리팹과 동일하게 맞추기)
 
     [Header("UI 연결")]
     public TextMeshProUGUI turnLabel;
@@ -31,10 +31,12 @@ public class ReplayManager : MonoBehaviour
     [Header("재생 설정")]
     [SerializeField] private bool _autoPlayOnStart = false;  // 씬 시작 시 자동 재생 여부
 
+    public static Transform ReplayEffectsContainer { get; private set; }    // 외부에서 마법 효과 컨테이너에 접근할 수 있도록 static으로 선언
+
     // 턴 히스토리 저장(턴 되돌리기용)
     private class TurnHistory
     {
-        public List<GameObject> addedStones = new List<GameObject>();          // 현재 턴에 추가된 돌들
+        public List<GameObject> addedActions = new List<GameObject>();          // 현재 턴에 수행한 행동들
         public List<(int row, int col, StoneType beforeType)> changes = new(); // 보드 변경전 상태
     }
 
@@ -56,6 +58,9 @@ public class ReplayManager : MonoBehaviour
             Debug.LogError("리플레이 데이터가 없습니다.");
             return;
         }
+
+        // 리플레이 마법효과 컨테이너 등록
+        ReplayEffectsContainer = _effectsContainer;
 
         // 초기화 작업
         _board = new StoneType[_gridSize, _gridSize];
@@ -110,6 +115,12 @@ public class ReplayManager : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        // 리플레이 마법효과 컨테이너 해제
+        ReplayEffectsContainer = null;
+    }
+
     void TogglePlay()
     {
         _isAutoPlaying = !_isAutoPlaying;
@@ -123,31 +134,14 @@ public class ReplayManager : MonoBehaviour
     private void OnPreviousTurn()
     {
         // 첫 턴이면 무시
-        if (_replay.CurrentTurnIndex <= 0 || _history.Count == 0) return;
+        if (_replay.CurrentTurnIndex <= 0) return;
 
         // 수동으로 턴을 변경하면 자동 재생이 멈추도록 설정
         _isAutoPlaying = false;
         playPauseLabel.text = "재생";
 
-        // 히스토리에서 마지막 턴 가져오기
-        TurnHistory lastTurn = _history.Pop();
-
-        // 추가된 돌들 제거
-        foreach (var stone in lastTurn.addedStones)
-        {
-            if (stone != null)
-                Destroy(stone);
-        }
-
-        // 보드 데이터 원복
-        foreach (var (row, col, beforeType) in lastTurn.changes)
-        {
-            _board[row, col] = beforeType;
-        }
-
-        // Replay 시스템에서 이전 턴으로 이동 후 UI 새로 고침
-        _replay.JumpToTurn(_replay.CurrentTurnIndex - 1);
-        UpdateUI();
+        // 턴 이동
+        MoveTo(_replay.CurrentTurnIndex - 1);
     }
 
     /// <summary>
@@ -158,20 +152,8 @@ public class ReplayManager : MonoBehaviour
         // 마지막 턴이라면 무시
         if (_replay.CurrentTurnIndex >= _replay.TotalTurns) return;
 
-        // 다음 턴 데이터 가져오기
-        var turnData = _replay.PlayNextTurn();
-
-        // 현재 턴의 히스토리 생성
-        TurnHistory history = new TurnHistory();
-
-        foreach (var action in turnData.Value.actions)
-        {
-            ExecuteAction(action, history);
-        }
-
-        // 히스토리 스택에 넣고 UI 업데이트
-        _history.Push(history);
-        UpdateUI();
+        // 턴 이동
+        MoveTo(_replay.CurrentTurnIndex + 1);
     }
 
     /// <summary>
@@ -188,8 +170,8 @@ public class ReplayManager : MonoBehaviour
         _isAutoPlaying = false;
         playPauseLabel.text = "재생";
 
-        // 처음부터 특정턴까지 다시 구성
-        RebuildToTurn(targetTurn);
+        // 턴 이동
+        MoveTo(targetTurn);
     }
 
     /// <summary>
@@ -208,9 +190,70 @@ public class ReplayManager : MonoBehaviour
             _isAutoPlaying = false;
             playPauseLabel.text = "재생";
 
-            // 처음부터 특정턴까지 다시 구성
+            // 턴 이동
+            MoveTo(targetTurn);
+        }
+    }
+
+    /// <summary>
+    /// 특정 턴으로 이동
+    /// </summary>
+    /// <param name="targetTurn">이동할 턴</param>
+    private void MoveTo(int targetTurn)
+    {
+        int currentTurn = _replay.CurrentTurnIndex;
+
+        // 범위 체크
+        if (targetTurn < 0 || targetTurn > _replay.TotalTurns) return;
+        if (targetTurn == currentTurn) return;
+
+        // 앞으로 1턴만 가는 경우
+        if(targetTurn == currentTurn + 1)
+        {
+            var turnData = _replay.PlayNextTurn();
+            TurnHistory history = new();
+
+            foreach(var action in turnData.Value.actions)
+            {
+                ExecuteAction(action, history);
+            }
+
+            _history.Push(history);
+        }
+        // 뒤로 1턴만 가는 경우
+        else if(targetTurn == currentTurn - 1 && _history.Count > 0)
+        {
+            TurnHistory lastTurn = _history.Pop();
+
+            // 보드 데이터 원복하면서 제거 이벤트 발생
+            foreach(var (row, col, beforeType) in lastTurn.changes)
+            {
+                StoneType currentType = _board[row, col];
+                _board[row, col] = beforeType;
+
+                // 돌이 제거되는 경우 이벤트 발생
+                if(currentType != StoneType.Empty && beforeType == StoneType.Empty)
+                {
+                    GameEvents.TriggerStoneRemoved(col, row, currentType);
+                }
+            }
+
+            // 추가된 행동들 제거
+            foreach(var action in lastTurn.addedActions)
+            {
+                if (action != null)
+                    Destroy(action);
+            }
+
+            _replay.JumpToTurn(targetTurn);
+        }
+        // 그 외의 경우
+        else
+        {
             RebuildToTurn(targetTurn);
         }
+
+        UpdateUI();
     }
 
 
@@ -245,9 +288,6 @@ public class ReplayManager : MonoBehaviour
             // 히스토리에 추가
             _history.Push(history);
         }
-
-        // UI 업데이트
-        UpdateUI();
     }
 
     /// <summary>
@@ -260,20 +300,8 @@ public class ReplayManager : MonoBehaviour
         switch (action.actionType)
         {
             case ActionType.UseMagic:
-                // 마법 사용으로 인한 보드 변화 적용
-                foreach (var change in action.boardChanges)
-                {
-                    // 보드 변화 후 상태가 빈 공간이 아니라면 돌 놓기
-                    if (change.stateAfter != StoneType.Empty)
-                    {
-                        PlaceStone(change.row, change.col, change.stateAfter, history);
-                    }
-                    // 비어있으면 돌 제거
-                    else
-                    {
-                        RemoveStone(change.row, change.col, history);
-                    }
-                }
+                // 마법 사용
+                ExecuteMagic(action, history);
                 break;
 
             case ActionType.PlaceStone:
@@ -281,9 +309,52 @@ public class ReplayManager : MonoBehaviour
                 if (action.boardChanges.Count > 0)
                 {
                     var change = action.boardChanges[0];
-                    PlaceStone(change.row, change.col, change.stateAfter, history);
+                    PlaceStone(change.row, change.col, change.after, history);
                 }
                 break;
+        }
+    }
+
+    /// <summary>
+    /// 마법 실행
+    /// </summary>
+    private void ExecuteMagic(Replay.ActionData action, TurnHistory history)
+    {
+        // SkillContext가 없으면 무시
+        if(action.skillContext == null)
+        {
+            Debug.LogWarning("마법 사용 행동에 SkillContext가 없습니다.");
+            return;
+        }
+
+        // 마법 가져오기
+        IMagic magic = MagicRegistry.Instance.GetMagicByID(action.magicID);
+
+        if(magic == null)
+        {
+            Debug.LogWarning($"마법 ID {action.magicID}를 찾을 수 없습니다.");
+            return;
+        }
+
+        if(magic is SkillBase skillBase)
+        {
+            SkillContext context = action.skillContext;
+
+            // 마법 실행 전 컨테이너 자식 수 기록
+            int beforeCount = _effectsContainer.childCount;
+
+            // Context 설정
+            skillBase.SetContext(context);
+
+            // 마법 실행
+            skillBase.Execute(true);
+
+            // 마법 실행 후 새로 생긴 효과들을 history에 추가
+            for(int i = beforeCount; i < _effectsContainer.childCount; i++)
+            {
+                GameObject effect = _effectsContainer.GetChild(i).gameObject;
+                history.addedActions.Add(effect);
+            }
         }
     }
 
@@ -309,19 +380,22 @@ public class ReplayManager : MonoBehaviour
         SpriteRenderer renderer = stone.GetComponent<SpriteRenderer>();
 
         // 스프라이트가 있고 스킨이 있다면 설정
-        if (renderer != null && _stoneSkins != null && _stoneSkins.Length > 0)
+        if (renderer != null && StoneSkinRegistry.Instance != null && StoneSkinRegistry.Instance.GetStoneSkinCount() > 0)
         {
             // 일단 흑은 0 백은 1로 하고 나중에 스킨쪽 완성되면 바꾸기
             int skinIndex = stoneType == StoneType.Black ? 0 : 1;
 
-            if (skinIndex < _stoneSkins.Length)
+            if (skinIndex < StoneSkinRegistry.Instance.GetStoneSkinCount())
             {
-                renderer.sprite = _stoneSkins[skinIndex];
+                renderer.sprite = StoneSkinRegistry.Instance.GetStoneSkin(skinIndex);
             }
         }
 
-        // 화면에 그려진 돌 기록
-        history.addedStones.Add(stone);
+        // 행동 기록
+        history.addedActions.Add(stone);
+
+        // 전역 이벤트 발생 (마법 효과들이 반응할 수 있도록)
+        GameEvents.TriggerStonePlaced(col, row, stoneType);
     }
 
     /// <summary>
@@ -348,15 +422,15 @@ public class ReplayManager : MonoBehaviour
             }
         }
 
-        // 모든 히스토리 내역 삭제 및 화면에서 돌 제거
+        // 모든 히스토리 내역 삭제 및 행동 제거
         while (_history.Count > 0)
         {
             var history = _history.Pop();
 
-            foreach (var stone in history.addedStones)
+            foreach (var action in history.addedActions)
             {
-                if (stone != null)
-                    Destroy(stone);
+                if (action != null)
+                    Destroy(action);
             }
         }
     }
@@ -365,7 +439,7 @@ public class ReplayManager : MonoBehaviour
     /// 인덱스(x, y)를 월드 좌표로 변환
     /// </summary>
     /// <returns>월드 좌표</returns>
-    private Vector3 GetWorldPositionFromIndex(int x, int y)
+    public Vector3 GetWorldPositionFromIndex(int x, int y)
     {
         // 오목판이 없으면 무시
         if (_boardTransform == null)

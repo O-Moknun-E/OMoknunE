@@ -129,8 +129,17 @@ public class OmokManager : Singleton<OmokManager>
         // 해당 플레이어가 마법 사용 가능하면
         if (player.TryUseMagic(magic.Cost))
         {
+            // 마법 사용 전 보드 상태 저장
+            StoneType[,] boardBefore = GetBoardCopy();
+
             // 마법 실제 사용
-            magic.Execute();
+            magic.Execute(false);
+
+            // 마법 사용 후 보드 상태 저장
+            StoneType[,] boardAfter = GetBoardCopy();
+
+            // 리플레이 - 마법 사용 기록
+            _replay.RecordUseMagic(magic.ID, ((SkillBase)magic).CurrentContext, boardBefore, boardAfter);
 
             // 마법 사용 이벤트
             OnUsedMagic?.Invoke();
@@ -138,6 +147,17 @@ public class OmokManager : Singleton<OmokManager>
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// 현재 보드 상태를 복사해서 반환
+    /// </summary>
+    /// <returns>현재 보드 상태</returns>
+    private StoneType[,] GetBoardCopy()
+    {
+        StoneType[,] copy = new StoneType[BoardSize, BoardSize];
+        Array.Copy(_board, copy, _board.Length);
+        return copy;
     }
 
     //// 돌을 실제로 놓는 메서드
