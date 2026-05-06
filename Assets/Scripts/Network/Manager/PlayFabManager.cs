@@ -72,7 +72,6 @@ public class PlayFabManager : Singleton<PlayFabManager>
 
         RankingManager.Instance.GetScore();
         NetworkManager.Instance.Connect();
-        RewardManager.Instance.GrantDailyBonus();
         UImanager.Instance.ShowLobby();
     }
 

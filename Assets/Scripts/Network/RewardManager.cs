@@ -20,10 +20,9 @@ public class RewardManager : Singleton<RewardManager>
         GiveReward(rewardAmount);
     }
 
-    public void GrantDailyBonus()//데일리 보너스 재화
-    {
+/*    public void GrantDailyBonus()//로그인
         GiveReward(dailyRewardAmount);
-    }
+    }*/
 
 
     public void GiveReward(int amount)
