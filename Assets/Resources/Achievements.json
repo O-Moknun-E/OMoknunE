@@ -1,0 +1,9 @@
+{
+  "Achievements": {
+    "FristVictory": {
+      "Reward": 100,
+      "Title": "FristVictory",
+      "Description": "FristVictory"
+    }
+  }
+}
