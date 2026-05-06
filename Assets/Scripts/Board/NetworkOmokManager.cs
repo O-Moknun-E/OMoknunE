@@ -22,6 +22,8 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
 
     private string _loadedSkillName = "";
 
+    private int _silencedTurnsLeft = 0; // 침묵 턴 변수
+
     [Header("게임 오버 UI")]
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private TextMeshProUGUI _resultText;
@@ -143,6 +145,16 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public void ApplySilence(int turns)
+    {
+        _silencedTurnsLeft = turns;
+
+        _loadedSkillName = "";
+        if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(false);
+
+        Debug.Log($"<color=red>[System] 침묵에 걸렸습니다! 앞으로 {_silencedTurnsLeft}턴 동안 스킬을 사용할 수 없습니다.</color>");
+    }
+
     // 나중에 UI 상점 버튼이 누를 함수
     public void UIButton_LoadSkill(string skillName)
     {
@@ -177,42 +189,9 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         // 내 턴일 때만 키보드 입력 허용
         bool isMyTurnNow = (_isMasterTurn && _myPlayerType == StoneType.Black) ||
                            (!_isMasterTurn && _myPlayerType == StoneType.White);
+
         if (!isMyTurnNow) return;
 
-        if (!_hasUsedSkillThisTurn)
-        {
-            // 1번 키 : 스킬 장전
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                _loadedSkillName = "FogSkill"; // 장전
-                if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(true);
-                Debug.Log("<color=cyan>[System] 안개 스킬 장전 오목판을 클릭하세요</color>");
-            }
-
-            // 2번 키 : 스킬 장전
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                _loadedSkillName = "FakeStoneSkill";
-                if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(true);
-                Debug.Log("<color=cyan>[System] 가짜 돌 스킬 장전 오목판을 클릭하세요</color>");
-            }
-
-            // 3번 키 : 스킬 장전
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                _loadedSkillName = "SealSkill";
-                if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(true);
-                Debug.Log("<color=cyan>[System] 봉인 결계 스킬 장전 오목판을 클릭하세요</color>");
-            }
-        }
-        else
-        {
-            // 유저가 스킬을 썼는데 또 1, 2, 3번을 누를 경우 로그 확인
-            if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                Debug.Log("<color=red>[System] 이미 이번 턴에 스킬을 사용했습니다! 오목을 두어 턴을 넘기세요.</color>");
-            }
-        }
         // 마우스 우클릭(1)을 누르면 스킬 장전 취소 (일반 돌 두기로 복귀)
         if (Input.GetMouseButtonDown(1) && !string.IsNullOrEmpty(_loadedSkillName))
         {
@@ -221,6 +200,71 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
             Debug.Log("<color=red>[System] 스킬 장전 취소 일반 착수 모드로 돌아갑니다</color>");
         }
 
+        // 스킬 장전 (TryLoadSkill 함수를 사용해 마나, 침묵, 사용 여부를 한 번에 검사)
+        if (Input.GetKeyDown(KeyCode.Alpha1)) TryLoadSkill("FogSkill");
+        if (Input.GetKeyDown(KeyCode.Alpha2)) TryLoadSkill("FakeStoneSkill");
+        if (Input.GetKeyDown(KeyCode.Alpha3)) TryLoadSkill("SealSkill");
+        if (Input.GetKeyDown(KeyCode.Alpha4)) TryLoadSkill("SilenceSkill");
+
+        // 엔터키 입력 시 스킬 사용 (침묵 스킬은 좌표 필요 없으므로 바로 발동)
+        if (Input.GetKeyDown(KeyCode.Return) && _loadedSkillName == "SilenceSkill")
+        {
+            // 좌표가 필요 없는 스킬이므로 -1, -1 이라는 가짜 좌표를 던짐
+            UseSkill(_loadedSkillName, -1, -1);
+
+            _hasUsedSkillThisTurn = true;
+            _loadedSkillName = "";
+            if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(false);
+
+            Debug.Log("<color=yellow>[System] 엔터 키 입력 침묵 스킬 발동 완료</color>");
+        }
+    }
+
+    // 스킬 장전 조건을 미리 검사하는 함수
+    private void TryLoadSkill(string skillName)
+    {
+        // 침묵 상태인지 먼저 검사
+        if (_silencedTurnsLeft > 0)
+        {
+            Debug.Log($"<color=red>[System] 침묵 상태입니다 남은 턴: {_silencedTurnsLeft}</color>");
+            return;
+        }
+
+        // 이미 이번 턴에 스킬을 썼는지 검사
+        if (_hasUsedSkillThisTurn)
+        {
+            Debug.Log("<color=red>[System] 이미 이번 턴에 스킬을 사용했습니다 오목을 두세요.</color>");
+            return;
+        }
+
+        // 마나가 충분한지 검사
+        SkillBase skill = Resources.Load<SkillBase>("Skills/" + skillName);
+        if (skill != null && OmokManager.Instance != null)
+        {
+            PlayerType myType = (_myPlayerType == StoneType.Black) ? PlayerType.Black : PlayerType.White;
+            Player myPlayer = OmokManager.Instance.GetPlayer(myType);
+
+            // 현재 마나가 스킬 코스트보다 적다면 장전 거부
+            if (myPlayer != null && myPlayer.CurrentMana < skill.Cost)
+            {
+                Debug.Log($"<color=red>[System] 마나가 부족합니다 (필요 마나: {skill.Cost} / 현재 마나: {myPlayer.CurrentMana})</color>");
+                return;
+            }
+        }
+
+        // 스킬 장전
+        _loadedSkillName = skillName;
+        if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(true);
+
+        // 스킬 종류에 따라 알맞은 안내 로그 출력
+        if (skillName == "SilenceSkill")
+        {
+            Debug.Log("<color=cyan>[System] 침묵 스킬 장전 완료 <Enter> 키를 눌러 발동하세요.</color>");
+        }
+        else
+        {
+            Debug.Log("<color=cyan>[System] 스킬 장전 완료 오목판을 클릭하세요.</color>");
+        }
     }
 
     public void UseSkill(string skillName, int x, int y)
@@ -292,4 +336,44 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         SceneManager.LoadScene("LobbyScene");// 후에 메인메뉴 씬으로 수정 필요 
     }
 
+
+    //======유니티 내장 UI 이용 테스틑 시간/마나======
+    // 유니티 내장 UI 함수로 화면에 시간/마나 띄우기
+    private void OnGUI()
+    {
+        // 씬 로딩 안됐거나, OmokManager가 없거나, 혼자 있을 땐 무시
+        if (OmokManager.Instance == null || !PhotonNetwork.InRoom || PhotonNetwork.CurrentRoom.PlayerCount < 2) return;
+
+        GUIStyle style = new GUIStyle();
+        style.fontSize = 35;
+        style.fontStyle = FontStyle.Bold;
+
+        // 남은 시간 통일
+        float timeLeft = Mathf.Max(0, OmokManager.Instance.TurnTimeLimit - OmokManager.Instance.TurnTimer);
+
+        bool isMyTurnNow = (_isMasterTurn && _myPlayerType == StoneType.Black) ||
+                           (!_isMasterTurn && _myPlayerType == StoneType.White);
+
+        if (isMyTurnNow)
+        {
+            style.normal.textColor = timeLeft < 5f ? Color.red : Color.yellow; // 5초 남으면 빨간색!
+            GUI.Label(new Rect(20, 20, 500, 50), $"[내 턴] 남은 시간: {timeLeft:F1}초", style);
+        }
+        else
+        {
+            //상대 턴일 때도 똑같이 남은 시간으로 표시
+            style.normal.textColor = Color.gray;
+            GUI.Label(new Rect(20, 20, 500, 50), $"[상대 턴] 남은 시간: {timeLeft:F1}초", style);
+        }
+
+        // 마나 표시
+        PlayerType myType = (_myPlayerType == StoneType.Black) ? PlayerType.Black : PlayerType.White;
+        Player myPlayer = OmokManager.Instance.GetPlayer(myType);
+
+        if (myPlayer != null)
+        {
+            style.normal.textColor = Color.cyan;
+            GUI.Label(new Rect(20, Screen.height - 70, 500, 50), $"💎 내 마나: {myPlayer.CurrentMana}", style);
+        }
+    }
 }

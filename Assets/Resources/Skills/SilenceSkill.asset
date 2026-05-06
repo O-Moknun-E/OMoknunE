@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7156d39803f9d4847a13bb3f82c54207, type: 3}
-  m_Name: FogSkill
+  m_Name: SilenceSkill
   m_EditorClassIdentifier: Assembly-CSharp::SkillBase
-  _id: 1
-  _skillName: "\uC2DC\uC57C \uCC28\uB2E8 \uC548\uAC1C"
+  _id: 3
+  _skillName: "\uCE68\uBB35"
   _description: 
   _cost: 5
   _effects:
-  - {fileID: 11400000, guid: d748144252631534d8ab64a713d623ad, type: 2}
+  - {fileID: 11400000, guid: a5709d710b2940d44b689c6051c52640, type: 2}

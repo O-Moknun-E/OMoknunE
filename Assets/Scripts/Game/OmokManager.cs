@@ -20,6 +20,13 @@ public class OmokManager : SceneSingleton<OmokManager>
     [Tooltip("리플레이 시스템")]
     [SerializeField] private Replay _replay;
 
+    //==========================================
+    //======================================추가된 부분
+    // 외부에서 남은 시간을 계산할 수 있도록 열기 (시간 UI 표시용)
+    public float TurnTimer => _turnTimer;
+    public float TurnTimeLimit => _turnTimeLimit;
+    //==========================================
+
     private const int BoardSize = 15;   // 오목판의 크기 (15x15)
 
     private StoneType[,] _board;        // 오목판 상태를 저장하는 2D 배열
@@ -29,6 +36,12 @@ public class OmokManager : SceneSingleton<OmokManager>
     private float _turnTimer;           // 턴 타이머
     private float[] _manaIncomeTimer;   // 마나 획득 타이머 (0: 흑, 1: 백)
     private bool _isGameOver;           // 게임 종료 여부
+
+    //==========================================
+    //======================================추가된 부분
+    // 포톤 서버 시간 기준으로 턴이 시작된 시간 기록
+    private double _turnStartNetworkTime;
+    //==========================================
 
     public event Action OnUsedMagic;            // 마법이 사용되었을 때 발생하는 이벤트
     public event Action OnManaChanged;          // 마나가 변경되었을 때 발생하는 이벤트
@@ -104,6 +117,12 @@ public class OmokManager : SceneSingleton<OmokManager>
         // 타이머 초기화
         _turnTimer = 0f;
         _manaIncomeTimer = new float[2] { 0f, 0f };
+
+        //==========================================
+        //======================================추가된 부분
+        // 게임 시작 시 포톤 룸 안에 있다면 현재 서버 시간을 기록
+        if (PhotonNetwork.InRoom) _turnStartNetworkTime = PhotonNetwork.Time;
+        //==========================================
 
         // 리플레이 기록 시작
         _replay.StartRecording(_players[0].Name, _players[1].Name);
@@ -229,6 +248,20 @@ public class OmokManager : SceneSingleton<OmokManager>
     {
         int waitingPlayerIndex = GetPlayerIndex(false);
 
+        //==========================================
+        //======================================추가된 부분 (서버 시간 동기화)
+        if (PhotonNetwork.InRoom)
+        {
+            if (_turnTimer - _manaIncomeTimer[waitingPlayerIndex] >= _manaIncomeTime)
+            {
+                _players[waitingPlayerIndex].AddMana(_manaIncome);
+                OnManaChanged?.Invoke();
+                _manaIncomeTimer[waitingPlayerIndex] += _manaIncomeTime;
+            }
+            return; // 오프라인 계산 건너뛰기
+        }
+        //==========================================
+
         _manaIncomeTimer[waitingPlayerIndex] += Time.deltaTime;
 
         // 마나 획득 시간이 지나면 상대방에게 마나 추가
@@ -247,13 +280,27 @@ public class OmokManager : SceneSingleton<OmokManager>
     // 턴 타이머 체크
     private void CheckTurnTimer()
     {
-        _turnTimer += Time.deltaTime;
+        //==========================================
+        //======================================추가된 부분 (서버 시간 동기화)
+        if (PhotonNetwork.InRoom)
+        {
+            _turnTimer = (float)(PhotonNetwork.Time - _turnStartNetworkTime);
+        }
+        else
+        {
+            _turnTimer += Time.deltaTime;
+        }
+        //==========================================
 
         // 턴 제한 시간이 지났을 때
         if (_turnTimer >= _turnTimeLimit)
         {
-            // 턴 넘기기
-            ChangeTurn();
+            // 턴 시간 초과 시, 현재 턴이었던 사람의 반대가 승리
+            StoneType winner = (_currentTurn == StoneType.Black) ? StoneType.White : StoneType.Black;
+            OnGameOver?.Invoke(winner);
+
+            // 더 이상 시간 안 흐르게 게임 오버 처리
+            _isGameOver = true;
         }
     }
 
@@ -263,6 +310,14 @@ public class OmokManager : SceneSingleton<OmokManager>
         _currentTurn = _currentTurn == StoneType.Black ? StoneType.White : StoneType.Black;
 
         _turnTimer = 0f;
+
+        //==========================================
+        //======================================추가된 부분
+        // 턴이 바뀔 때마다 포톤 서버 시간 갱신 및 마나 타이머 초기화
+        if (PhotonNetwork.InRoom) _turnStartNetworkTime = PhotonNetwork.Time;
+        _manaIncomeTimer[0] = 0f;
+        _manaIncomeTimer[1] = 0f;
+        //==========================================
 
         // 리플레이 - 현재 턴 종료 및 시작
         _replay.EndTurn();
