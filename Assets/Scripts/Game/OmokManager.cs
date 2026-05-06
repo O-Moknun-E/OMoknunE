@@ -1,5 +1,7 @@
 using Photon.Pun;
 using System;
+using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 /// <summary>
@@ -20,7 +22,7 @@ public class OmokManager : SceneSingleton<OmokManager>
     [Tooltip("리플레이 시스템")]
     [SerializeField] private Replay _replay;
 
-    private const int BoardSize = 15;   // 오목판의 크기 (15x15)
+    public static readonly int BoardSize = 15;   // 오목판의 크기 (15x15)
 
     private StoneType[,] _board;        // 오목판 상태를 저장하는 2D 배열
     private Player[] _players;          // 플레이어 배열 (0: 흑, 1: 백)
@@ -197,6 +199,42 @@ public class OmokManager : SceneSingleton<OmokManager>
     //        ChangeTurn();
     //    }
     //}
+
+    /// <summary>
+    /// PvE 모드용 로컬 착수 메서드
+    /// </summary>
+    /// <returns>착수할 수 있으면 true, 아니면 false</returns>
+    public bool TryPlaceStoneLocal(int row, int col)
+    {
+        // 게임이 종료된 상태면 무시
+        if (_isGameOver) return false;
+
+        // 규칙 체크
+        if(_rule.CanPlaceStone(_board, row, col, _currentTurn)) {
+            // 보드에 돌 놓기
+            _board[row, col] = _currentTurn;
+
+            // 리플레이 - 착수 기록
+            _replay.RecordPlaceStone(row, col, _currentTurn);
+
+            Debug.Log($"<color=green>[Local] ({col}, {row})에 {_currentTurn} 착수</color>");
+
+            // 승리 조건 체크
+            if(_rule.CheckWin(_board, row, col, _currentTurn))
+            {
+                // 게임 종료 이벤트
+                OnGameOver?.Invoke(_currentTurn);
+            } else
+            {
+                // 턴 변경
+                ChangeTurn();
+            }
+
+            return true;
+        }
+
+        return false;
+    }
 
     // ===============>>서버에서 돌이 놓였다는 정보를 받았을 때 보드 업데이트================
     private void UpdateBoardFromServer(int x, int y, StoneType playerType)

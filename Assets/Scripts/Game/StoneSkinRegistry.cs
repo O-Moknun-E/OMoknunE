@@ -15,7 +15,7 @@ public class StoneSkinRegistry : PersistentSingleton<StoneSkinRegistry>
         // 유효성 검사
         if(_stoneSkins == null || skinID < 0 || skinID >= _stoneSkins.Length)
         {
-            Debug.LogWarning($"[SkinRegistry] 유호하지 않은 스킨 ID: {skinID}");
+            Debug.LogWarning($"[SkinRegistry] 유효하지 않은 스킨 ID: {skinID}");
             return null;
         }
 

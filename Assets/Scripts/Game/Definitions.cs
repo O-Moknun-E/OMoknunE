@@ -28,3 +28,22 @@ public enum ActionType
     UseMagic,   // 마법 사용
     PlaceStone  // 돌 착수
 }
+
+/// <summary>
+/// AI 난이도
+/// </summary>
+public enum AIDifficulty
+{
+    Easy,   // 쉬움: 휴리스틱 (1수 탐색)
+    Normal, // 보통: 미니맥스 (2~3수 탐색)
+    Hard    // 어려움: 알파베타 가지치기 (4~5수 탐색)
+}
+
+/// <summary>
+/// 게임 모드
+/// </summary>
+public enum GameMode
+{
+    PvP,    // 플레이어 vs 플레이어
+    PvE,    // 플레이어 vs AI
+}
