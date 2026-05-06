@@ -399,16 +399,6 @@ public class ReplayManager : MonoBehaviour
     }
 
     /// <summary>
-    ///  히스토리에 기록 후 돌 제거
-    /// </summary>
-    private void RemoveStone(int row, int col, TurnHistory history)
-    {
-        // 돌 제거 전 변경전 보드 상태 기록
-        history.changes.Add((row, col, _board[row, col]));
-        _board[row, col] = StoneType.Empty;
-    }
-
-    /// <summary>
     /// 보드 초기화
     /// </summary>
     private void ResetBoard()

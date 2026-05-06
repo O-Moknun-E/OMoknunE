@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MJTest.unity
     guid: 5fc27a05345a4524ebb0d52019b2b769
   - enabled: 0
@@ -30,7 +30,7 @@ EditorBuildSettings:
     path: Assets/Scenes/GameSceneUI.unity
     guid: e51e3d4b157158647a5d34feda6c035e
   - enabled: 1
-    path: Assets/Scenes/LobbySceneUI.unity
+    path: Assets/Scenes/LobbyScene.unity
     guid: e7f6597741b77db4995d778e1149b313
   - enabled: 1
     path: Assets/Scenes/ReplaySceneUI.unity

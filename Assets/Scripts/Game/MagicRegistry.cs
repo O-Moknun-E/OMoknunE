@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// 모든 마법을 ID로 관리하는 레지스트리 클래스
 /// </summary>
-public class MagicRegistry : Singleton<MagicRegistry>
+public class MagicRegistry : PersistentSingleton<MagicRegistry>
 {
     [Header("마법 목록")]
     [SerializeField] private List<SkillBase> _magicList = new();

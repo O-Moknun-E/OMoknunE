@@ -14,11 +14,14 @@ public class FakeStoneEffect : SkillEffect
     {
         if (fakeStonePrefab == null || blindPrefab == null) return;
 
-        // 1. 이미 돌이 있으면 실패
-        if (OmokManager.Instance.GetBoardData(context.TargetX, context.TargetY) != StoneType.Empty)
+        // 1. 이미 돌이 있으면 실패(리플레이 모드에서는 체크 X)
+        if (!context.IsReplay)
         {
-            Debug.LogWarning("이미 돌이 있는 자리입니다");
-            return;
+            if (OmokManager.Instance.GetBoardData(context.TargetX, context.TargetY) != StoneType.Empty)
+            {
+                Debug.LogWarning("이미 돌이 있는 자리입니다");
+                return;
+            }
         }
 
         // 리플레이 모드일 때 컨테이너를 부모로 지정
@@ -56,8 +59,11 @@ public class FakeStoneEffect : SkillEffect
         TurnDuration timer = fakeStone.AddComponent<TurnDuration>();
         timer.Setup(context.GetCasterStoneType(), 3, context.IsReplay);
 
-        // 6. 자물쇠 잠금 컴포넌트 추가 및 좌표 전달
-        FakeStoneCleanup cleanup = fakeStone.AddComponent<FakeStoneCleanup>();
-        cleanup.LockSpot(context.TargetX, context.TargetY);
+        // 6. 자물쇠 잠금 컴포넌트 추가 및 좌표 전달 (리플레이에서는 X)
+        if (!context.IsReplay)
+        {
+            FakeStoneCleanup cleanup = fakeStone.AddComponent<FakeStoneCleanup>();
+            cleanup.LockSpot(context.TargetX, context.TargetY);
+        }
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class StoneSkinRegistry : Singleton<StoneSkinRegistry>
+public class StoneSkinRegistry : PersistentSingleton<StoneSkinRegistry>
 {
     [Header("돌 스킨 배열")]
     [SerializeField] private Sprite[] _stoneSkins;

@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 오목 게임의 전반적인 관리를 담당하는 싱글톤 클래스
 /// </summary>
-public class OmokManager : Singleton<OmokManager>
+public class OmokManager : SceneSingleton<OmokManager>
 {
     [Tooltip("마나 획득에 걸리는 시간(초)")]
     [SerializeField] private float _manaIncomeTime = 3f;
@@ -215,10 +215,6 @@ public class OmokManager : Singleton<OmokManager>
         if (_rule.CheckWin(_board, y, x, placedStone))
         {
             // 게임 종료 이벤트
-
-            RankingManager.Instance.AddScoreAndSync(winnerName == PlayFabManager.Instance.UserNickName); //민정추가
-
-
             OnGameOver?.Invoke(placedStone);
         }
         else
@@ -291,8 +287,10 @@ public class OmokManager : Singleton<OmokManager>
     {
         _isGameOver = true;
         FindFirstObjectByType<BoardInteraction>().SetGameOver();
-        string winnerName = (winner == StoneType.Black) ? "흑(플레이어1)" : "백(플레이어2)";
+        string winnerName = (winner == StoneType.Black) ? _players[0].Name : _players[1].Name;
         Debug.Log($"<color=yellow><b>[SERVER INFO] {winnerName} 승리 모든 착수가 금지됩니다.</b></color>");
+
+        RankingManager.Instance.AddScoreAndSync(winnerName == PlayFabManager.Instance.UserNickName); //민정추가
 
         // 리플레이 - 현재 턴 종료 및 기록 종료
         _replay.EndTurn();
