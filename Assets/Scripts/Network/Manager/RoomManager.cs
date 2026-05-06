@@ -1,14 +1,18 @@
-using UnityEngine;
-using Photon.Pun;
+ï»¿using Photon.Pun;
 using Photon.Realtime;
 using System.Collections.Generic;
-using TMPro;
 using System.Linq;
+using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
+
 
 public enum RoomFilter { All, Public, Private }
 
+
 public class RoomManager : MonoBehaviourPunCallbacks
 {
+
     public static RoomManager Instance;
 
     [Header("Password UI")]
@@ -29,8 +33,9 @@ public class RoomManager : MonoBehaviourPunCallbacks
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
     }
+   
 
-    public void SetFilter(int filterIndex) //°ø°³¿©ºÎ ÇÊÅÍ
+    public void SetFilter(int filterIndex) //ê³µê°œì—¬ë¶€ í•„í„°
     {
         currentFilter = (RoomFilter)filterIndex;
         ApplyFilter();
@@ -43,7 +48,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
         ApplyFilter(); 
     }
 
-    private void UpdateCachedRoomList(List<RoomInfo> roomList)//¹æ¸®½ºÆ® ¾÷µ¥ÀÌÆ®
+    private void UpdateCachedRoomList(List<RoomInfo> roomList)//ë°©ë¦¬ìŠ¤íŠ¸ ì—…ë°ì´íŠ¸
     {
         foreach (var room in roomList)
         {
@@ -84,14 +89,14 @@ public class RoomManager : MonoBehaviourPunCallbacks
             var info = cachedRoomList.FirstOrDefault(r => r.Name == entry.Key);
             if (info == null) continue;
 
-            // Á¶°Ç¹®À» µ¥ÀÌÅÍ ±â¹ÝÀ¸·Î ÃÖÀûÈ­ (LINQ ½Ä È°¿ë)
+            // ì¡°ê±´ë¬¸ì„ ë°ì´í„° ê¸°ë°˜ìœ¼ë¡œ ìµœì í™” (LINQ ì‹ í™œìš©)
             bool hasPassword = info.CustomProperties.ContainsKey(RoomKeys.Password);
 
             bool isVisible = currentFilter switch
             {
                 RoomFilter.Public => !hasPassword,
                 RoomFilter.Private => hasPassword,
-                _ => true // AllÀÎ °æ¿ì
+                _ => true // Allì¸ ê²½ìš°
             };
 
             entry.Value.SetActive(isVisible);
@@ -103,6 +108,8 @@ public class RoomManager : MonoBehaviourPunCallbacks
         selectedRoom = info;
         passwordInput.text = string.Empty; 
         passwordPanel.SetActive(true);
+
+        
     }
 
     public void OnClickConfirmPassword() 
@@ -118,10 +125,12 @@ public class RoomManager : MonoBehaviourPunCallbacks
             }
             else
             {
-                Debug.LogWarning("ºñ¹Ð¹øÈ£°¡ Æ²·ÈÀ½!"); 
+                Debug.LogWarning("ë¹„ë°€ë²ˆí˜¸ê°€ í‹€ë ¸ìŒ!"); 
             }
         }
     }
 
     public void ClosePasswordPanel() => passwordPanel.SetActive(false);
+
+    
 }
