@@ -10,4 +10,12 @@ public class ReplayBtn : MonoBehaviour
     {
         SceneManager.LoadScene("ReplayListScene");
     }
+
+    /// <summary>
+    /// 로비 씬으로 이동
+    /// </summary>
+    public void LoadLobbyScene()
+    {
+        SceneManager.LoadScene("LobbyScene");
+    }
 }

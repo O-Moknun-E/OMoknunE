@@ -6,6 +6,5 @@ public interface IMagic
     string Name { get; }                // 마법 이름
     string Description { get; }         // 마법 설명
     int Cost { get; }                   // 마법 비용
-    CellChangeType ChangeType { get; }  // 오목판의 변화 종류
     void Execute(bool isReplay);        // 마법 사용 메서드
 }

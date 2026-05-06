@@ -20,16 +20,14 @@ public class Replay : MonoBehaviour
         public int col;                     // 변경된 열
         public StoneType before;            // 변경 전 상태(돌)
         public StoneType after;             // 변경 후 상태(돌)
-        public CellChangeType changeType;   // 변경 종류 (착수, 제거, 시각 효과)
 
         // row와 col는 필요없을때 -1
-        public CellChange(int row, int col, StoneType before, StoneType after, CellChangeType changeType)
+        public CellChange(int row, int col, StoneType before, StoneType after)
         {   
             this.row = row;
             this.col = col;
             this.before = before;
             this.after = after;
-            this.changeType = changeType;
         }
     }
 
@@ -69,7 +67,7 @@ public class Replay : MonoBehaviour
                 targetRow = row,
                 targetCol = col,
                 boardChanges = new List<CellChange> {
-                    new CellChange(row, col, StoneType.Empty, stoneType, CellChangeType.PlaceStone) // 빈 공간 -> 착수된 돌
+                    new CellChange(row, col, StoneType.Empty, stoneType) // 빈 공간 -> 착수된 돌
                 }
             };
     }
@@ -170,11 +168,8 @@ public class Replay : MonoBehaviour
         // 마법 정보 가져오기
         IMagic magic = MagicRegistry.Instance.GetMagicByID(magicID);
 
-        // 마법 정보가 없으면 시각 효과로 간주
-        CellChangeType changeType = magic != null ? magic.ChangeType : CellChangeType.VisualEffect;
-
         // 보드 변화 감지
-        var changes = DetectBoardChanges(skillContext.TargetY, skillContext.TargetX, boardBefore, boardAfter, changeType);
+        var changes = DetectBoardChanges(skillContext.TargetY, skillContext.TargetX, boardBefore, boardAfter);
 
         // 마법 사용 데이터 기록 후 행동 리스트에 추가
         ActionData action = ActionData.CreateMagicAction(
@@ -240,7 +235,7 @@ public class Replay : MonoBehaviour
     /// <param name="before">행동 전 보드 상태</param>
     /// <param name="after">행동 후 보드 상태</param>
     /// <returns>변화된 칸 정보 반환</returns>
-    private List<CellChange> DetectBoardChanges(int targetRow, int targetCol, StoneType[,] before, StoneType[,] after, CellChangeType changeType)
+    private List<CellChange> DetectBoardChanges(int targetRow, int targetCol, StoneType[,] before, StoneType[,] after)
     {
         List<CellChange> changes = new();
 
@@ -253,15 +248,15 @@ public class Replay : MonoBehaviour
             {
                 if (before[r, c] != after[r, c])
                 {
-                    changes.Add(new CellChange(r, c, before[r, c], after[r, c], changeType));
+                    changes.Add(new CellChange(r, c, before[r, c], after[r, c]));
                 }
             }
         }
 
         // 보드 변화 없이 시각 효과만 있는 마법
-        if(changes.Count == 0 && changeType == CellChangeType.VisualEffect)
+        if(changes.Count == 0)
         {
-            changes.Add(new CellChange(targetRow, targetCol, StoneType.Empty, StoneType.Empty, changeType));
+            changes.Add(new CellChange(targetRow, targetCol, StoneType.Empty, StoneType.Empty));
         }
 
         return changes;

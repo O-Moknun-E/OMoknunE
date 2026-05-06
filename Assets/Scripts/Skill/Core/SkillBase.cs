@@ -52,7 +52,6 @@ public class SkillBase : ScriptableObject, IMagic
     [SerializeField] private string _skillName;
     [SerializeField][TextArea] private string _description;
     [SerializeField] private int _cost;
-    [SerializeField] private CellChangeType _changeType;    // 오목판 변화 종류
 
     [Header("효과 조립 (순서대로 실행됨)")]
     [SerializeField] private List<SkillEffect> _effects = new List<SkillEffect>();
@@ -62,7 +61,6 @@ public class SkillBase : ScriptableObject, IMagic
     public string Name => _skillName;
     public string Description => _description;
     public int Cost => _cost;
-    public CellChangeType ChangeType => _changeType;
     public SkillContext CurrentContext => _currentContext;
 
     // 내부 상태 저장용
