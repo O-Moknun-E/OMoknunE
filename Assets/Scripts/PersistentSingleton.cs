@@ -1,9 +1,9 @@
 using UnityEngine;
 
 /// <summary>
-/// MonoBehaviour 기반 싱글톤 클래스
+/// 씬 전환 시에도 유지되는 MonoBehaviour 기반 싱글톤 클래스
 /// </summary>
-public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
+public class PersistentSingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
 
@@ -18,7 +18,6 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                 if (_instance == null)
                 {
                     GameObject obj = new GameObject(typeof(T).Name);
-
                     _instance = obj.AddComponent<T>();
                     DontDestroyOnLoad(obj);
                 }

@@ -1,19 +1,45 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 
-public struct SkillContext
+[Serializable]
+public class SkillContext
 {
     public int TargetX;
     public int TargetY;
     public PlayerType Caster;
     public int SkinID;
+    public bool IsReplay;   // 리플레이 모드 여부
+
+    /// <summary>
+    /// 시전자가 자신인지 확인(리플레이 모드에서는 항상 true)
+    /// </summary>
+    /// <returns>자신이면 true, 아니면 false(리플레이 모드는 항상 true)</returns>
+    public bool IsMine()
+    {
+        // 리플레이 모드에서는 시전자가 자신이라고 가정하여 효과에 영향 안받게(안개 등)
+        if (IsReplay) return true;
+
+        NetworkOmokManager netManager = UnityEngine.Object.FindFirstObjectByType<NetworkOmokManager>();
+        if (netManager == null) return false;
+
+        StoneType casterStoneType = (Caster == PlayerType.Black) ? StoneType.Black : StoneType.White;
+        return casterStoneType == netManager.MyPlayerType;
+
+    }
+
+    /// <summary>
+    /// 시전자의 StoneType 반환
+    /// </summary>
+    /// <returns>시전자의 StoneType</returns>
+    public StoneType GetCasterStoneType() => (Caster == PlayerType.Black) ? StoneType.Black : StoneType.White;
 }
 
 //SkillEffect 상속받아서 스킬 효과 구현하기
 public abstract class SkillEffect : ScriptableObject
 {
-    public abstract void OnExecute(SkillContext context);
+    public abstract void OnExecute(SkillContext context, Vector3 spawnPos);
 }
 
 
@@ -35,6 +61,7 @@ public class SkillBase : ScriptableObject, IMagic
     public string Name => _skillName;
     public string Description => _description;
     public int Cost => _cost;
+    public SkillContext CurrentContext => _currentContext;
 
     // 내부 상태 저장용
     private SkillContext _currentContext;
@@ -44,8 +71,16 @@ public class SkillBase : ScriptableObject, IMagic
         _currentContext = new SkillContext { TargetX = x, TargetY = y, Caster = caster, SkinID = skinId };
     }
 
-    // 인터페이스의 Execute를 구현
-    public void Execute()
+    /// <summary>
+    /// SkillContext 설정
+    /// </summary>
+    public void SetContext(SkillContext skillContext) => _currentContext = skillContext;
+
+    /// <summary>
+    /// 마법을 실행하는 메서드
+    /// </summary>
+    /// <param name="isReplay">리플레이 모드 여부</param>
+    public void Execute(bool isReplay)
     {
         if (_effects == null || _effects.Count == 0)
         {
@@ -53,10 +88,29 @@ public class SkillBase : ScriptableObject, IMagic
             return;
         }
 
+        // 리플레이 모드 여부 설정
+        _currentContext.IsReplay = isReplay;
+
         // 리스트에 담긴 효과들을 순차적으로 실행
         foreach (var effect in _effects)
         {
-            effect.OnExecute(_currentContext);
+            Vector3 spawnPos = Vector3.zero;
+
+            if(isReplay)
+            {
+                // 리플레이 모드에서는 Board Transform으로
+                ReplayManager rm = FindFirstObjectByType<ReplayManager>();
+
+                spawnPos = rm.GetWorldPositionFromIndex(_currentContext.TargetX, _currentContext.TargetY);
+            } else
+            {
+                // 아니면 BoardInteraction으로
+                BoardInteraction bi = FindFirstObjectByType<BoardInteraction>();
+
+                spawnPos = bi.GetWorldPositionFromIndex(_currentContext.TargetX, _currentContext.TargetY);
+            }
+
+            effect.OnExecute(_currentContext, spawnPos);
         }
     }
 }

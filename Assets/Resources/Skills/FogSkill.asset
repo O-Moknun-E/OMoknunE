@@ -16,5 +16,6 @@ MonoBehaviour:
   _skillName: "\uC2DC\uC57C \uCC28\uB2E8 \uC548\uAC1C"
   _description: 
   _cost: 0
+  _changeType: 2
   _effects:
   - {fileID: 11400000, guid: d748144252631534d8ab64a713d623ad, type: 2}
