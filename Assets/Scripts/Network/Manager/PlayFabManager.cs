@@ -70,6 +70,7 @@ public class PlayFabManager : Singleton<PlayFabManager>
         userNickName = result.InfoResultPayload.AccountInfo.TitleInfo.DisplayName;
         PhotonNetwork.NickName = userNickName;
 
+        AchievementManager.Instance.LoadAchievementDatas();
         RankingManager.Instance.GetScore();
         NetworkManager.Instance.Connect();
         UImanager.Instance.ShowLobby();

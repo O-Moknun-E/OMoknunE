@@ -7,17 +7,32 @@ using Newtonsoft.Json;
 public class AchievementManager : Singleton<AchievementManager>
 {
     public Dictionary<string, AchievementData> achievementConfigs = new Dictionary<string, AchievementData>();
+    public AchievementTracker achievementTracker;
+
+    private HashSet<string> completedAchievements = new HashSet<string>();
+    private bool isUserDataLoaded = false;
 
     public void LoadAchievementDatas()
     {
         var request = new GetTitleDataRequest { Keys = new List<string> { "AchievementList" } };
-
         PlayFabClientAPI.GetTitleData(request, OnLoadSuccess, OnError);
 
+        LoadUserCompletedList();
     }
 
+    private void LoadUserCompletedList()
+    {
+        PlayFabClientAPI.GetUserData(new GetUserDataRequest(), result => {
+            if (result.Data.ContainsKey("CompletedAchievements"))
+            {
+                string[] ids = result.Data["CompletedAchievements"].Value.Split(',');
+                foreach (var id in ids) completedAchievements.Add(id);
+                Debug.Log("기존 달성 목록 로드 완료!");
+            }
+        }, OnError);
+    }
 
-    public void CheckAllAchievementsByStat(string statName, int currentValue)
+    public void CheckAchievements(string statName, int currentValue)
     {
         foreach (var pair in achievementConfigs)
         {

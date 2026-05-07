@@ -653,6 +653,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1516087339}
   - component: {fileID: 1516087338}
+  - component: {fileID: 1516087340}
   m_Layer: 0
   m_Name: AchievementManager
   m_TagString: Untagged
@@ -672,6 +673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de3dabd9efc6d394b850a454cddffcf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AchievementManager
+  achievementTracker: {fileID: 1516087340}
 --- !u!4 &1516087339
 Transform:
   m_ObjectHideFlags: 0
@@ -687,6 +689,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1516087340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1516087337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8f84e2205005ce4dbf55dbf8f97c44d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AchievementTracker
 --- !u!1 &1598242119
 GameObject:
   m_ObjectHideFlags: 0

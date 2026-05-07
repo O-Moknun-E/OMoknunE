@@ -288,7 +288,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     public void ReturnToMainMenu()
     {
         IsReturningFromGame = true;
-
+        AchievementManager.Instance.achievementTracker.UpdatePlayerGameCount(); //민정추가
         PhotonNetwork.LeaveRoom();
     }
 
