@@ -55,6 +55,28 @@ public class OmokManager : SceneSingleton<OmokManager>
 
     ///////////////////////////////////////////////////////////////////////////////////
 
+    //==========================================
+    //======================================추가된 부분 (시간 과부하 기능)
+    private int[] _overloadTurnsLeft = new int[2] { 0, 0 }; // 시간 과부하 남은 턴 수 (0: 흑, 1: 백)
+
+    // 현재 적용되는 '실제' 턴 제한 시간 (과부하 시 절반으로 계산)
+    public float CurrentTurnTimeLimit
+    {
+        get
+        {
+            int pIndex = GetPlayerIndex(true);
+            return _overloadTurnsLeft[pIndex] > 0 ? _turnTimeLimit / 2f : _turnTimeLimit;
+        }
+    }
+
+    // 시간 과부하를 적용하는 함수 (스킬에서 호출)
+    public void ApplyTimeOverload(PlayerType targetPlayer, int turns)
+    {
+        int targetIndex = (targetPlayer == PlayerType.Black) ? 0 : 1;
+        _overloadTurnsLeft[targetIndex] = turns;
+        Debug.Log($"<color=magenta>[System] {targetPlayer} 진영에 {turns}턴 동안 시간 과부하(제한시간 절반)가 적용됩니다</color>");
+    }
+    //==========================================
 
     private void OnEnable()
     {
@@ -292,14 +314,14 @@ public class OmokManager : SceneSingleton<OmokManager>
         }
         //==========================================
 
-        // 턴 제한 시간이 지났을 때
-        if (_turnTimer >= _turnTimeLimit)
+        //==========================================
+        //======================================추가된 부분 (TurnTimeLimit -> CurrentTurnTimeLimit)
+        // 턴 제한 시간이 지났을 때 (과부하 상태면 15초, 아니면 30초와 비교)
+        if (_turnTimer >= CurrentTurnTimeLimit)
+        //==========================================
         {
-            // 턴 시간 초과 시, 현재 턴이었던 사람의 반대가 승리
             StoneType winner = (_currentTurn == StoneType.Black) ? StoneType.White : StoneType.Black;
             OnGameOver?.Invoke(winner);
-
-            // 더 이상 시간 안 흐르게 게임 오버 처리
             _isGameOver = true;
         }
     }
@@ -307,6 +329,19 @@ public class OmokManager : SceneSingleton<OmokManager>
     // 턴 변경 메서드
     private void ChangeTurn()
     {
+        //==========================================
+        //======================================추가된 부분 (턴 끝나기 직전에 과부하 턴 감소)
+        int pIndex = GetPlayerIndex(true);
+        if (_overloadTurnsLeft[pIndex] > 0)
+        {
+            _overloadTurnsLeft[pIndex]--;
+            if (_overloadTurnsLeft[pIndex] == 0)
+            {
+                Debug.Log($"<color=cyan>[System] {((pIndex == 0) ? PlayerType.Black : PlayerType.White)} 진영의 시간 과부하가 해제되었습니다</color>");
+            }
+        }
+        //==========================================
+
         _currentTurn = _currentTurn == StoneType.Black ? StoneType.White : StoneType.Black;
 
         _turnTimer = 0f;

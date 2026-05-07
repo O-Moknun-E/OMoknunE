@@ -205,9 +205,11 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         if (Input.GetKeyDown(KeyCode.Alpha2)) TryLoadSkill("FakeStoneSkill");
         if (Input.GetKeyDown(KeyCode.Alpha3)) TryLoadSkill("SealSkill");
         if (Input.GetKeyDown(KeyCode.Alpha4)) TryLoadSkill("SilenceSkill");
+        if (Input.GetKeyDown(KeyCode.Alpha5)) TryLoadSkill("ManaTrapSkill");
+        if (Input.GetKeyDown(KeyCode.Alpha6)) TryLoadSkill("TimeOverloadSkill");
 
         // 엔터키 입력 시 스킬 사용 (침묵 스킬은 좌표 필요 없으므로 바로 발동)
-        if (Input.GetKeyDown(KeyCode.Return) && _loadedSkillName == "SilenceSkill")
+        if (Input.GetKeyDown(KeyCode.Return) && (_loadedSkillName == "SilenceSkill" || _loadedSkillName == "TimeOverloadSkill"))
         {
             // 좌표가 필요 없는 스킬이므로 -1, -1 이라는 가짜 좌표를 던짐
             UseSkill(_loadedSkillName, -1, -1);
@@ -216,7 +218,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
             _loadedSkillName = "";
             if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(false);
 
-            Debug.Log("<color=yellow>[System] 엔터 키 입력 침묵 스킬 발동 완료</color>");
+            Debug.Log("<color=yellow>[System] 엔터 키 입력 즉발 스킬 발동 완료</color>");
         }
     }
 
@@ -257,14 +259,11 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(true);
 
         // 스킬 종류에 따라 알맞은 안내 로그 출력
-        if (skillName == "SilenceSkill")
+        if (skillName == "SilenceSkill" || skillName == "TimeOverloadSkill")
         {
-            Debug.Log("<color=cyan>[System] 침묵 스킬 장전 완료 <Enter> 키를 눌러 발동하세요.</color>");
+            Debug.Log($"<color=cyan>[System] {skillName} 장전 완료 <Enter> 키를 눌러 발동하세요</color>");
         }
-        else
-        {
-            Debug.Log("<color=cyan>[System] 스킬 장전 완료 오목판을 클릭하세요.</color>");
-        }
+        Debug.Log($"<color=cyan>[System] {skillName} 스킬 장전 완료! 오목판을 클릭하세요.</color>");
     }
 
     public void UseSkill(string skillName, int x, int y)
@@ -349,7 +348,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         style.fontStyle = FontStyle.Bold;
 
         // 남은 시간 통일
-        float timeLeft = Mathf.Max(0, OmokManager.Instance.TurnTimeLimit - OmokManager.Instance.TurnTimer);
+        float timeLeft = Mathf.Max(0, OmokManager.Instance.CurrentTurnTimeLimit - OmokManager.Instance.TurnTimer);
 
         bool isMyTurnNow = (_isMasterTurn && _myPlayerType == StoneType.Black) ||
                            (!_isMasterTurn && _myPlayerType == StoneType.White);
