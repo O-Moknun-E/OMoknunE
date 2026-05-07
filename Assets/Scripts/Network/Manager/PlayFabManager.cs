@@ -80,7 +80,7 @@ public class PlayFabManager : Singleton<PlayFabManager>
         Debug.LogError("로그인 실패");
 
         string userMassge = PlayFabErrorHandler.GetErrorMessage(error.Error);
-        Debug.Log(userMassge); // 나중에 UI 텍스트로 전달 예정
+        Debug.Log(userMassge); 
     }
 
     private void OnRegusterFailure(PlayFabError error)
@@ -88,7 +88,7 @@ public class PlayFabManager : Singleton<PlayFabManager>
         Debug.LogError("회원가입 실패");
 
         string userMassge = PlayFabErrorHandler.GetErrorMessage(error.Error);
-        Debug.Log(userMassge); // 나중에 UI 텍스트로 전달 예정
+        Debug.Log(userMassge); 
     }
 
     #endregion
