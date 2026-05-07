@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI; // Slider 사용하려고 추가
 
 public class AudioManager : MonoBehaviour
 {
@@ -13,10 +14,25 @@ public class AudioManager : MonoBehaviour
     public AudioClip sfxaudio;
     public AudioClip moveaudio;
 
+    // ---------------- 추가된 부분 ----------------
+    [Header("-------Volume Slider-------")]
+
+    // 배경음 슬라이더
+    public Slider musicSlider;
+
+    // 효과음 슬라이더
+    public Slider sfxSlider;
+
+    // 착수음 슬라이더
+    public Slider moveSlider;
+    // --------------------------------------------
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
     } //추가! 씬 바꿔도 노래 안 꺼지게
+
+
 
     private void Start()
     {

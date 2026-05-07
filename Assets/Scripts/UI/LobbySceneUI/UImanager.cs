@@ -36,4 +36,19 @@ public class UImanager : MonoBehaviour
         loginPanel.SetActive(false);
         lobbyPanel.SetActive(true);
     }
+
+    public GameObject soundOptionPanel; //// 사운드 옵션 패널 채빈추가==========
+
+    // 사운드 옵션 열기
+    public void OpenSoundOption()
+    {
+        soundOptionPanel.SetActive(true);
+    }
+
+    // 사운드 옵션 닫기
+    public void CloseSoundOption()
+    {
+        soundOptionPanel.SetActive(false);
+    }
+    //========================================
 }
