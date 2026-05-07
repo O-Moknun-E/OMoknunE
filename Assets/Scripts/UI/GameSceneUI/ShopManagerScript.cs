@@ -56,6 +56,12 @@ public class ShopManagerScript : MonoBehaviour
             shopItems[3, ButtonRef.GetComponent<ButtonInfo>().ItemID]++;
             CoinsTXT.text = "Coins:" + coins.ToString();
             ButtonRef.GetComponent<ButtonInfo>().QuantityTxt.text = shopItems[3, ButtonRef.GetComponent<ButtonInfo>().ItemID].ToString();
+
+            //인벤토리 추가
+            InventoryManager.instance.UpdateInventory(
+            ButtonRef.GetComponent<ButtonInfo>().ItemID,
+            shopItems[3, ButtonRef.GetComponent<ButtonInfo>().ItemID]);
         }
+
     }
 }
