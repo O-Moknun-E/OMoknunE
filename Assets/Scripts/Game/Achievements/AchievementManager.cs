@@ -6,18 +6,18 @@ using Newtonsoft.Json;
 
 public class AchievementManager : Singleton<AchievementManager>
 {
-    public Dictionary<string, AchievementData> achievementConfigs = new Dictionary<string, AchievementData>();
     public AchievementTracker achievementTracker;
+    public AchievementsPopup achievementsPopup;
 
+    private Dictionary<string, AchievementData> achievementConfigs = new Dictionary<string, AchievementData>();
     private HashSet<string> completedAchievements = new HashSet<string>();
 
     private string achievementKey = "AchievementList";
     private string completedAchievementKey = "CompletedAchievements";
     private bool isUserDataLoaded = false;
 
-    public void LoadAchievementDatas()
+    public void LoadAchievementDatas() // 접속시 업적리스트 , 이전 업적들을 로드
     {
-
         if (isUserDataLoaded) return;
 
         var request = new GetTitleDataRequest { Keys = new List<string> { achievementKey } };
@@ -42,7 +42,7 @@ public class AchievementManager : Singleton<AchievementManager>
         }, OnError);
     }
 
-    public void CheckAchievements(string statName, int currentValue)
+    public void CheckAchievements(string statName, int currentValue) //업적을 달성했는지 확인
     {
         foreach (var pair in achievementConfigs)
         {
@@ -53,16 +53,15 @@ public class AchievementManager : Singleton<AchievementManager>
 
             if (config.StatName == statName && currentValue >= config.Target)
             {
-
-                Debug.Log($"업적 달성 확인: {achievementId}");
                 completedAchievements.Add(achievementId);
-                GiveRewardAndTitle(achievementId, config);
+                GiveReward(achievementId, config);
 
+                achievementsPopup.Move(achievementId);
             }
         }
     }
 
-    private void GiveRewardAndTitle(string achievementId, AchievementData data)
+    private void GiveReward(string achievementId, AchievementData data) //달성시 리워드 지급
     {
         RewardManager.Instance.GiveReward(data.Reward);
 
@@ -73,6 +72,7 @@ public class AchievementManager : Singleton<AchievementManager>
             Data = new Dictionary<string, string> {{ completedAchievementKey, combinedIds }}
         };
 
+        PlayFabClientAPI.UpdateUserData(request, result => {Debug.Log("업적 업데이트 완료!");}, OnError);
     }
 
 
