@@ -129,6 +129,11 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         // 핵심 분기: 장전된 스킬 존재 확인
         if (!string.IsNullOrEmpty(_loadedSkillName))
         {
+            if (_loadedSkillName == "SilenceSkill" || _loadedSkillName == "TimeOverloadSkill")
+            {
+                Debug.Log("<color=yellow>[System] 이 스킬은 오목판 클릭이 아니라 <Enter> 키를 눌러 발동해야 합니다</color>");
+                return;
+            }
             // 1. 장전된 스킬이 있다면 클릭한 좌표로 생성
             UseSkill(_loadedSkillName, x, y);
 
