@@ -10,25 +10,35 @@ public class AchievementManager : Singleton<AchievementManager>
     public AchievementTracker achievementTracker;
 
     private HashSet<string> completedAchievements = new HashSet<string>();
+
+    private string achievementKey = "AchievementList";
+    private string completedAchievementKey = "CompletedAchievements";
     private bool isUserDataLoaded = false;
 
     public void LoadAchievementDatas()
     {
-        var request = new GetTitleDataRequest { Keys = new List<string> { "AchievementList" } };
+
+        if (isUserDataLoaded) return;
+
+        var request = new GetTitleDataRequest { Keys = new List<string> { achievementKey } };
         PlayFabClientAPI.GetTitleData(request, OnLoadSuccess, OnError);
 
-        LoadUserCompletedList();
+        LoadUserCompletedList();    
     }
 
     private void LoadUserCompletedList()
     {
-        PlayFabClientAPI.GetUserData(new GetUserDataRequest(), result => {
-            if (result.Data.ContainsKey("CompletedAchievements"))
+        PlayFabClientAPI.GetUserData(new GetUserDataRequest(), result =>
+        {
+            if (result.Data.ContainsKey(completedAchievementKey))
             {
-                string[] ids = result.Data["CompletedAchievements"].Value.Split(',');
+                string[] ids = result.Data[completedAchievementKey].Value.Split(',');
+                completedAchievements.Clear();
                 foreach (var id in ids) completedAchievements.Add(id);
-                Debug.Log("기존 달성 목록 로드 완료!");
             }
+
+            isUserDataLoaded = true;
+
         }, OnError);
     }
 
@@ -39,13 +49,15 @@ public class AchievementManager : Singleton<AchievementManager>
             string achievementId = pair.Key;
             AchievementData config = pair.Value;
 
-            if (config.StatName == statName)
+            if (completedAchievements.Contains(achievementId)) continue;
+
+            if (config.StatName == statName && currentValue >= config.Target)
             {
-                if (currentValue >= config.Target)
-                {
-                    Debug.Log($"업적 달성 확인: {achievementId} ({config.Description})");
-                    GiveRewardAndTitle(achievementId, config);
-                }
+
+                Debug.Log($"업적 달성 확인: {achievementId}");
+                completedAchievements.Add(achievementId);
+                GiveRewardAndTitle(achievementId, config);
+
             }
         }
     }
@@ -54,25 +66,23 @@ public class AchievementManager : Singleton<AchievementManager>
     {
         RewardManager.Instance.GiveReward(data.Reward);
 
+        string combinedIds = string.Join(",", completedAchievements);
+
         var request = new UpdateUserDataRequest
         {
-            Data = new Dictionary<string, string> { { "ActiveTitle", data.Title } }
+            Data = new Dictionary<string, string> {{ completedAchievementKey, combinedIds }}
         };
 
-        PlayFabClientAPI.UpdateUserData(request, result => {
-            Debug.Log("칭호 업데이트 완료!");
-        }, OnError);
     }
 
 
     private void OnLoadSuccess(GetTitleDataResult result)
     {
-        if (result.Data.ContainsKey("AchievementList"))
+        if (result.Data.ContainsKey(achievementKey))
         {
-            string json = result.Data["AchievementList"];
+            string json = result.Data[achievementKey];
             var container = JsonConvert.DeserializeObject<AchievementContainer>(json);
             achievementConfigs = container.Achievements;
-            Debug.Log("업적 로드 완료!");
         }
     }
     private void OnError(PlayFabError error) => Debug.LogError(error.GenerateErrorReport());

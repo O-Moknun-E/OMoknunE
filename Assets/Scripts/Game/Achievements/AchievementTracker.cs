@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
-using UnityEngine.SocialPlatforms.Impl;
-using UnityEditor.PackageManager;
 
 public class AchievementTracker : MonoBehaviour
 {
@@ -21,14 +19,10 @@ public class AchievementTracker : MonoBehaviour
             Statistics = stats
         };
 
-        PlayFabClientAPI.UpdatePlayerStatistics(request, result =>
-        {
-            Debug.Log("판수 업데이트 성공!");
-            GetLatestStats();
-        }, OnUpdateFailure);
+        PlayFabClientAPI.UpdatePlayerStatistics(request, GetLatestStats, OnUpdateFailure);
     }
 
-    private void GetLatestStats()
+    private void GetLatestStats(UpdatePlayerStatisticsResult result)
     {
         var request = new GetPlayerStatisticsRequest { StatisticNames = new List<string> { playStatistic } };
 
@@ -37,10 +31,7 @@ public class AchievementTracker : MonoBehaviour
             foreach (var stat in result.Statistics)
             {
                 if (stat.StatisticName == playStatistic)
-                {
-                    Debug.Log("업적 확인중");
-                    AchievementManager.Instance.CheckAchievements("WinCount", stat.Value);
-                }
+                    AchievementManager.Instance.CheckAchievements("GameCount", stat.Value);
 
             }
         }, OnUpdateFailure);
