@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine.UI;
 
+
 public class CreateroomUI : MonoBehaviour
 {
 
@@ -15,9 +16,11 @@ public class CreateroomUI : MonoBehaviour
 
     int roomCount = 1;
 
+    
     public void OnToggleChanged()
     {
         passwordField.SetActive(isPrivateToggle.isOn);
+        
     }
 
     public GameObject panel;

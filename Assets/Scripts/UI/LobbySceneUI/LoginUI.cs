@@ -16,6 +16,8 @@ public class LoginUI : MonoBehaviour //¹ÎÁ¤¼öÁ¤
     public void TryLogin()
     {
         PlayFabManager.Instance.Login(emailInput.text, passwordInput.text);
+        if(PlayFabManager.Instance.SuccessLogin)
+            gameObject.SetActive(false);
     }
 
     public void TryRegister()
