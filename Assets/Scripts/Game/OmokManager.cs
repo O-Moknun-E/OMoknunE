@@ -24,6 +24,14 @@ public class OmokManager : SceneSingleton<OmokManager>
 
     public static readonly int BoardSize = 15;   // 오목판의 크기 (15x15)
 
+    private BoardInteraction _boardInteraction;  // 보드 인터랙션 참조
+    private Sprite _playerStone;                 // 플레이어 돌 스프라이트 (AI 모드에서 플레이어 돌 스킨 변경용)
+    private IMagic _loadedSkill;                  // AI 모드 전용 현재 장전된 스킬
+
+    private GameMode _gameMode;         // 게임 모드 (PvP, PvE)
+    private AIPlayer _aiPlayer;         // AI 플레이어 (PvE 모드에서 사용)
+    private AIDifficulty _aiDifficulty; // AI 난이도 설정 (PvE 모드에서 사용)
+
     private StoneType[,] _board;        // 오목판 상태를 저장하는 2D 배열
     private Player[] _players;          // 플레이어 배열 (0: 흑, 1: 백)
     private IOmokRule _rule;            // 오목 게임 규칙
@@ -47,15 +55,37 @@ public class OmokManager : SceneSingleton<OmokManager>
 
     private void OnEnable()
     {
-        InitGame();
+        // AI 모드라면 AI 매치 초기화
+        if (AIMatchManager.IsAIMode)
+        {
+            Debug.Log("AI");
+            InitAIGame();
+        }
+        else
+        {
+            Debug.Log("PvP");
+            InitGame();
 
-        NetworkOmokManager.OnStonePlaced += UpdateBoardFromServer;
+            NetworkOmokManager.OnStonePlaced += UpdateBoardFromServer;
+        }
+
         OnGameOver += EndGame;
     }
 
     private void OnDisable()
     {
-        NetworkOmokManager.OnStonePlaced -= UpdateBoardFromServer;
+        // PvP 모드라면 이벤트 해제(IsAIMode는 게임이 끝날때 false로 바뀌므로 게임모드로 체크)
+        if (_gameMode == GameMode.PvP)
+        {
+            NetworkOmokManager.OnStonePlaced -= UpdateBoardFromServer;
+        }
+        // PvE 모드
+        else
+        {
+            // 보드 인터랙션 이벤트 해제
+            _boardInteraction.OnStoneClicked -= OnBoardClickedAI;
+        }
+
         OnGameOver -= EndGame;
     }
 
@@ -66,11 +96,20 @@ public class OmokManager : SceneSingleton<OmokManager>
 
         IncomeMana();
         CheckTurnTimer();
+
+        // AI 모드 스킬 입력
+        if(_gameMode == GameMode.PvE && _currentTurn == StoneType.Black)
+        {
+            HandleSkillInput();
+        }
     }
 
     // 게임 초기화
     public void InitGame()
     {
+        // PvP
+        _gameMode = GameMode.PvP;
+
         _board = new StoneType[BoardSize, BoardSize];
         _players = new Player[2];
 
@@ -78,8 +117,6 @@ public class OmokManager : SceneSingleton<OmokManager>
         _rule = new StandardOmokRule();
 
         // 플레이어 초기화
-        // 나중에 닉네임 추가(임시로 "흑", "백")
-
         int index = 0;
         foreach (Photon.Realtime.Player photonPlayer in PhotonNetwork.PlayerList) // 민정추가 유저닉네임 저장
         {
@@ -93,14 +130,10 @@ public class OmokManager : SceneSingleton<OmokManager>
             index++;
         }
 
-        /*        _players[0] = new Player("흑", _manaBlack);
-                _players[1] = new Player("백", _manaWhite);*/
-
         // 게임 상태 초기화
         _isGameOver = false;
 
         // 임시로 흑이 먼저 시작
-        // 네트워크 연동되면 그때 결정
         _currentTurn = StoneType.Black;
 
         // 타이머 초기화
@@ -114,6 +147,171 @@ public class OmokManager : SceneSingleton<OmokManager>
         _replay.StartTurn(_currentTurn == StoneType.Black ? PlayerType.Black : PlayerType.White);
     }
 
+    /// <summary>
+    /// AI 게임 초기화 (PvE)
+    /// </summary>
+    private void InitAIGame()
+    {
+        // 게임 모드 및 난이도 설정
+        _gameMode = GameMode.PvE;
+        _aiDifficulty = AIMatchManager.SelectedDifficulty;
+
+        // 보드 및 플레이어 초기화
+        _board = new StoneType[BoardSize, BoardSize];
+        _players = new Player[2];
+
+        // 기본 오목 규칙 사용
+        _rule = new StandardOmokRule();
+
+        // 플레이어 초기화(흑: 플레이어, 백: AI)
+        _players[0] = new Player(PlayFabManager.Instance.UserNickName ?? "플레이어", _manaBlack);
+        _players[1] = new Player($"AI ({_aiDifficulty})", _manaWhite);
+
+        // AI 플레이어 초기화
+        GameObject aiObject = new GameObject("AIPlayer");
+        _aiPlayer = aiObject.AddComponent<AIPlayer>();
+        _aiPlayer.Initialize(this, _aiDifficulty, StoneType.White);
+
+        // 보드 인터랙션 초기화
+        SetupBoardInteractionForAI();
+
+        // 게임 상태 초기화
+        _isGameOver = false;
+
+        // 흑이 먼저 시작
+        _currentTurn = StoneType.Black;
+
+        // 스킬 초기화
+        _loadedSkill = null;
+
+        // 타이머 초기화
+        _turnTimer = 0f;
+        _manaIncomeTimer = new float[2] { 0f, 0f };
+
+        // 리플레이 기록 시작
+        _replay.StartRecording(_players[0].Name, _players[1].Name);
+
+        // 첫 턴은 바로 기록
+        _replay.StartTurn(_currentTurn == StoneType.Black ? PlayerType.Black : PlayerType.White);
+
+        Debug.Log($"<color=cyan>AI 게임 초기화 완료 - 난이도: {_aiDifficulty}</color>");
+    }
+
+    /// <summary>
+    /// AI 모드용 보드 인터랙션 설정
+    /// </summary>
+    private void SetupBoardInteractionForAI()
+    {
+        _boardInteraction = FindFirstObjectByType<BoardInteraction>();
+
+        if (_boardInteraction == null)
+        {
+            Debug.LogError("BoardInteraction을 찾을 수 없습니다.");
+            return;
+        }
+
+        // 플레이어 돌 스킨 설정 (임시로 흑돌. 스킨 적용 기능이 생기면 변경)
+        _playerStone = StoneSkinRegistry.Instance.GetStoneSkin(0);
+
+        if (_playerStone == null)
+        {
+            Debug.LogError("돌 스킨을 찾을 수 없습니다.");
+            return;
+        }
+
+        _boardInteraction.ChangeStoneSkin(_playerStone);
+
+        // 플레이어 턴 활성화
+        _boardInteraction.SetMyTurn(true);
+
+        // 착수 이벤트 구독
+        _boardInteraction.OnStoneClicked += OnBoardClickedAI;
+    }
+
+    /// <summary>
+    /// AI 모드 보드 클릭 처리
+    /// </summary>
+    private void OnBoardClickedAI(int x, int y)
+    {
+        // AI 모드가 아니면 무시
+        if (_gameMode != GameMode.PvE) return;
+
+        // 플레이어가 아니면 무시
+        if (_currentTurn != StoneType.Black) return;
+
+        // 스킬 장전 상태일 때
+        if (_loadedSkill != null) {
+            UseSkillAI(x, y);
+            _loadedSkill = null;
+            _boardInteraction.SetSkillLoadedState(false);
+            return;
+        }
+
+        // 착수 시도
+        if (TryPlaceStoneLocal(y, x))
+        {
+            _boardInteraction.PlaceStoneRemote(x, y, _playerStone);
+        }
+    }
+
+    /// <summary>
+    /// AI 모드 스킬 입력 처리
+    /// </summary>
+    private void HandleSkillInput()
+    {
+        // 스킬 사용 안했을때만
+        if (!_players[0].UsedMagicThisTurn)
+        {
+            // 스킬 장전
+            if (Input.GetKeyDown(KeyCode.Alpha1)) LoadSkill(0);
+            else if(Input.GetKeyDown(KeyCode.Alpha2)) LoadSkill(1);
+            else if(Input.GetKeyDown(KeyCode.Alpha3)) LoadSkill(2);
+        }
+        else if(Input.GetKeyDown(KeyCode.Alpha1) ||  Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            Debug.Log("<color=red>이번 턴에 이미 스킬을 사용했습니다.</color>");
+        }
+
+        // 우클릭으로 스킬 장전 취소
+        if(Input.GetMouseButtonDown(1) && _loadedSkill != null)
+        {
+            _loadedSkill = null;
+            _boardInteraction.SetSkillLoadedState(false);
+            Debug.Log("<color=red>스킬 장전 취소</color>");
+        }
+    }
+
+    /// <summary>
+    /// 스킬 ID로 마법 장전
+    /// </summary>
+    private void LoadSkill(int skillID)
+    {
+        IMagic skill = MagicRegistry.Instance.GetMagicByID(skillID);
+
+        if(skill != null)
+        {
+            _loadedSkill = skill;
+            _boardInteraction.SetSkillLoadedState(true);
+            Debug.Log($"<color=cyan>{skill.Name} 장전 완료</color>");
+        }
+    }
+
+    /// <summary>
+    /// AI 모드 스킬 사용
+    /// </summary>
+    private void UseSkillAI(int x, int y)
+    {
+        SkillBase skill = _loadedSkill as SkillBase;
+        if (skill == null) return;
+
+        // 타겟 설정
+        skill.SetTarget(x, y, PlayerType.Black, 0);
+        
+        // 사용 시도. 가능하면 사용
+        if(TryUseMagic(skill)) {
+            Debug.Log($"<color=cyan>{skill.Name} 사용: ({x}, {y})</color>");
+        }
+    }
 
     //// 돌을 놓을 수 있는지 여부
     //// 놓을 수 있다면 ture, 놓을 수 없다면 false 반환
@@ -210,9 +408,13 @@ public class OmokManager : SceneSingleton<OmokManager>
         if (_isGameOver) return false;
 
         // 규칙 체크
-        if(_rule.CanPlaceStone(_board, row, col, _currentTurn)) {
+        if (_rule.CanPlaceStone(_board, row, col, _currentTurn))
+        {
             // 보드에 돌 놓기
             _board[row, col] = _currentTurn;
+
+            // 이벤트 발생
+            GameEvents.TriggerStonePlaced(col, row, _currentTurn);
 
             // 리플레이 - 착수 기록
             _replay.RecordPlaceStone(row, col, _currentTurn);
@@ -220,11 +422,12 @@ public class OmokManager : SceneSingleton<OmokManager>
             Debug.Log($"<color=green>[Local] ({col}, {row})에 {_currentTurn} 착수</color>");
 
             // 승리 조건 체크
-            if(_rule.CheckWin(_board, row, col, _currentTurn))
+            if (_rule.CheckWin(_board, row, col, _currentTurn))
             {
                 // 게임 종료 이벤트
                 OnGameOver?.Invoke(_currentTurn);
-            } else
+            }
+            else
             {
                 // 턴 변경
                 ChangeTurn();
@@ -305,6 +508,24 @@ public class OmokManager : SceneSingleton<OmokManager>
         // 리플레이 - 현재 턴 종료 및 시작
         _replay.EndTurn();
         _replay.StartTurn(_currentTurn == StoneType.Black ? PlayerType.Black : PlayerType.White);
+
+        // PvE 모드전용
+        if (_gameMode == GameMode.PvE)
+        {
+            // AI 턴
+            if (_currentTurn == StoneType.White)
+            {
+                // 플레이어 착수 비활성화
+                _boardInteraction.SetMyTurn(false);
+                _aiPlayer.StartAITurn();
+            }
+            // 플레이어 턴
+            else
+            {
+                // 플레이어 착수 활성화
+                _boardInteraction.SetMyTurn(true);
+            }
+        }
     }
 
     // 플레이어 인덱스 반환
@@ -328,7 +549,9 @@ public class OmokManager : SceneSingleton<OmokManager>
         string winnerName = (winner == StoneType.Black) ? _players[0].Name : _players[1].Name;
         Debug.Log($"<color=yellow><b>[SERVER INFO] {winnerName} 승리 모든 착수가 금지됩니다.</b></color>");
 
-        RankingManager.Instance.AddScoreAndSync(winnerName == PlayFabManager.Instance.UserNickName); //민정추가
+        // PvP 모드 일때만
+        if (_gameMode == GameMode.PvP)
+            RankingManager.Instance.AddScoreAndSync(winnerName == PlayFabManager.Instance.UserNickName); //민정추가
 
         // 리플레이 - 현재 턴 종료 및 기록 종료
         _replay.EndTurn();
@@ -336,5 +559,16 @@ public class OmokManager : SceneSingleton<OmokManager>
 
         // PlayFab에 리플레이 저장
         _replay.SaveReplayToPlayFab();
+
+        // 플레이어 이벤트 구독 해제
+        for (int i = 0; i < _players.Length; i++)
+            _players[i].Cleanup();
+
+        // AI 모드 플래그 초기화
+        if (_gameMode == GameMode.PvE)
+        {
+            AIMatchManager.ResetAIMode();
+        }
+
     }
 }

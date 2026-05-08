@@ -34,7 +34,9 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     public override void OnEnable()
     {
         base.OnEnable();
-        if (_boardInteraction != null)
+
+        // AI 모드가 아닐때 보드인터랙션 이벤트 구독
+        if (_boardInteraction != null && !AIMatchManager.IsAIMode)
             _boardInteraction.OnStoneClicked += HandleBoardClick;
         if (OmokManager.Instance != null)
             OmokManager.Instance.OnGameOver += ShowGameOverUI;
@@ -43,7 +45,9 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     public override void OnDisable()
     {
         base.OnDisable();
-        if (_boardInteraction != null)
+
+        // AI 모드가 아닐때 보드인터랙션 이벤트 해제
+        if (_boardInteraction != null && !AIMatchManager.IsAIMode)
             _boardInteraction.OnStoneClicked -= HandleBoardClick;
         if (OmokManager.Instance != null)
             OmokManager.Instance.OnGameOver -= ShowGameOverUI;
@@ -51,6 +55,9 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        // AI모드면 무시
+        if (AIMatchManager.IsAIMode) return;
+
         if (OmokManager.Instance != null)
         {
             OmokManager.Instance.InitGame();
@@ -284,7 +291,16 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     {
         IsReturningFromGame = true;
 
-        PhotonNetwork.LeaveRoom();
+        // 방이 존재할때만
+        if (PhotonNetwork.CurrentRoom != null)
+        {
+            PhotonNetwork.LeaveRoom();
+        }
+        // 없으면 로비씬으로 바로 이동
+        else
+        {
+            SceneManager.LoadScene("LobbyScene");
+        }
     }
 
     public override void OnLeftRoom()
