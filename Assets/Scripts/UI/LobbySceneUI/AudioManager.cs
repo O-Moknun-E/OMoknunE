@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI; // Slider 사용하려고 추가
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : PersistentSingleton<AudioManager>
 {
     [Header("-------Audio Source-------")]
     [SerializeField] AudioSource musicSource;
@@ -26,13 +26,6 @@ public class AudioManager : MonoBehaviour
     // 착수음 슬라이더
     public Slider moveSlider;
     // --------------------------------------------
-
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    } //추가! 씬 바꿔도 노래 안 꺼지게
-
-
 
     private void Start()
     {
