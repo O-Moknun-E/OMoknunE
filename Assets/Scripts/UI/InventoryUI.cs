@@ -12,12 +12,12 @@ public class InventoryUI : MonoBehaviour
     private Inventory inven;
     private List<Slot> slotPool = new List<Slot>();
 
-    private ITEM_TYPE currentFilter = ITEM_TYPE.None;
+    private ITEM_TYPE currentFilter = ITEM_TYPE.All;
 
     public void ChangeType(int index)
     {
         currentFilter = (ITEM_TYPE)index;
-        MatchingItem(); // 필터가 바뀌었으니 다시 그림
+        MatchingItem(); 
     }
 
     public void MatchingItem()
@@ -40,7 +40,7 @@ public class InventoryUI : MonoBehaviour
                 currentSlot = slotPool[slotIndex];  
             else
             {
-                currentSlot = Instantiate(slotPrefab, itemBox.transform);
+                currentSlot = Instantiate(slotPrefab, itemBox.transform.position,Quaternion.identity);
                 slotPool.Add(currentSlot);
             }
             currentSlot.gameObject.SetActive(true);

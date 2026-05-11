@@ -3,9 +3,12 @@ using PlayFab;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
+using Unity.VisualScripting;
 
-public class AchievementManager : Singleton<AchievementManager>
+public class AchievementManager : MonoBehaviour
 {
+    public static AchievementManager Instance;
+
     public AchievementTracker achievementTracker;
     public AchievementsPopup achievementsPopup;
 
@@ -15,6 +18,18 @@ public class AchievementManager : Singleton<AchievementManager>
     private string achievementKey = "AchievementList";
     private string completedAchievementKey = "CompletedAchievements";
     private bool isUserDataLoaded = false;
+
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+            Destroy(this.gameObject);
+    }
 
     public void LoadAchievementDatas() // 접속시 업적리스트 , 이전 업적들을 로드
     {

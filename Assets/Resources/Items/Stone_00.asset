@@ -15,4 +15,4 @@ MonoBehaviour:
   itemId: Stone_00
   itemName: Stone_00
   itemPrefab: {fileID: 1672987080683482776, guid: 3e95d3a4c10feb5429d6480a466615ed, type: 3}
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: -2324884414257792160, guid: c15f86258bdad5146bb90e88180bc286, type: 3}

@@ -104,5 +104,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dc980634e1621a4da294f68f6a925f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StoneItem
-  Type: 0
-  data: {fileID: 0}
+  Type: 9
+  data: {fileID: 11400000, guid: e2d8c6d26f5953d4494e5a11ab26a09e, type: 2}

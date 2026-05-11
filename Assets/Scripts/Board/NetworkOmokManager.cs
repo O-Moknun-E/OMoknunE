@@ -340,7 +340,6 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         IsReturningFromGame = true;
 
         AchievementManager.Instance.achievementTracker.UpdatePlayerGameCount(); //민정추가
-        PhotonNetwork.LeaveRoom();
 
         // 방이 존재할때만
         if (PhotonNetwork.CurrentRoom != null)

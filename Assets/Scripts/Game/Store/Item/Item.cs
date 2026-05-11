@@ -6,10 +6,11 @@ using UnityEngine.UI;
 [Flags]
 public enum ITEM_TYPE
 { 
-    None,
-    Stone,
-    Bord,
-    Picture
+    None = 0,
+    Stone = 1 <<0,
+    Bord = 1 << 1,
+    Picture = 1 << 2,
+    All = 1 << 3,
 }
 
 public interface IUsable
