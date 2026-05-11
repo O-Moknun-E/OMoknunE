@@ -355,45 +355,4 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     {
         SceneManager.LoadScene("LobbyScene");// 후에 메인메뉴 씬으로 수정 필요 
     }
-
-
-    //======유니티 내장 UI 이용 테스틑 시간/마나======
-    // 유니티 내장 UI 함수로 화면에 시간/마나 띄우기
-    private void OnGUI()
-    {
-        // 씬 로딩 안됐거나, OmokManager가 없거나, 혼자 있을 땐 무시
-        if (OmokManager.Instance == null || !PhotonNetwork.InRoom || PhotonNetwork.CurrentRoom.PlayerCount < 2) return;
-
-        GUIStyle style = new GUIStyle();
-        style.fontSize = 35;
-        style.fontStyle = FontStyle.Bold;
-
-        // 남은 시간 통일
-        float timeLeft = Mathf.Max(0, OmokManager.Instance.CurrentTurnTimeLimit - OmokManager.Instance.TurnTimer);
-
-        bool isMyTurnNow = (_isMasterTurn && _myPlayerType == StoneType.Black) ||
-                           (!_isMasterTurn && _myPlayerType == StoneType.White);
-
-        if (isMyTurnNow)
-        {
-            style.normal.textColor = timeLeft < 5f ? Color.red : Color.yellow; // 5초 남으면 빨간색!
-            GUI.Label(new Rect(20, 20, 500, 50), $"[내 턴] 남은 시간: {timeLeft:F1}초", style);
-        }
-        else
-        {
-            //상대 턴일 때도 똑같이 남은 시간으로 표시
-            style.normal.textColor = Color.gray;
-            GUI.Label(new Rect(20, 20, 500, 50), $"[상대 턴] 남은 시간: {timeLeft:F1}초", style);
-        }
-
-        // 마나 표시
-        PlayerType myType = (_myPlayerType == StoneType.Black) ? PlayerType.Black : PlayerType.White;
-        Player myPlayer = OmokManager.Instance.GetPlayer(myType);
-
-        if (myPlayer != null)
-        {
-            style.normal.textColor = Color.cyan;
-            GUI.Label(new Rect(20, Screen.height - 70, 500, 50), $"💎 내 마나: {myPlayer.CurrentMana}", style);
-        }
-    }
 }

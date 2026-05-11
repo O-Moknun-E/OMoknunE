@@ -1,7 +1,5 @@
 using Photon.Pun;
 using System;
-using TMPro;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 /// <summary>
@@ -43,6 +41,7 @@ public class OmokManager : SceneSingleton<OmokManager>
     private Player[] _players;          // 플레이어 배열 (0: 흑, 1: 백)
     private IOmokRule _rule;            // 오목 게임 규칙
     private StoneType _currentTurn;     // 현재 턴의 돌 색상
+    private PlayerType _myPlayerType;   // 내 플레이어 타입
     private float _turnTimer;           // 턴 타이머
     private float[] _manaIncomeTimer;   // 마나 획득 타이머 (0: 흑, 1: 백)
     private bool _isGameOver;           // 게임 종료 여부
@@ -64,6 +63,19 @@ public class OmokManager : SceneSingleton<OmokManager>
     public Player GetPlayer(PlayerType type) => _players[(int)type];
 
     ///////////////////////////////////////////////////////////////////////////////////
+    
+    public bool IsMyTurn
+    {
+        get
+        {
+            // PvE 모드
+            if (_gameMode == GameMode.PvE)
+                return _currentTurn == StoneType.Black;
+
+            // PvP 모드
+            return _currentTurn == (_myPlayerType == PlayerType.Black ? StoneType.Black : StoneType.White);
+        }
+    }
 
     //==========================================
     //======================================추가된 부분 (시간 과부하 기능)
@@ -131,7 +143,7 @@ public class OmokManager : SceneSingleton<OmokManager>
         CheckTurnTimer();
 
         // AI 모드 스킬 입력
-        if(_gameMode == GameMode.PvE && _currentTurn == StoneType.Black)
+        if (_gameMode == GameMode.PvE && _currentTurn == StoneType.Black)
         {
             HandleSkillInput();
         }
@@ -168,6 +180,7 @@ public class OmokManager : SceneSingleton<OmokManager>
 
         // 임시로 흑이 먼저 시작
         _currentTurn = StoneType.Black;
+        _myPlayerType = PhotonNetwork.IsMasterClient ? PlayerType.Black : PlayerType.White;
 
         // 타이머 초기화
         _turnTimer = 0f;
@@ -219,6 +232,7 @@ public class OmokManager : SceneSingleton<OmokManager>
 
         // 흑이 먼저 시작
         _currentTurn = StoneType.Black;
+        _myPlayerType = PlayerType.Black;
 
         // 스킬 초기화
         _loadedSkill = null;
@@ -279,7 +293,8 @@ public class OmokManager : SceneSingleton<OmokManager>
         if (_currentTurn != StoneType.Black) return;
 
         // 스킬 장전 상태일 때
-        if (_loadedSkill != null) {
+        if (_loadedSkill != null)
+        {
             UseSkillAI(x, y);
             _loadedSkill = null;
             _boardInteraction.SetSkillLoadedState(false);
@@ -303,16 +318,16 @@ public class OmokManager : SceneSingleton<OmokManager>
         {
             // 스킬 장전
             if (Input.GetKeyDown(KeyCode.Alpha1)) LoadSkill(0);
-            else if(Input.GetKeyDown(KeyCode.Alpha2)) LoadSkill(1);
-            else if(Input.GetKeyDown(KeyCode.Alpha3)) LoadSkill(2);
+            else if (Input.GetKeyDown(KeyCode.Alpha2)) LoadSkill(1);
+            else if (Input.GetKeyDown(KeyCode.Alpha3)) LoadSkill(2);
         }
-        else if(Input.GetKeyDown(KeyCode.Alpha1) ||  Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3))
+        else if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3))
         {
             Debug.Log("<color=red>이번 턴에 이미 스킬을 사용했습니다.</color>");
         }
 
         // 우클릭으로 스킬 장전 취소
-        if(Input.GetMouseButtonDown(1) && _loadedSkill != null)
+        if (Input.GetMouseButtonDown(1) && _loadedSkill != null)
         {
             _loadedSkill = null;
             _boardInteraction.SetSkillLoadedState(false);
@@ -327,7 +342,7 @@ public class OmokManager : SceneSingleton<OmokManager>
     {
         IMagic skill = MagicRegistry.Instance.GetMagicByID(skillID);
 
-        if(skill != null)
+        if (skill != null)
         {
             _loadedSkill = skill;
             _boardInteraction.SetSkillLoadedState(true);
@@ -345,9 +360,10 @@ public class OmokManager : SceneSingleton<OmokManager>
 
         // 타겟 설정
         skill.SetTarget(x, y, PlayerType.Black, 0);
-        
+
         // 사용 시도. 가능하면 사용
-        if(TryUseMagic(skill)) {
+        if (TryUseMagic(skill))
+        {
             Debug.Log($"<color=cyan>{skill.Name} 사용: ({x}, {y})</color>");
         }
     }
@@ -588,8 +604,8 @@ public class OmokManager : SceneSingleton<OmokManager>
         //======================================추가된 부분
         // 턴이 바뀔 때마다 포톤 서버 시간 갱신 및 마나 타이머 초기화
         if (PhotonNetwork.InRoom) _turnStartNetworkTime = PhotonNetwork.Time;
-        _manaIncomeTimer[0] = 0f;
-        _manaIncomeTimer[1] = 0f;
+        //_manaIncomeTimer[0] = 0f;
+        //_manaIncomeTimer[1] = 0f;
         //==========================================
 
         // 리플레이 - 현재 턴 종료 및 시작
@@ -657,5 +673,38 @@ public class OmokManager : SceneSingleton<OmokManager>
             AIMatchManager.ResetAIMode();
         }
 
+    }
+
+    //======유니티 내장 UI 이용 테스틑 시간/마나======
+    // 유니티 내장 UI 함수로 화면에 시간/마나 띄우기
+    private void OnGUI()
+    {
+        GUIStyle style = new GUIStyle();
+        style.fontSize = 35;
+        style.fontStyle = FontStyle.Bold;
+
+        // 남은 시간 통일
+        float timeLeft = Mathf.Max(0, CurrentTurnTimeLimit - _turnTimer);
+
+        if (IsMyTurn)
+        {
+            style.normal.textColor = timeLeft < 5f ? Color.red : Color.yellow; // 5초 남으면 빨간색!
+            GUI.Label(new Rect(20, 20, 500, 50), $"[내 턴] 남은 시간: {timeLeft:F1}초", style);
+        }
+        else
+        {
+            //상대 턴일 때도 똑같이 남은 시간으로 표시
+            style.normal.textColor = Color.gray;
+            GUI.Label(new Rect(20, 20, 500, 50), $"[상대 턴] 남은 시간: {timeLeft:F1}초", style);
+        }
+
+        // 마나 표시
+        Player myPlayer = GetPlayer(_myPlayerType);
+
+        if (myPlayer != null)
+        {
+            style.normal.textColor = Color.cyan;
+            GUI.Label(new Rect(20, Screen.height - 70, 500, 50), $"💎 내 마나: {myPlayer.CurrentMana}", style);
+        }
     }
 }
