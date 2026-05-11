@@ -71,6 +71,7 @@ public class PlayFabManager : Singleton<PlayFabManager>
         PhotonNetwork.NickName = userNickName;
 
         AchievementManager.Instance.LoadAchievementDatas();
+        ItemManager.Instance.LoadItemDatas();
         RankingManager.Instance.GetScore();
         NetworkManager.Instance.Connect();
         UImanager.Instance.ShowLobby();
