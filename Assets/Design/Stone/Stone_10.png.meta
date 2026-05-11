@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 3db3acdc86c06b94b9cc4cf8633b6758
+guid: 4f1195880165a454eb72ff5d47cc75e4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2820143329777312509
-    second: Frog_0
+      213: 4646649027328027380
+    second: Egg_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,12 +126,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Frog_0
+      name: Egg_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 16
+        width: 15
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: df2601baa69232720800000000000000
-      internalID: 2820143329777312509
+      spriteID: 4fa2dcddba63c7040800000000000000
+      internalID: 4646649027328027380
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Frog_0: 2820143329777312509
+      Egg_0: 4646649027328027380
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

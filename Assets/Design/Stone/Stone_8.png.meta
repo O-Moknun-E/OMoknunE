@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: bb72852bcc61130478a0391033ff211d
+guid: b222a2575ef3415439db7ad5552dff25
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5199979006384268662
-    second: Star_0
+      213: 2156367947432475481
+    second: WhiteRabbit_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Star_0
+      name: WhiteRabbit_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 17
-        height: 17
+        height: 18
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 675e50b0b590a2840800000000000000
-      internalID: 5199979006384268662
+      spriteID: 95b30c72935fced10800000000000000
+      internalID: 2156367947432475481
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Star_0: 5199979006384268662
+      WhiteRabbit_0: 2156367947432475481
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

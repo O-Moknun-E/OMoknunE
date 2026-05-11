@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d55d5030acf930d40ab54b9171ccdc9a
+guid: c15f86258bdad5146bb90e88180bc286
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6601691336363857274
-    second: White_0
+      213: -2324884414257792160
+    second: PinkRabbit_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,12 +126,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: White_0
+      name: PinkRabbit_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 1
-        width: 18
+        x: 0
+        y: 0
+        width: 16
         height: 18
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 68a2243f4b41264a0800000000000000
-      internalID: -6601691336363857274
+      spriteID: 06b725861f95cbfd0800000000000000
+      internalID: -2324884414257792160
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      White_0: -6601691336363857274
+      PinkRabbit_0: -2324884414257792160
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 327acea2d369e6e4eb01e0c739bf9d4d
+guid: c265a0a0231511a4fba76bf2078a69aa
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7801881510924318990
-    second: Smile_0
+      213: 3926884368516478327
+    second: PurpleStrawberry_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Smile_0
+      name: PurpleStrawberry_0
       rect:
         serializedVersion: 2
         x: 0
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e09f456e5e9d54c60800000000000000
-      internalID: 7801881510924318990
+      spriteID: 775757317881f7630800000000000000
+      internalID: 3926884368516478327
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Smile_0: 7801881510924318990
+      PurpleStrawberry_0: 3926884368516478327
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
