@@ -22,6 +22,13 @@ public class OmokManager : SceneSingleton<OmokManager>
     [Tooltip("리플레이 시스템")]
     [SerializeField] private Replay _replay;
 
+    //==========================================
+    //======================================추가된 부분
+    // 외부에서 남은 시간을 계산할 수 있도록 열기 (시간 UI 표시용)
+    public float TurnTimer => _turnTimer;
+    public float TurnTimeLimit => _turnTimeLimit;
+    //==========================================
+
     public static readonly int BoardSize = 15;   // 오목판의 크기 (15x15)
 
     private BoardInteraction _boardInteraction;  // 보드 인터랙션 참조
@@ -40,6 +47,12 @@ public class OmokManager : SceneSingleton<OmokManager>
     private float[] _manaIncomeTimer;   // 마나 획득 타이머 (0: 흑, 1: 백)
     private bool _isGameOver;           // 게임 종료 여부
 
+    //==========================================
+    //======================================추가된 부분
+    // 포톤 서버 시간 기준으로 턴이 시작된 시간 기록
+    private double _turnStartNetworkTime;
+    //==========================================
+
     public event Action OnUsedMagic;            // 마법이 사용되었을 때 발생하는 이벤트
     public event Action OnManaChanged;          // 마나가 변경되었을 때 발생하는 이벤트
     public event Action<StoneType> OnGameOver;  // 게임이 종료되었을 때 발생하는 이벤트(승리한 돌 전달)
@@ -52,6 +65,28 @@ public class OmokManager : SceneSingleton<OmokManager>
 
     ///////////////////////////////////////////////////////////////////////////////////
 
+    //==========================================
+    //======================================추가된 부분 (시간 과부하 기능)
+    private int[] _overloadTurnsLeft = new int[2] { 0, 0 }; // 시간 과부하 남은 턴 수 (0: 흑, 1: 백)
+
+    // 현재 적용되는 '실제' 턴 제한 시간 (과부하 시 절반으로 계산)
+    public float CurrentTurnTimeLimit
+    {
+        get
+        {
+            int pIndex = GetPlayerIndex(true);
+            return _overloadTurnsLeft[pIndex] > 0 ? _turnTimeLimit / 2f : _turnTimeLimit;
+        }
+    }
+
+    // 시간 과부하를 적용하는 함수 (스킬에서 호출)
+    public void ApplyTimeOverload(PlayerType targetPlayer, int turns)
+    {
+        int targetIndex = (targetPlayer == PlayerType.Black) ? 0 : 1;
+        _overloadTurnsLeft[targetIndex] = turns;
+        Debug.Log($"<color=magenta>[System] {targetPlayer} 진영에 {turns}턴 동안 시간 과부하(제한시간 절반)가 적용됩니다</color>");
+    }
+    //==========================================
 
     private void OnEnable()
     {
@@ -137,6 +172,12 @@ public class OmokManager : SceneSingleton<OmokManager>
         // 타이머 초기화
         _turnTimer = 0f;
         _manaIncomeTimer = new float[2] { 0f, 0f };
+
+        //==========================================
+        //======================================추가된 부분
+        // 게임 시작 시 포톤 룸 안에 있다면 현재 서버 시간을 기록
+        if (PhotonNetwork.InRoom) _turnStartNetworkTime = PhotonNetwork.Time;
+        //==========================================
 
         // 리플레이 기록 시작
         _replay.StartRecording(_players[0].Name, _players[1].Name);
@@ -468,6 +509,20 @@ public class OmokManager : SceneSingleton<OmokManager>
     {
         int waitingPlayerIndex = GetPlayerIndex(false);
 
+        //==========================================
+        //======================================추가된 부분 (서버 시간 동기화)
+        if (PhotonNetwork.InRoom)
+        {
+            if (_turnTimer - _manaIncomeTimer[waitingPlayerIndex] >= _manaIncomeTime)
+            {
+                _players[waitingPlayerIndex].AddMana(_manaIncome);
+                OnManaChanged?.Invoke();
+                _manaIncomeTimer[waitingPlayerIndex] += _manaIncomeTime;
+            }
+            return; // 오프라인 계산 건너뛰기
+        }
+        //==========================================
+
         _manaIncomeTimer[waitingPlayerIndex] += Time.deltaTime;
 
         // 마나 획득 시간이 지나면 상대방에게 마나 추가
@@ -486,22 +541,56 @@ public class OmokManager : SceneSingleton<OmokManager>
     // 턴 타이머 체크
     private void CheckTurnTimer()
     {
-        _turnTimer += Time.deltaTime;
-
-        // 턴 제한 시간이 지났을 때
-        if (_turnTimer >= _turnTimeLimit)
+        //==========================================
+        //======================================추가된 부분 (서버 시간 동기화)
+        if (PhotonNetwork.InRoom)
         {
-            // 턴 넘기기
-            ChangeTurn();
+            _turnTimer = (float)(PhotonNetwork.Time - _turnStartNetworkTime);
+        }
+        else
+        {
+            _turnTimer += Time.deltaTime;
+        }
+        //==========================================
+
+        //==========================================
+        //======================================추가된 부분 (TurnTimeLimit -> CurrentTurnTimeLimit)
+        // 턴 제한 시간이 지났을 때 (과부하 상태면 15초, 아니면 30초와 비교)
+        if (_turnTimer >= CurrentTurnTimeLimit)
+        //==========================================
+        {
+            StoneType winner = (_currentTurn == StoneType.Black) ? StoneType.White : StoneType.Black;
+            OnGameOver?.Invoke(winner);
         }
     }
 
     // 턴 변경 메서드
     private void ChangeTurn()
     {
+        //==========================================
+        //======================================추가된 부분 (턴 끝나기 직전에 과부하 턴 감소)
+        int pIndex = GetPlayerIndex(true);
+        if (_overloadTurnsLeft[pIndex] > 0)
+        {
+            _overloadTurnsLeft[pIndex]--;
+            if (_overloadTurnsLeft[pIndex] == 0)
+            {
+                Debug.Log($"<color=cyan>[System] {((pIndex == 0) ? PlayerType.Black : PlayerType.White)} 진영의 시간 과부하가 해제되었습니다</color>");
+            }
+        }
+        //==========================================
+
         _currentTurn = _currentTurn == StoneType.Black ? StoneType.White : StoneType.Black;
 
         _turnTimer = 0f;
+
+        //==========================================
+        //======================================추가된 부분
+        // 턴이 바뀔 때마다 포톤 서버 시간 갱신 및 마나 타이머 초기화
+        if (PhotonNetwork.InRoom) _turnStartNetworkTime = PhotonNetwork.Time;
+        _manaIncomeTimer[0] = 0f;
+        _manaIncomeTimer[1] = 0f;
+        //==========================================
 
         // 리플레이 - 현재 턴 종료 및 시작
         _replay.EndTurn();

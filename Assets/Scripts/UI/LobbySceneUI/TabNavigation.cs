@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -6,21 +6,21 @@ public class TabNavigation : MonoBehaviour
 {
     void Update()
     {
-        // Tab ´­·ÈÀ» ¶§
+        // Tab ëˆŒë ¸ì„ ë•Œ
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             GameObject current = EventSystem.current.currentSelectedGameObject;
 
             if (current == null)
             {
-                Debug.Log("ÇöÀç ¼±ÅÃµÈ UI ¾øÀ½");
+                Debug.Log("í˜„ì¬ ì„ íƒëœ UI ì—†ìŒ");
                 return;
             }
 
             Selectable selectable = current.GetComponent<Selectable>();
             if (selectable == null)
             {
-                Debug.Log("Selectable ¾Æ´Ô");
+                Debug.Log("Selectable ì•„ë‹˜");
                 return;
             }
 
@@ -33,11 +33,11 @@ public class TabNavigation : MonoBehaviour
 
             if (next != null)
             {
-                Debug.Log("´ÙÀ½ ¼±ÅÃ: " + next.name);
+                Debug.Log("ë‹¤ìŒ ì„ íƒ: " + next.name);
 
                 EventSystem.current.SetSelectedGameObject(next.gameObject);
 
-                // TMP/InputField µÑ ´Ù ´ëÀÀ
+                // TMP/InputField ë‘˜ ë‹¤ ëŒ€ì‘
                 var input = next.GetComponent<InputField>();
                 if (input != null) input.ActivateInputField();
 
@@ -46,7 +46,7 @@ public class TabNavigation : MonoBehaviour
             }
             else
             {
-                Debug.Log("´ÙÀ½ selectable ¾øÀ½");
+                Debug.Log("ë‹¤ìŒ selectable ì—†ìŒ");
             }
         }
     }
