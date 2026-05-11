@@ -51,4 +51,21 @@ public class UImanager : MonoBehaviour
         soundOptionPanel.SetActive(false);
     }
     //========================================
+    // ===== Ä¿½ºÅÒ Ã¢ Ãß°¡ =====
+    public GameObject customizationPanel;
+
+    // Ä¿½ºÅÒ Ã¢ ¿­±â
+    public void OpenCustomization()
+    {
+        customizationPanel.SetActive(true);
+    }
+
+    // Ä¿½ºÅÒ Ã¢ ´Ý±â
+    public void CloseCustomization()
+    {
+        customizationPanel.SetActive(false);
+    }
+
+
+
 }
