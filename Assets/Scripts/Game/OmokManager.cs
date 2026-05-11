@@ -58,12 +58,10 @@ public class OmokManager : SceneSingleton<OmokManager>
         // AI 모드라면 AI 매치 초기화
         if (AIMatchManager.IsAIMode)
         {
-            Debug.Log("AI");
             InitAIGame();
         }
         else
         {
-            Debug.Log("PvP");
             InitGame();
 
             NetworkOmokManager.OnStonePlaced += UpdateBoardFromServer;
