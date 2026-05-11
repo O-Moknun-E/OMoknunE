@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using Photon.Pun;
 
-public class PlayFabManager : Singleton<PlayFabManager>
+public class PlayFabManager : PersistentSingleton<PlayFabManager>
 {
     private string userID;
     private string userNickName;

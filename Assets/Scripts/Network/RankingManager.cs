@@ -3,7 +3,7 @@ using PlayFab.ClientModels;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RankingManager : Singleton<RankingManager>
+public class RankingManager : PersistentSingleton<RankingManager>
 {
 
     private List<StatisticUpdate> statUpdateBuffer = new List<StatisticUpdate>(1);

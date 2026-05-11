@@ -3,7 +3,7 @@ using PlayFab;
 using PlayFab.ClientModels;
 using System;
 
-public class RewardManager : Singleton<RewardManager>
+public class RewardManager : PersistentSingleton<RewardManager>
 {
 
     public static event Action OnRewardGranted;

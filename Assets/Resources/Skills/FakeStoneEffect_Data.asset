@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: FakeStoneEffect_Data
   m_EditorClassIdentifier: Assembly-CSharp::FakeStoneEffect
   fakeStonePrefab: {fileID: 2196603116645338615, guid: c463d605d6252c549a6b408ed3c96fcf, type: 3}
-  myFakeMarkSprite: {fileID: 4455655206081075757, guid: c18673cac7c8e02429ace0787c3ef22a, type: 3}
+  blindPrefab: {fileID: 6288190251127392025, guid: d208d2fb4ade5f54ba51db8dd14a1202, type: 3}
