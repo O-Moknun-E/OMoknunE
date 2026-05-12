@@ -26,6 +26,25 @@ public class PlayFabManager : PersistentSingleton<PlayFabManager>
         PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnLoginFailure);
     }
 
+    /// <summary>
+    ///  플레이팹 및 포톤 로그아웃 메서드
+    /// </summary>
+    public void Logout()
+    {
+        PlayFabClientAPI.ForgetAllCredentials();
+        successLogin = false;
+        userID = null;
+        userNickName = null;
+
+        // 포톤 연결되어있을 때 연결 해제
+        if(PhotonNetwork.IsConnected)
+        {
+            NetworkManager.Instance.Disconnect();
+        }
+
+        Debug.Log("로그아웃 완료");
+    }
+
 
     public void Register(string email, string password, string useName) //회원가입
     {

@@ -28,7 +28,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private TextMeshProUGUI _resultText;
 
-    public static bool IsReturningFromGame = false;
+    //public static bool IsReturningFromGame = false;
 
     //스킬 사용 여부 체크
     private bool _hasUsedSkillThisTurn = false;
@@ -337,7 +337,8 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     }
     public void ReturnToMainMenu()
     {
-        IsReturningFromGame = true;
+        // 로그인 되어있는지 체크하는 식으로 변경
+        //IsReturningFromGame = true;
 
         // 방이 존재할때만
         if (PhotonNetwork.CurrentRoom != null)
