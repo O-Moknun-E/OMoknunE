@@ -1,37 +1,37 @@
 fileFormatVersion: 2
-guid: cf97970a60af404468cb3561ee532004
+guid: 24d75df6606d92e4d8b33c3416a04086
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3549893921074704228
-    second: Create_Room_0
+      213: -7396418920498218092
+    second: Imogi_0
   - first:
-      213: 8381026067401814703
-    second: Create_Room_1
+      213: -2565801869985535143
+    second: Imogi_1
   - first:
-      213: -6039673774370690312
-    second: Create_Room_2
+      213: 6170512867244110036
+    second: Imogi_2
   - first:
-      213: -4563937828812415751
-    second: Create_Room_3
+      213: -1819678979523616387
+    second: Imogi_3
   - first:
-      213: -5438344727254281720
-    second: Create_Room_4
+      213: -5389727539072042386
+    second: Imogi_4
   - first:
-      213: -4976776624372942459
-    second: Create_Room_5
+      213: -6269571064202790909
+    second: Imogi_5
   - first:
-      213: 4323106737654667865
-    second: Create_Room_6
+      213: 5557254377644007147
+    second: Imogi_6
   - first:
-      213: -1395042596383925345
-    second: Create_Room_7
+      213: -354766612072576046
+    second: Imogi_7
   - first:
-      213: 2411006138311388916
-    second: Create_Room_8
+      213: -8593629147830134051
+    second: Imogi_8
   - first:
-      213: -533076516356634025
-    second: Create_Room_9
+      213: -8216878001709101220
+    second: Imogi_9
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -78,7 +78,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -123,251 +123,181 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Create_Room_0
+      name: Imogi_0
       rect:
         serializedVersion: 2
-        x: 4
-        y: 98
-        width: 127
-        height: 71
+        x: 0
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 46fe9fb86b1c34130800000000000000
-      internalID: 3549893921074704228
+      spriteID: 49bb9b10e24aa5990800000000000000
+      internalID: -7396418920498218092
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Create_Room_1
+      name: Imogi_1
       rect:
         serializedVersion: 2
-        x: 150
-        y: 98
-        width: 127
-        height: 71
+        x: 32
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fa236c0cdc26f4470800000000000000
-      internalID: 8381026067401814703
+      spriteID: 95baa7f1bc0746cd0800000000000000
+      internalID: -2565801869985535143
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Create_Room_2
+      name: Imogi_2
       rect:
         serializedVersion: 2
-        x: 8
-        y: 71
-        width: 101
-        height: 14
+        x: 64
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8fa6467a3b4ce2ca0800000000000000
-      internalID: -6039673774370690312
+      spriteID: 4d0ff0e82c012a550800000000000000
+      internalID: 6170512867244110036
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Create_Room_3
+      name: Imogi_3
       rect:
         serializedVersion: 2
-        x: 34
-        y: 59
-        width: 38
-        height: 12
+        x: 96
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9fc1ba8b9b2a9a0c0800000000000000
-      internalID: -4563937828812415751
+      spriteID: d71ef34fb933fb6e0800000000000000
+      internalID: -1819678979523616387
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Create_Room_4
+      name: Imogi_4
       rect:
         serializedVersion: 2
-        x: 119
-        y: 17
-        width: 127
-        height: 71
+        x: 0
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 802d3edb84e1784b0800000000000000
-      internalID: -5438344727254281720
+      spriteID: e6a7875fb57d335b0800000000000000
+      internalID: -5389727539072042386
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Create_Room_5
+      name: Imogi_5
       rect:
         serializedVersion: 2
-        x: 75
-        y: 57
-        width: 8
-        height: 11
+        x: 32
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 58978c93700feeab0800000000000000
-      internalID: -4976776624372942459
+      spriteID: 308ff10b5520ef8a0800000000000000
+      internalID: -6269571064202790909
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Create_Room_6
+      name: Imogi_6
       rect:
         serializedVersion: 2
-        x: 27
-        y: 28
-        width: 18
-        height: 18
+        x: 64
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 95a11005ca2cefb30800000000000000
-      internalID: 4323106737654667865
+      spriteID: bee94f1b9655f1d40800000000000000
+      internalID: 5557254377644007147
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Create_Room_7
+      name: Imogi_7
       rect:
         serializedVersion: 2
-        x: 45
-        y: 29
-        width: 14
-        height: 16
+        x: 96
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f9b5ffb5620d3ace0800000000000000
-      internalID: -1395042596383925345
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Create_Room_8
-      rect:
-        serializedVersion: 2
-        x: 61
-        y: 29
-        width: 14
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4fe26590f4d957120800000000000000
-      internalID: 2411006138311388916
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Create_Room_9
-      rect:
-        serializedVersion: 2
-        x: 75
-        y: 28
-        width: 18
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 75ac5749bb12a98f0800000000000000
-      internalID: -533076516356634025
+      spriteID: 2dbce3d55ad931bf0800000000000000
+      internalID: -354766612072576046
       vertices: []
       indices: 
       edges: []
@@ -376,7 +306,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 7fe68255661acfb41a14697f89bf0b8b
     internalID: 0
     vertices: []
     indices: 
@@ -384,18 +314,18 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":4.0,"y":2.0},"gridSpriteSize":{"x":32.0,"y":32.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Create_Room_0: 3549893921074704228
-      Create_Room_1: 8381026067401814703
-      Create_Room_2: -6039673774370690312
-      Create_Room_3: -4563937828812415751
-      Create_Room_4: -5438344727254281720
-      Create_Room_5: -4976776624372942459
-      Create_Room_6: 4323106737654667865
-      Create_Room_7: -1395042596383925345
-      Create_Room_8: 2411006138311388916
-      Create_Room_9: -533076516356634025
+      Imogi_0: -7396418920498218092
+      Imogi_1: -2565801869985535143
+      Imogi_2: 6170512867244110036
+      Imogi_3: -1819678979523616387
+      Imogi_4: -5389727539072042386
+      Imogi_5: -6269571064202790909
+      Imogi_6: 5557254377644007147
+      Imogi_7: -354766612072576046
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
