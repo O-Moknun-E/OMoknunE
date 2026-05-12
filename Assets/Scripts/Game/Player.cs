@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +16,8 @@ public class Player
 
     private List<IMagic> _magics; // 보유한 마법 리스트
 
+    private Action<int, int, StoneType> _resetTurnHandler; // 구독 해제용 참조
+
     // 초기 마나를 지정하는 생성자
     public Player(string name, int initialMana)
     {
@@ -24,9 +27,34 @@ public class Player
         UsedMagicThisTurn = false;
         _magics = new();
 
+        // 델리게이트 참조 저장
+        _resetTurnHandler = (row, col, type) => ResetTurn();
+
         //==============NetworkOmokManager를 구독하도록 수정==============
         // 어떤 돌이 놓이든 서버에서 확정 신호가 오면 마법 사용 턴을 리셋함
-        NetworkOmokManager.OnStonePlaced += (row, col, type) => ResetTurn();
+        // AI모드가 아닐때만
+        if(!AIMatchManager.IsAIMode)
+            NetworkOmokManager.OnStonePlaced += _resetTurnHandler;
+        // AI 모드
+        else
+            GameEvents.OnStonePlaced += _resetTurnHandler;
+    }
+
+    /// <summary>
+    /// 이벤트 구독 해제 및 정리
+    /// </summary>
+    public void Cleanup()
+    {
+        if(_resetTurnHandler != null)
+        {
+            // 모드에 따른 이벤트 구독 해제
+            if(!AIMatchManager.IsAIMode)
+                NetworkOmokManager.OnStonePlaced -= _resetTurnHandler;
+            else
+                GameEvents.OnStonePlaced -= _resetTurnHandler;
+
+            _resetTurnHandler = null;
+        }
     }
 
     // 마법 사용 시도 메서드

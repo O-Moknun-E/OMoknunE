@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26d5fad9ae13f5a4f8d0625d0b629ad7, type: 3}
+  m_Name: FogEffect_Data
+  m_EditorClassIdentifier: Assembly-CSharp::FogEffect
+  fogPrefab: {fileID: 8056359585070895723, guid: 7563a83a71de23b4ca7bc8eb2c788949, type: 3}
