@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -14,41 +13,73 @@ public class InventoryUI : MonoBehaviour
 
     private ITEM_TYPE currentFilter = ITEM_TYPE.All;
 
-    public void ChangeType(int index)
+    private void OnEnable()
     {
-        currentFilter = (ITEM_TYPE)index;
-        MatchingItem(); 
+        UpdateInventoryUI();
     }
 
-    public void MatchingItem()
+    public void ChangeType(int index)
     {
 
+        currentFilter = (ITEM_TYPE)index;
+        UpdateInventoryUI();
+    }
+
+    public void UpdateInventoryUI()
+    {
+        ResetAllSlots();
+
+        if (inven == null || inven.Items == null) return;
+
+        var filteredItems = GetFilteredItems();
+
+        for (int i = 0; i < filteredItems.Count; i++)
+        {
+            Slot slot = GetOrCreateSlot(i);
+
+            slot.SetItem(filteredItems[i].itemImage, filteredItems[i].displayName);
+            slot.gameObject.SetActive(true);
+        }
+    }
+
+    private List<Item> GetFilteredItems()
+    {
+        List<Item> filteredList = new List<Item>();
+
+        if (inven == null || inven.Items == null) return filteredList;
+
+        if (currentFilter == ITEM_TYPE.All) return inven.Items;
+
+
+        foreach (Item item in inven.Items)
+        {
+            if (item == null) continue;
+
+            if ((item.type & currentFilter) != 0)
+                filteredList.Add(item);
+        }
+
+        return filteredList;
+    }
+
+    private void ResetAllSlots()
+    {
         foreach (var slot in slotPool)
         {
             slot.gameObject.SetActive(false);
         }
-
-        if(inven.Items == null) return;
-
-        int slotIndex = 0;
-        foreach (var item in inven.Items)
-        {
-
-            Slot currentSlot;
-
-            if(slotIndex < slotPool.Count)
-                currentSlot = slotPool[slotIndex];  
-            else
-            {
-                currentSlot = Instantiate(slotPrefab, itemBox.transform.position,Quaternion.identity);
-                slotPool.Add(currentSlot);
-            }
-            currentSlot.gameObject.SetActive(true);
-            currentSlot.SetItem(item.ItemImage, item.DisplayName); 
-
-            slotIndex++;
-        }
     }
 
+    private Slot GetOrCreateSlot(int index)
+    {
+        if (index < slotPool.Count)
+        {
+            return slotPool[index];
+        }
+
+        Slot newSlot = Instantiate(slotPrefab, itemBox.transform);
+        slotPool.Add(newSlot);
+        return newSlot;
+    }
 
 }

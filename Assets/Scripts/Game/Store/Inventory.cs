@@ -2,7 +2,7 @@ using PlayFab.ClientModels;
 using PlayFab;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
+
 
 public class Inventory : MonoBehaviour
 {
@@ -39,25 +39,44 @@ public class Inventory : MonoBehaviour
 
     public bool HasItem(string targetItemId) //플레이어가 해당 아이템이 있는지 확인
     {
-        return items.Exists(item => item.ItemID == targetItemId);
+        return items.Exists(item => item.itemId == targetItemId);
     }
 
 
     private void OnLoadItemSuccess(GetUserInventoryResult result)
     {
-        items.Clear();
+        var inventoryData = result.Inventory;
 
-        foreach (var instance in result.Inventory)
+        if (items.Count > inventoryData.Count)
         {
-            ItemData so = ItemManager.Instance.GetItemData(instance.ItemId);
-
-            if (so != null)
+            for (int i = items.Count - 1; i >= inventoryData.Count; i--)
             {
-                Item newItem = new Item(instance, so);
-                items.Add(newItem);
-                Debug.Log(newItem.ItemID);
+                Destroy(items[i].gameObject);
+                items.RemoveAt(i);
             }
         }
+        for (int i = 0; i < inventoryData.Count; i++)
+        {
+            var instance = inventoryData[i];
+            ItemData so = ItemManager.Instance.GetItemData(instance.ItemId);
+            if (so == null) continue;
 
+            if (i < items.Count)
+            {
+                items[i].Initialize(instance, so);
+                Debug.Log($"데이터 갱신: {items[i].displayName}");
+            }
+            else
+            {
+                if (so.itemPrefab != null)
+                {
+                    GameObject go = Instantiate(so.itemPrefab, transform);
+                    Item newItem = go.GetComponent<Item>();
+                    newItem.Initialize(instance, so);
+                    items.Add(newItem);
+                    Debug.Log($"신규 생성: {newItem.displayName}");
+                }
+            }
+        }
     }
 }

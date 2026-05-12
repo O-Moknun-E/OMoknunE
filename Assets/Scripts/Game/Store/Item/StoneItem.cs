@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class StoneItem : Item, IUsable
 {
-    public StoneItem(ItemInstance instance, ItemData meta) : base(instance, meta) { }
+    //public StoneItem(ItemInstance instance, ItemData meta) : base(instance, meta) { }
 
     public void Use()
     {
