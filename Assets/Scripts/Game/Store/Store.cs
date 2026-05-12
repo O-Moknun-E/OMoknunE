@@ -2,10 +2,12 @@ using PlayFab.ClientModels;
 using PlayFab;
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class Store : MonoBehaviour
 {
    
+    public Action<List<CatalogItem>> OnStoreLoaded;
 
     [SerializeField]
     private Inventory inven;
@@ -15,7 +17,7 @@ public class Store : MonoBehaviour
 
     private List<CatalogItem> storeCatalog = new List<CatalogItem>();
 
-    public void BuyItem(string itemId, int price)
+    public void BuyItem(string itemId, uint price)
     {
         if (inven.HasItem(itemId))
         {
@@ -28,13 +30,13 @@ public class Store : MonoBehaviour
             CatalogVersion = catalogVersion,
             ItemId = itemId,
             VirtualCurrency = moneyCode,
-            Price = price
+            Price = (int)price
         };
 
-        PlayFabClientAPI.PurchaseItem(request, result =>{ inven.LoadItem(); }, error => Debug.LogError(error.GenerateErrorReport()));
+        PlayFabClientAPI.PurchaseItem(request, result =>{ inven.LoadItem(); Debug.Log($"{itemId}구매완료"); }, error => Debug.LogError(error.GenerateErrorReport()));
     }
 
-    public void LoadStoreCatalog()
+    public List<CatalogItem> LoadStoreCatalog()
     {
         var request = new GetCatalogItemsRequest
         {
@@ -45,8 +47,11 @@ public class Store : MonoBehaviour
             result => {
                 storeCatalog = result.Catalog;
                 Debug.Log("상점 카탈로그 로드 완료!");
+                OnStoreLoaded?.Invoke(storeCatalog);
             },
             error => Debug.LogError(error.GenerateErrorReport())
         );
+
+        return storeCatalog;
     }
 }

@@ -58,21 +58,21 @@ public class Inventory : MonoBehaviour
         for (int i = 0; i < inventoryData.Count; i++)
         {
             var instance = inventoryData[i];
-            ItemData so = ItemManager.Instance.GetItemData(instance.ItemId);
-            if (so == null) continue;
+            ItemData data = ItemManager.Instance.GetItemData(instance.ItemId);
+            if (data == null) continue;
 
             if (i < items.Count)
             {
-                items[i].Initialize(instance, so);
+                items[i].Initialize(instance, data);
                 Debug.Log($"데이터 갱신: {items[i].displayName}");
             }
             else
             {
-                if (so.itemPrefab != null)
+                if (data.itemPrefab != null)
                 {
-                    GameObject go = Instantiate(so.itemPrefab, transform);
-                    Item newItem = go.GetComponent<Item>();
-                    newItem.Initialize(instance, so);
+                    GameObject obj = Instantiate(data.itemPrefab, transform);
+                    Item newItem = obj.GetComponent<Item>();
+                    newItem.Initialize(instance, data);
                     items.Add(newItem);
                     Debug.Log($"신규 생성: {newItem.displayName}");
                 }

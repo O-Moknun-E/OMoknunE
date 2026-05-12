@@ -36,8 +36,9 @@ public class InventoryUI : MonoBehaviour
         for (int i = 0; i < filteredItems.Count; i++)
         {
             Slot slot = GetOrCreateSlot(i);
+            Item item = filteredItems[i];
 
-            slot.SetItem(filteredItems[i].itemImage, filteredItems[i].displayName);
+            slot.SetInvenSlot(item.itemImage, item.displayName, item.itemId,item.type);
             slot.gameObject.SetActive(true);
         }
     }

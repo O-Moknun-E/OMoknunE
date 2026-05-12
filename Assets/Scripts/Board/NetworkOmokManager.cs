@@ -101,7 +101,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
             _myPlayerType = StoneType.White;
             _mySkinIndex = 1;
         }
-        _boardInteraction.ChangeStoneSkin(StoneSkinRegistry.Instance.GetStoneSkin(_mySkinIndex));
+        _boardInteraction.ChangeStoneSkin(PlayerEquipItem.Instance.customStone); //민정추가
         CheckAndApplyTurn();
     }
 
@@ -290,7 +290,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void RPC_ReceiveAndDrawStone(int x, int y, StoneType playerType, int skinID)
     {
-        Sprite stoneSkin = StoneSkinRegistry.Instance.GetStoneSkin(skinID);
+        Sprite stoneSkin = PlayerEquipItem.Instance.customStone; //민정추가
         _boardInteraction.PlaceStoneRemote(x, y, stoneSkin);
 
         _isMasterTurn = !_isMasterTurn;

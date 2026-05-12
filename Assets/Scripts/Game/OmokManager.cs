@@ -268,7 +268,7 @@ public class OmokManager : SceneSingleton<OmokManager>
         }
 
         // 플레이어 돌 스킨 설정 (임시로 흑돌. 스킨 적용 기능이 생기면 변경)
-        _playerStone = StoneSkinRegistry.Instance.GetStoneSkin(0);
+        _playerStone = PlayerEquipItem.Instance.customStone; //민정추가
 
         if (_playerStone == null)
         {

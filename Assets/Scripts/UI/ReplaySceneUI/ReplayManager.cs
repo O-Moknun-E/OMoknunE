@@ -387,7 +387,7 @@ public class ReplayManager : MonoBehaviour
 
             if (skinIndex < StoneSkinRegistry.Instance.GetStoneSkinCount())
             {
-                renderer.sprite = StoneSkinRegistry.Instance.GetStoneSkin(skinIndex);
+                renderer.sprite = PlayerEquipItem.Instance.customStone; //민정추가
             }
         }
 

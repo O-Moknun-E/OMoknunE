@@ -42,7 +42,7 @@ public class AIPlayer : MonoBehaviour
             return;
         }
 
-        _aiStoneSprite = StoneSkinRegistry.Instance.GetStoneSkin(1);
+        _aiStoneSprite = PlayerEquipItem.Instance.customStone; //민정추가
 
         if (_aiStoneSprite == null)
         {
