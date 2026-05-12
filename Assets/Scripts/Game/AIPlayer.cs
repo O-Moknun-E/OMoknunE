@@ -446,8 +446,8 @@ public class AIPlayer : MonoBehaviour
             int count = 1;
             int openCount = 0;
 
-            // 정방향 탐색
-            for (int i = 1; i < 5; i++)
+            // 정방향 탐색 (6목 이상일 경우를 위해 보드 끝까지 탐색)
+            for (int i = 1; i < OmokManager.BoardSize; i++)
             {
                 int nx = x + dx[dir] * i;
                 int ny = y + dy[dir] * i;
@@ -473,8 +473,8 @@ public class AIPlayer : MonoBehaviour
                 }
             }
 
-            // 역방향 탐색(좌, 하, 좌하, 좌상)
-            for (int i = 1; i < 5; i++)
+            // 역방향 탐색(좌, 하, 좌하, 좌상) (6목 이상일 경우를 위해 보드 끝까지 탐색)
+            for (int i = 1; i < OmokManager.BoardSize; i++)
             {
                 int nx = x - dx[dir] * i;
                 int ny = y - dy[dir] * i;
@@ -501,8 +501,11 @@ public class AIPlayer : MonoBehaviour
             }
 
             // 현재 방향에 놓인 돌에 대한 점수 계산
-            if (count >= 5)
+            if (count == 5)
                 totalScore += WinScore;
+            // 6목 이상은 닫힌 4와 같은 취급
+            else if (count >= 6)
+                totalScore += ClosedFour;
             else if (count == 4 && openCount == 2)
                 totalScore += OpenFour;
             else if (count == 4 && openCount == 1)
@@ -589,8 +592,8 @@ public class AIPlayer : MonoBehaviour
         {
             int count = 1;
 
-            // 정방향 탐색
-            for (int i = 1; i < 5; i++)
+            // 정방향 탐색 (6목 이상일 경우를 위해 보드 끝까지 탐색)
+            for (int i = 1; i < OmokManager.BoardSize; i++)
             {
                 int nx = x + dx[dir] * i;
                 int ny = y + dy[dir] * i;
@@ -603,8 +606,8 @@ public class AIPlayer : MonoBehaviour
                     break;
             }
 
-            // 역방향 탐색
-            for (int i = 1; i < 5; i++)
+            // 역방향 탐색 (6목 이상일 경우를 위해 보드 끝까지 탐색)
+            for (int i = 1; i < OmokManager.BoardSize; i++)
             {
                 int nx = x - dx[dir] * i;
                 int ny = y - dy[dir] * i;
@@ -616,8 +619,8 @@ public class AIPlayer : MonoBehaviour
                     break;
             }
 
-            // 연속으로 놓인 돌이 5개 이상이면 승리하는 수
-            if (count >= 5) return true;
+            // 연속으로 놓인 돌이 5개면 승리하는 수
+            if (count == 5) return true;
         }
 
         return false;
