@@ -347,6 +347,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoardManager
       objectReference: {fileID: 0}
+    - target: {fileID: 2658414794616664226, guid: f23c73525b45a5c49855ba86e13de9e5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4653648914224303798, guid: f23c73525b45a5c49855ba86e13de9e5, type: 3}
       propertyPath: _resultText
       value: 
@@ -474,6 +478,10 @@ PrefabInstance:
     - target: {fileID: 7447299432726326190, guid: f95116843f116c14f953c956edf4295d, type: 3}
       propertyPath: m_Name
       value: OmokEnvironment_Group
+      objectReference: {fileID: 0}
+    - target: {fileID: 7447299432726326190, guid: f95116843f116c14f953c956edf4295d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8410165839057069982, guid: f95116843f116c14f953c956edf4295d, type: 3}
       propertyPath: _blindPanel

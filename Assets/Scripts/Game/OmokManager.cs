@@ -48,8 +48,8 @@ public class OmokManager : SceneSingleton<OmokManager>
 
     //==========================================
     //======================================추가된 부분
-    // 포톤 서버 시간 기준으로 턴이 시작된 시간 기록
-    private double _turnStartNetworkTime;
+    private double _turnStartNetworkTime;            // 포톤 서버 시간 기준으로 턴이 시작된 시간 기록
+    private double _lastNetworkTime;                 // 한 프레임동안 흐른 서버 시간 기록 (마나 획득 타이머 계산용)
     //==========================================
 
     public event Action OnUsedMagic;            // 마법이 사용되었을 때 발생하는 이벤트
@@ -63,7 +63,7 @@ public class OmokManager : SceneSingleton<OmokManager>
     public Player GetPlayer(PlayerType type) => _players[(int)type];
 
     ///////////////////////////////////////////////////////////////////////////////////
-    
+
     public bool IsMyTurn
     {
         get
@@ -188,8 +188,12 @@ public class OmokManager : SceneSingleton<OmokManager>
 
         //==========================================
         //======================================추가된 부분
-        // 게임 시작 시 포톤 룸 안에 있다면 현재 서버 시간을 기록
-        if (PhotonNetwork.InRoom) _turnStartNetworkTime = PhotonNetwork.Time;
+        // 게임 시작 시 포톤 룸 안에 있다면 현재 서버 시간 초기화
+        if (PhotonNetwork.InRoom)
+        {
+            _turnStartNetworkTime = PhotonNetwork.Time;
+            _lastNetworkTime = PhotonNetwork.Time;
+        }
         //==========================================
 
         // 리플레이 기록 시작
@@ -529,29 +533,38 @@ public class OmokManager : SceneSingleton<OmokManager>
         //======================================추가된 부분 (서버 시간 동기화)
         if (PhotonNetwork.InRoom)
         {
-            if (_turnTimer - _manaIncomeTimer[waitingPlayerIndex] >= _manaIncomeTime)
-            {
-                _players[waitingPlayerIndex].AddMana(_manaIncome);
-                OnManaChanged?.Invoke();
-                _manaIncomeTimer[waitingPlayerIndex] += _manaIncomeTime;
-            }
-            return; // 오프라인 계산 건너뛰기
+            // 이번 프레임 동안 흐른 시간
+            float elapsed = (float)(PhotonNetwork.Time - _lastNetworkTime);
+
+            // 음수 방어
+            if (elapsed < 0f)
+                elapsed = 0f;
+
+            _manaIncomeTimer[waitingPlayerIndex] += elapsed;
+
+            _lastNetworkTime = PhotonNetwork.Time;
+        }
+        // 오프라인
+        else
+        {
+            _manaIncomeTimer[waitingPlayerIndex] += Time.deltaTime;
         }
         //==========================================
 
-        _manaIncomeTimer[waitingPlayerIndex] += Time.deltaTime;
+        bool manaChanged = false;
 
-        // 마나 획득 시간이 지나면 상대방에게 마나 추가
-        if (_manaIncomeTimer[waitingPlayerIndex] >= _manaIncomeTime)
+        while (_manaIncomeTimer[waitingPlayerIndex] >= _manaIncomeTime)
         {
+            // 초과된 시간은 다음 타이머로 이월
+            _manaIncomeTimer[waitingPlayerIndex] -= _manaIncomeTime;
+
             _players[waitingPlayerIndex].AddMana(_manaIncome);
 
-            // 마나 변경 이벤트
-            OnManaChanged?.Invoke();
-
-            // 시간 초과분은 다음 타이머로 이월
-            _manaIncomeTimer[waitingPlayerIndex] -= _manaIncomeTime;
+            manaChanged = true;
         }
+
+        if (manaChanged)
+            OnManaChanged?.Invoke();
     }
 
     // 턴 타이머 체크
@@ -602,10 +615,14 @@ public class OmokManager : SceneSingleton<OmokManager>
 
         //==========================================
         //======================================추가된 부분
-        // 턴이 바뀔 때마다 포톤 서버 시간 갱신 및 마나 타이머 초기화
-        if (PhotonNetwork.InRoom) _turnStartNetworkTime = PhotonNetwork.Time;
-        //_manaIncomeTimer[0] = 0f;
-        //_manaIncomeTimer[1] = 0f;
+        // 턴이 바뀔 때마다 포톤 서버 시간 갱신
+        if (PhotonNetwork.InRoom)
+        {
+            // 이미 턴이 바뀐 상태이니 현재 턴이 아닌 플레이어의 마나 획득 타이머도 갱신.
+            int waitingPlayerIndex = GetPlayerIndex(false);
+            _turnStartNetworkTime = PhotonNetwork.Time;
+            _lastNetworkTime = PhotonNetwork.Time;
+        }
         //==========================================
 
         // 리플레이 - 현재 턴 종료 및 시작
