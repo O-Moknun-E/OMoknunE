@@ -11,18 +11,18 @@ public class PlayerEquipItem : PersistentSingleton<PlayerEquipItem>
     public Sprite customStone { get; private set; }
     public Sprite customBord { get; private set; }
 
-    private void Start()
-    {
-        customPicture = basicPicture;
-        customStone = basicStone;
-        customBord = basicBord;
-    }
-
 
     public void PictureItem(Sprite picture) => this.customPicture = picture; 
 
     public void StoneItem( Sprite stone = null) => this.customStone = stone;
 
     public void BordItem( Sprite bord) => this.customBord = bord;
+
+/*    public Sprite CheckCustomStone(StoneType stoneType)
+    {
+        if(stoneType == StoneType.Black)
+
+        return customStone;
+    }*/
 
 }

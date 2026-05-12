@@ -9,9 +9,13 @@ public class InventoryUI : MonoBehaviour
 
     [SerializeField]
     private Inventory inven;
-    private List<Slot> slotPool = new List<Slot>();
+    [SerializeField]
+    private GameObject checkPopup;
 
+
+    private List<Slot> slotPool = new List<Slot>();
     private ITEM_TYPE currentFilter = ITEM_TYPE.All;
+
 
     private void OnEnable()
     {
@@ -79,8 +83,14 @@ public class InventoryUI : MonoBehaviour
         }
 
         Slot newSlot = Instantiate(slotPrefab, itemBox.transform);
+        newSlot.button.onClick.AddListener(()=> { CheckUse(); });
         slotPool.Add(newSlot);
         return newSlot;
+    }
+
+    private void CheckUse()
+    {
+        checkPopup.gameObject.SetActive(true);
     }
 
 }

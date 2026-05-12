@@ -62,6 +62,8 @@ public class OmokManager : SceneSingleton<OmokManager>
     public StoneType GetBoardData(int x, int y) => _board[y, x];
     public Player GetPlayer(PlayerType type) => _players[(int)type];
 
+    public StoneType _CurrentTurn => _currentTurn;
+
     ///////////////////////////////////////////////////////////////////////////////////
 
     public bool IsMyTurn
@@ -268,7 +270,10 @@ public class OmokManager : SceneSingleton<OmokManager>
         }
 
         // 플레이어 돌 스킨 설정 (임시로 흑돌. 스킨 적용 기능이 생기면 변경)
-        _playerStone = PlayerEquipItem.Instance.customStone; //민정추가
+        if (PlayerEquipItem.Instance.customStone != null)
+            _playerStone = PlayerEquipItem.Instance.customStone; //민정추가
+        else
+            _playerStone = StoneSkinRegistry.Instance.GetStoneSkin(0);
 
         if (_playerStone == null)
         {

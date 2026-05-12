@@ -73,6 +73,7 @@ public class BoardInteraction : MonoBehaviour
 
         Vector3 worldPos = GetWorldPositionFromIndex(x, y);
         GameObject stone = Instantiate(_baseStonePrefab, worldPos, Quaternion.identity);
+        
         stone.GetComponent<SpriteRenderer>().sprite = stoneSprite;
 
         _isStonePlaced[x, y] = true;

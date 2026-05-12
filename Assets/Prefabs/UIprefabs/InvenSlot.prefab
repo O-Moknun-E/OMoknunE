@@ -222,6 +222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 132a51daab7a7f842bc0a087b5e7231b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Slot
+  button: {fileID: 8641904921158289571}
   itemImage: {fileID: 3801490706421148894}
   itemName: {fileID: 6068152048797258509}
 --- !u!1 &5273014753636615521

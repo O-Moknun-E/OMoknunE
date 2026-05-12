@@ -46,7 +46,11 @@ public class FakeStoneEffect : SkillEffect
             else
             {
                 if (anim != null) anim.enabled = false;
-                sr.sprite = PlayerEquipItem.Instance.customStone; //민정추가
+                if (PlayerEquipItem.Instance.customStone != null)
+                    sr.sprite = PlayerEquipItem.Instance.customStone; //민정추가
+                else
+                    sr.sprite = StoneSkinRegistry.Instance.GetStoneSkin(context.SkinID);
+
                 sr.color = new Color(1f, 1f, 1f, 1f);
 
                 // 1.5초 화면 가리기

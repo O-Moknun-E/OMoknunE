@@ -385,10 +385,11 @@ public class ReplayManager : MonoBehaviour
             // 일단 흑은 0 백은 1로 하고 나중에 스킨쪽 완성되면 바꾸기
             int skinIndex = stoneType == StoneType.Black ? 0 : 1;
 
-            if (skinIndex < StoneSkinRegistry.Instance.GetStoneSkinCount())
-            {
+            if(PlayerEquipItem.Instance.customStone != null)
                 renderer.sprite = PlayerEquipItem.Instance.customStone; //민정추가
-            }
+
+            else if (skinIndex < StoneSkinRegistry.Instance.GetStoneSkinCount())
+                renderer.sprite = StoneSkinRegistry.Instance.GetStoneSkin(skinIndex);
         }
 
         // 행동 기록

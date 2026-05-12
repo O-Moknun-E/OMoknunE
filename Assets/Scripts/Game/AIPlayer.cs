@@ -42,7 +42,12 @@ public class AIPlayer : MonoBehaviour
             return;
         }
 
-        _aiStoneSprite = PlayerEquipItem.Instance.customStone; //민정추가
+        if (PlayerEquipItem.Instance.customStone != null)
+            _aiStoneSprite = PlayerEquipItem.Instance.customStone; //민정추가
+        else
+            _aiStoneSprite = StoneSkinRegistry.Instance.GetStoneSkin(1);
+
+
 
         if (_aiStoneSprite == null)
         {
@@ -114,17 +119,18 @@ public class AIPlayer : MonoBehaviour
         });
 
         // Task 완료까지 대기 (프레임마다 체크)
-        while(!aiTask.IsCompleted)
+        while (!aiTask.IsCompleted)
         {
             yield return null;
         }
 
         // 결과 가져오기
-        if(aiTask.Status == TaskStatus.RanToCompletion)
+        if (aiTask.Status == TaskStatus.RanToCompletion)
         {
             bestMove = aiTask.Result;
             moveFound = true;
-        } else
+        }
+        else
         {
             Debug.LogError("<color=red>[AI] Task 실행 실패</color>");
         }

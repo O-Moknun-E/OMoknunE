@@ -5,8 +5,11 @@ using UnityEngine.UI;
 
 public class Slot : MonoBehaviour
 {
+    public Button button;
+
     private int price;
     private string itemId;
+
     [SerializeField]private Image itemImage;
     [SerializeField]private TextMeshProUGUI itemName;
 
