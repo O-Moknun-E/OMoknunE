@@ -307,10 +307,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Room
   enterBtn: {fileID: 7586866528508841339}
-  roomNameText: {fileID: 8974167583049382547}
-  roonManagerText: {fileID: 5222506539914938521}
-  playerCountText: {fileID: 8500029430720407005}
-  lockIcon: {fileID: 3088471067581369565}
+  roomName: {fileID: 8974167583049382547}
+  masterName: {fileID: 5222506539914938521}
+  playerCount: {fileID: 8500029430720407005}
+  lockImage: {fileID: 5620022347574554772}
+  lockIcone: {fileID: -1395042596383925345, guid: cf97970a60af404468cb3561ee532004, type: 3}
+  publicIcon: {fileID: 2411006138311388916, guid: cf97970a60af404468cb3561ee532004, type: 3}
 --- !u!114 &7586866528508841339
 MonoBehaviour:
   m_ObjectHideFlags: 0

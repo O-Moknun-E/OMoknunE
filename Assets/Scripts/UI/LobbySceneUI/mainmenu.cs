@@ -15,8 +15,12 @@ public class mainmenu : MonoBehaviour
         loginPanel.SetActive(true);
     }
 
-    public void QuitGame()
+    public void QuitGame() //민정수정
     {
-        Application.Quit();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false; 
+#else
+        Application.Quit(); // 실제 빌드된 게임을 종료함
+#endif
     }
 }
