@@ -275,7 +275,10 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         {
             Debug.Log($"<color=cyan>[System] {skillName} 장전 완료 <Enter> 키를 눌러 발동하세요</color>");
         }
-        Debug.Log($"<color=cyan>[System] {skillName} 스킬 장전 완료! 오목판을 클릭하세요.</color>");
+        else
+        {
+            Debug.Log($"<color=cyan>[System] {skillName} 스킬 장전 완료 오목판을 클릭하세요.</color>");
+        }
     }
 
     public void UseSkill(string skillName, int x, int y)
@@ -292,6 +295,15 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     {
         Sprite stoneSkin = StoneSkinRegistry.Instance.GetStoneSkin(skinID);
         _boardInteraction.PlaceStoneRemote(x, y, stoneSkin);
+
+        if (playerType == _myPlayerType && _silencedTurnsLeft > 0)
+        {
+            _silencedTurnsLeft--;
+            if (_silencedTurnsLeft == 0)
+            {
+                Debug.Log("<color=green>[System] 침묵이 해제되었습니다 이제 스킬을 사용할 수 있습니다.</color>");
+            }
+        }
 
         _isMasterTurn = !_isMasterTurn;
         CheckAndApplyTurn();
