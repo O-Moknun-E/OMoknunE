@@ -354,6 +354,29 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         OmokManager.Instance.TriggerGameOver(winner);
     }
 
+    /// <summary>
+    /// 이모지를 상대방에게 전송
+    /// </summary>
+    /// <param name="emojiType"></param>
+    public void SendEmojiToOpponent(EmojiType emojiType)
+    {
+        photonView.RPC("RPC_ReceiveEmoji", RpcTarget.Others, emojiType);
+    }
+
+    /// <summary>
+    /// 상대방으로부터 이모지 수신
+    /// </summary>
+    /// <param name="emojiType">수신한 이모지 타입</param>
+    [PunRPC]
+    private void RPC_ReceiveEmoji(EmojiType emojiType)
+    {
+        // 상대방 위치에 표시
+        if (GameUIManager.Instance != null)
+        {
+            GameUIManager.Instance.ReceiveEmojiFromOpponent(emojiType);
+        }
+    }
+
     // 게임 종료 시 승자 정보를 받아서 UI를 띄워주는 함수
     private void ShowGameOverUI(StoneType winner)
     {

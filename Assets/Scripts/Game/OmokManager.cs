@@ -28,6 +28,7 @@ public class OmokManager : SceneSingleton<OmokManager>
     //==========================================
 
     public PlayerType MyPlayerType => _myPlayerType;    // 내 플레이어 타입 (흑/백)
+    public GameMode GameMode => _gameMode;              // 현재 게임 모드 (PvP/PvE)
 
     public static readonly int BoardSize = 15;   // 오목판의 크기 (15x15)
 
@@ -55,11 +56,11 @@ public class OmokManager : SceneSingleton<OmokManager>
     private double _lastNetworkTime;                 // 한 프레임동안 흐른 서버 시간 기록 (마나 획득 타이머 계산용)
     //==========================================
 
-    public event Action OnGameStarted;                 // 게임이 시작되었을 때 발생하는 이벤트
-    public event Action OnUsedMagic;                   // 마법이 사용되었을 때 발생하는 이벤트
-    public event Action<int> OnManaChanged;            // 마나가 변경되었을 때 발생하는 이벤트
-    public event Action<StoneType> OnGameOver;         // 게임이 종료되었을 때 발생하는 이벤트(승리한 돌 전달)
-    public event Action<int> OnTurnTimerSecondChanged; // 턴 타이머가 1초 단위로 변경될 때 발생하는 이벤트 (남은 착수 시간)
+    public event Action OnGameStarted;                      // 게임이 시작되었을 때 발생하는 이벤트
+    public event Action OnUsedMagic;                        // 마법이 사용되었을 때 발생하는 이벤트
+    public event Action<int> OnManaChanged;                 // 마나가 변경되었을 때 발생하는 이벤트
+    public event Action<StoneType> OnGameOver;              // 게임이 종료되었을 때 발생하는 이벤트(승리한 돌 전달)
+    public event Action<int> OnTurnTimerSecondChanged;      // 턴 타이머가 1초 단위로 변경될 때 발생하는 이벤트 (남은 착수 시간)
 
     ///////////////////////////////////////////////////////////////////////////////////
     // OmokManager 내부에 추가된 부분
