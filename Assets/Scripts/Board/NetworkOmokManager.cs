@@ -4,11 +4,12 @@ using Photon.Pun;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using Unity.VisualScripting;
 
 public class NetworkOmokManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private BoardInteraction _boardInteraction;
-
+    
     // 전달 데이터: x좌표, y좌표, 진영번호
     public static event Action<int, int, StoneType> OnStonePlaced;
 
@@ -28,7 +29,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private TextMeshProUGUI _resultText;
 
-    public static bool IsReturningFromGame = false;
+    //public static bool IsReturningFromGame = false;
 
     //스킬 사용 여부 체크
     private bool _hasUsedSkillThisTurn = false;
@@ -54,6 +55,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         if (OmokManager.Instance != null)
             OmokManager.Instance.OnGameOver -= ShowGameOverUI;
     }
+
 
     private void Start()
     {
@@ -94,6 +96,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             _myPlayerType = StoneType.Black;
+
             _mySkinIndex = 0;
         }
         else
@@ -101,7 +104,11 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
             _myPlayerType = StoneType.White;
             _mySkinIndex = 1;
         }
-        _boardInteraction.ChangeStoneSkin(StoneSkinRegistry.Instance.GetStoneSkin(_mySkinIndex));
+        if(PlayerEquipItem.Instance.customStone != null)
+             _boardInteraction.ChangeStoneSkin(PlayerEquipItem.Instance.customStone); //민정추가
+        else
+            _boardInteraction.ChangeStoneSkin(StoneSkinRegistry.Instance.GetStoneSkin(_mySkinIndex));
+
         CheckAndApplyTurn();
     }
 
@@ -152,6 +159,9 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         }
         else
         {
+            if (PlayerEquipItem.Instance.customStone != null) //민정추가
+                _mySkinIndex = StoneSkinRegistry.Instance.GetEquipStoneSkin(PlayerEquipItem.Instance.customStone);
+
             // 장전된 스킬이 없다면 평소처럼 돌 두는 통신
             photonView.RPC("RPC_ReceiveAndDrawStone", RpcTarget.All, x, y, _myPlayerType, _mySkinIndex);
         }
@@ -286,6 +296,9 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         PlayerType myType = (_myPlayerType == StoneType.Black) ? PlayerType.Black : PlayerType.White;
         string path = "Skills/" + skillName;
 
+        if(PlayerEquipItem.Instance.customStone != null) //민정추가
+            _mySkinIndex = StoneSkinRegistry.Instance.GetEquipStoneSkin(PlayerEquipItem.Instance.customStone);
+
         // _mySkinIndex 를 맨 뒤에 추가해서 전송
         photonView.RPC("RPC_ExecuteSkill", RpcTarget.All, path, x, y, myType, _mySkinIndex);
     }
@@ -293,7 +306,9 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void RPC_ReceiveAndDrawStone(int x, int y, StoneType playerType, int skinID)
     {
+
         Sprite stoneSkin = StoneSkinRegistry.Instance.GetStoneSkin(skinID);
+
         _boardInteraction.PlaceStoneRemote(x, y, stoneSkin);
 
         if (playerType == _myPlayerType && _silencedTurnsLeft > 0)
@@ -331,6 +346,49 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         }
     }
 
+    /// <summary>
+    /// 기권 정보를 네트워크로 전송
+    /// </summary>
+    public void SendSurrender(StoneType winner)
+    {
+        photonView.RPC(nameof(RPC_Surrender), RpcTarget.All, winner);
+    }
+
+    /// <summary>
+    /// 기권 정보를 받아서 게임 종료 처리
+    /// </summary>
+    [PunRPC]
+    private void RPC_Surrender(StoneType winner)
+    {
+        Debug.Log($"<color=orange>[Surrender] 플레이어가 기권했습니다. {winner} 승리!</color>");
+
+        // 게임 종료 이벤트 발생
+        OmokManager.Instance.TriggerGameOver(winner);
+    }
+
+    /// <summary>
+    /// 이모지를 상대방에게 전송
+    /// </summary>
+    /// <param name="emojiType"></param>
+    public void SendEmojiToOpponent(EmojiType emojiType)
+    {
+        photonView.RPC("RPC_ReceiveEmoji", RpcTarget.Others, emojiType);
+    }
+
+    /// <summary>
+    /// 상대방으로부터 이모지 수신
+    /// </summary>
+    /// <param name="emojiType">수신한 이모지 타입</param>
+    [PunRPC]
+    private void RPC_ReceiveEmoji(EmojiType emojiType)
+    {
+        // 상대방 위치에 표시
+        if (GameUIManager.Instance != null)
+        {
+            GameUIManager.Instance.ReceiveEmojiFromOpponent(emojiType);
+        }
+    }
+
     // 게임 종료 시 승자 정보를 받아서 UI를 띄워주는 함수
     private void ShowGameOverUI(StoneType winner)
     {
@@ -349,7 +407,10 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     }
     public void ReturnToMainMenu()
     {
-        IsReturningFromGame = true;
+        // 로그인 되어있는지 체크하는 식으로 변경
+        //IsReturningFromGame = true;
+
+        AchievementManager.Instance.achievementTracker.UpdatePlayerGameCount(); //민정추가
 
         // 방이 존재할때만
         if (PhotonNetwork.CurrentRoom != null)
@@ -361,6 +422,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         {
             SceneManager.LoadScene("LobbyScene");
         }
+
     }
 
     public override void OnLeftRoom()

@@ -25,6 +25,12 @@ public class UImanager : MonoBehaviour
 
     public void ShowLogin()
     {
+        // 로그인 되어있을때만 PlayFab 로그아웃 처리
+        if(PlayFabManager.Instance != null && PlayFabManager.Instance.SuccessLogin)
+        {
+            PlayFabManager.Instance.Logout();
+        }
+
         mainMenuPanel.SetActive(false);
         loginPanel.SetActive(true);
         lobbyPanel.SetActive(false);
