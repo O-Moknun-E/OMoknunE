@@ -45,8 +45,6 @@ public class LoginUI : MonoBehaviour //민정수정
     {
         var pm = PlayFabManager.Instance;
 
-        Debug.Log(pm.Error);
-
         if (pm.SuccessLogin)
         {
             gameObject.SetActive(false);
@@ -61,7 +59,7 @@ public class LoginUI : MonoBehaviour //민정수정
     private void CheckRegisterResult()
     {
         var pm = PlayFabManager.Instance;
-        Debug.Log(pm.Error);
+
         if (pm.SuccessRegister)
             UpdateMessage("회원가입이 완료되었습니다!", true);
         else
