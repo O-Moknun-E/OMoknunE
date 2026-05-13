@@ -19,8 +19,20 @@ public class ItemManager : MonoBehaviour
 
     public void LoadItemDatas() //리소스 폴더에 있는 아이템들을 불러와서 읽음
     {
+        if (itemDict == null) itemDict = new Dictionary<string, ItemData>();
+
+        itemDict.Clear();
+
         var datas = Resources.LoadAll<ItemData>("Items");
-        foreach (var data in datas) itemDict.Add(data.itemId, data);
+        foreach (var data in datas)
+        {
+            if (itemDict.ContainsKey(data.itemId))
+            {
+                Debug.LogWarning($"중복된 아이템 ID 발견: {data.itemId}. 건너뜀.");
+                continue;
+            }
+            itemDict.Add(data.itemId, data);
+        }
         OnLoadItems?.Invoke();
     }
 

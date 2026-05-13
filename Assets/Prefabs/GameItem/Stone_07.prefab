@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 905051902410611919}
   - component: {fileID: -5628098613775972979}
   m_Layer: 0
-  m_Name: Stone_00
+  m_Name: Stone_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 5275952812963398122, guid: 1cdf6ad85383d344b8350d54b3b8b6b5, type: 3}
+  m_Sprite: {fileID: 3926884368516478327, guid: c265a0a0231511a4fba76bf2078a69aa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -104,4 +104,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dc980634e1621a4da294f68f6a925f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StoneItem
-  data: {fileID: 11400000, guid: e2d8c6d26f5953d4494e5a11ab26a09e, type: 2}
+  data: {fileID: 11400000, guid: f0ab8de4f5520454e923f18de91ae576, type: 2}

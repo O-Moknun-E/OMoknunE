@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b55c6d9b95fbef48a6323bfa5fa2b81, type: 3}
-  m_Name: Stone_00
+  m_Name: Stone_03
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   itemPrice: 0
-  itemId: Stone_00
-  itemName: Stone_00
-  itemPrefab: {fileID: 1672987080683482776, guid: 3e95d3a4c10feb5429d6480a466615ed, type: 3}
-  itemIcon: {fileID: 6488346107780823948, guid: e337df821cbd07742bce8e66c84186cd, type: 3}
+  itemId: Stone_03
+  itemName: Stone_03
+  itemPrefab: {fileID: 1672987080683482776, guid: 61fc5bc9e4168ee469b67877f7d3caeb, type: 3}
+  itemIcon: {fileID: 2820143329777312509, guid: 3db3acdc86c06b94b9cc4cf8633b6758, type: 3}
   itemType: 1
