@@ -1,3 +1,6 @@
+using PlayFab.ClientModels;
+using PlayFab;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerEquipItem : PersistentSingleton<PlayerEquipItem>
@@ -12,17 +15,28 @@ public class PlayerEquipItem : PersistentSingleton<PlayerEquipItem>
     public Sprite customBord { get; private set; }
 
 
-    public void PictureItem(Sprite picture) => this.customPicture = picture; 
+    public void PictureItem(Sprite picture) => this.customPicture = picture;
 
-    public void StoneItem( Sprite stone = null) => this.customStone = stone;
-
-    public void BordItem( Sprite bord) => this.customBord = bord;
-
-/*    public Sprite CheckCustomStone(StoneType stoneType)
+    public void StoneItem(Sprite stone = null)
     {
-        if(stoneType == StoneType.Black)
+        this.customStone = stone;
+        int skinID = StoneSkinRegistry.Instance.GetEquipStoneSkin(stone);
+        SaveEquippedSkinToServer(skinID);
+    }
 
-        return customStone;
-    }*/
+    public void BordItem(Sprite bord) => this.customBord = bord;
+
+    private void SaveEquippedSkinToServer(int skinID)
+    {
+        var request = new UpdateUserDataRequest
+        {
+            Data = new Dictionary<string, string> {
+            { "EquippedStoneID", skinID.ToString() }
+        }
+        };
+        PlayFabClientAPI.UpdateUserData(request,
+            result => Debug.Log("서버에 스킨 저장 완료!"),
+            error => Debug.LogError("서버 저장 실패: " + error.GenerateErrorReport()));
+    }
 
 }

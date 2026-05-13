@@ -24,10 +24,11 @@ public class Room : MonoBehaviourPunCallbacks
         targetRoomName = info.Name;
         roomNameText.text = info.Name;
         playerCountText.text = $"{info.PlayerCount} / {info.MaxPlayers}";
-
+        roonManagerText.text = PlayFabManager.Instance.UserNickName;
 
         if (info.CustomProperties.TryGetValue(RoomKeys.HostName, out object hostNameObj))
         {
+            Debug.Log("µé¾î¿È");
             if (hostNameObj != null)
             {
                 roonManagerText.text = hostNameObj.ToString();
