@@ -27,6 +27,8 @@ public class OmokManager : SceneSingleton<OmokManager>
     public float TurnTimeLimit => _turnTimeLimit;
     //==========================================
 
+    public PlayerType MyPlayerType => _myPlayerType;    // 내 플레이어 타입 (흑/백)
+
     public static readonly int BoardSize = 15;   // 오목판의 크기 (15x15)
 
     private BoardInteraction _boardInteraction;  // 보드 인터랙션 참조
@@ -43,6 +45,7 @@ public class OmokManager : SceneSingleton<OmokManager>
     private StoneType _currentTurn;     // 현재 턴의 돌 색상
     private PlayerType _myPlayerType;   // 내 플레이어 타입
     private float _turnTimer;           // 턴 타이머
+    private float _lastTurnSecond = -1; // 이전 프레임의 턴 타이머 정수 초
     private float[] _manaIncomeTimer;   // 마나 획득 타이머 (0: 흑, 1: 백)
     private bool _isGameOver;           // 게임 종료 여부
 
@@ -52,9 +55,11 @@ public class OmokManager : SceneSingleton<OmokManager>
     private double _lastNetworkTime;                 // 한 프레임동안 흐른 서버 시간 기록 (마나 획득 타이머 계산용)
     //==========================================
 
-    public event Action OnUsedMagic;            // 마법이 사용되었을 때 발생하는 이벤트
-    public event Action OnManaChanged;          // 마나가 변경되었을 때 발생하는 이벤트
-    public event Action<StoneType> OnGameOver;  // 게임이 종료되었을 때 발생하는 이벤트(승리한 돌 전달)
+    public event Action OnGameStarted;                 // 게임이 시작되었을 때 발생하는 이벤트
+    public event Action OnUsedMagic;                   // 마법이 사용되었을 때 발생하는 이벤트
+    public event Action<int> OnManaChanged;            // 마나가 변경되었을 때 발생하는 이벤트
+    public event Action<StoneType> OnGameOver;         // 게임이 종료되었을 때 발생하는 이벤트(승리한 돌 전달)
+    public event Action<int> OnTurnTimerSecondChanged; // 턴 타이머가 1초 단위로 변경될 때 발생하는 이벤트 (남은 착수 시간)
 
     ///////////////////////////////////////////////////////////////////////////////////
     // OmokManager 내부에 추가된 부분
@@ -149,6 +154,40 @@ public class OmokManager : SceneSingleton<OmokManager>
         }
     }
 
+    /// <summary>
+    /// 기권 처리 메서드
+    /// </summary>
+    public void Surrender()
+    {
+        // 이미 게임 종료된 상태면 무시
+        if (_isGameOver) return;
+
+        // PvP 모드
+        if(_gameMode == GameMode.PvP)
+        {
+            // 내가 기권하면 상대방이 승리
+            StoneType winner = _myPlayerType == PlayerType.Black ? StoneType.White : StoneType.Black;
+
+            // 네트워크로 기권 정보 전송
+            NetworkOmokManager networkOmokManager = FindFirstObjectByType<NetworkOmokManager>();
+            networkOmokManager.SendSurrender(winner);
+        }
+        // PvE 모드
+        else
+        {
+            // 플레이어가 기권하면 AI 승리
+            OnGameOver?.Invoke(StoneType.White);
+        }
+    }
+
+    /// <summary>
+    /// 외부에서 게임 종료 이벤트를 발생시키기 위한 메서드
+    /// </summary>
+    public void TriggerGameOver(StoneType winner)
+    {
+        OnGameOver?.Invoke(winner);
+    }
+
     // 게임 초기화
     public void InitGame()
     {
@@ -185,6 +224,9 @@ public class OmokManager : SceneSingleton<OmokManager>
         // 타이머 초기화
         _turnTimer = 0f;
         _manaIncomeTimer = new float[2] { 0f, 0f };
+
+        // 게임 시작 이벤트 발생
+        OnGameStarted?.Invoke();
 
         //==========================================
         //======================================추가된 부분
@@ -244,6 +286,9 @@ public class OmokManager : SceneSingleton<OmokManager>
         // 타이머 초기화
         _turnTimer = 0f;
         _manaIncomeTimer = new float[2] { 0f, 0f };
+
+        // 게임 시작 이벤트 발생
+        OnGameStarted?.Invoke();
 
         // 리플레이 기록 시작
         _replay.StartRecording(_players[0].Name, _players[1].Name);
@@ -567,8 +612,9 @@ public class OmokManager : SceneSingleton<OmokManager>
             manaChanged = true;
         }
 
-        if (manaChanged)
-            OnManaChanged?.Invoke();
+        // 상대 턴일때만 내 마나가 변경되니 그때만 갱신할 수 있도록 하기
+        if (!IsMyTurn && manaChanged)
+            OnManaChanged?.Invoke(_players[waitingPlayerIndex].CurrentMana);
     }
 
     // 턴 타이머 체크
@@ -585,6 +631,19 @@ public class OmokManager : SceneSingleton<OmokManager>
             _turnTimer += Time.deltaTime;
         }
         //==========================================
+
+        // 정수 초 단위 변경 감지
+        int currentSecond = Mathf.FloorToInt(_turnTimer);
+
+        // 이전 값이랑 다르면 변경 됨
+        if(currentSecond != _lastTurnSecond)
+        {
+            _lastTurnSecond = currentSecond;
+
+            // 남은 시간 계산 후 이벤트 발생
+            int remainingSeconds = Mathf.CeilToInt(CurrentTurnTimeLimit - _turnTimer);
+            OnTurnTimerSecondChanged?.Invoke(remainingSeconds);
+        }
 
         //==========================================
         //======================================추가된 부분 (TurnTimeLimit -> CurrentTurnTimeLimit)
@@ -615,7 +674,9 @@ public class OmokManager : SceneSingleton<OmokManager>
 
         _currentTurn = _currentTurn == StoneType.Black ? StoneType.White : StoneType.Black;
 
+        // 턴 관련 타이머 초기화
         _turnTimer = 0f;
+        _lastTurnSecond = -1;
 
         //==========================================
         //======================================추가된 부분
@@ -696,36 +757,38 @@ public class OmokManager : SceneSingleton<OmokManager>
 
     }
 
-    //======유니티 내장 UI 이용 테스틑 시간/마나======
-    // 유니티 내장 UI 함수로 화면에 시간/마나 띄우기
-    private void OnGUI()
-    {
-        GUIStyle style = new GUIStyle();
-        style.fontSize = 35;
-        style.fontStyle = FontStyle.Bold;
+    // ######################## 완성된 게임씬 연동 후 주석 #########################
+    ////======유니티 내장 UI 이용 테스틑 시간/마나======
+    //// 유니티 내장 UI 함수로 화면에 시간/마나 띄우기
+    //private void OnGUI()
+    //{
+    //    GUIStyle style = new GUIStyle();
+    //    style.fontSize = 35;
+    //    style.fontStyle = FontStyle.Bold;
 
-        // 남은 시간 통일
-        float timeLeft = Mathf.Max(0, CurrentTurnTimeLimit - _turnTimer);
+    //    // 남은 시간 통일
+    //    float timeLeft = Mathf.Max(0, CurrentTurnTimeLimit - _turnTimer);
 
-        if (IsMyTurn)
-        {
-            style.normal.textColor = timeLeft < 5f ? Color.red : Color.yellow; // 5초 남으면 빨간색!
-            GUI.Label(new Rect(20, 20, 500, 50), $"[내 턴] 남은 시간: {timeLeft:F1}초", style);
-        }
-        else
-        {
-            //상대 턴일 때도 똑같이 남은 시간으로 표시
-            style.normal.textColor = Color.gray;
-            GUI.Label(new Rect(20, 20, 500, 50), $"[상대 턴] 남은 시간: {timeLeft:F1}초", style);
-        }
+    //    if (IsMyTurn)
+    //    {
+    //        style.normal.textColor = timeLeft < 5f ? Color.red : Color.yellow; // 5초 남으면 빨간색!
+    //        GUI.Label(new Rect(20, 20, 500, 50), $"[내 턴] 남은 시간: {timeLeft:F1}초", style);
+    //    }
+    //    else
+    //    {
+    //        //상대 턴일 때도 똑같이 남은 시간으로 표시
+    //        style.normal.textColor = Color.gray;
+    //        GUI.Label(new Rect(20, 20, 500, 50), $"[상대 턴] 남은 시간: {timeLeft:F1}초", style);
+    //    }
 
-        // 마나 표시
-        Player myPlayer = GetPlayer(_myPlayerType);
+    //    // 마나 표시
+    //    Player myPlayer = GetPlayer(_myPlayerType);
 
-        if (myPlayer != null)
-        {
-            style.normal.textColor = Color.cyan;
-            GUI.Label(new Rect(20, Screen.height - 70, 500, 50), $"💎 내 마나: {myPlayer.CurrentMana}", style);
-        }
-    }
+    //    if (myPlayer != null)
+    //    {
+    //        style.normal.textColor = Color.cyan;
+    //        GUI.Label(new Rect(20, Screen.height - 70, 500, 50), $"💎 내 마나: {myPlayer.CurrentMana}", style);
+    //    }
+    //}
+    // #############################################################################
 }

@@ -29,7 +29,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private TextMeshProUGUI _resultText;
 
-    public static bool IsReturningFromGame = false;
+    //public static bool IsReturningFromGame = false;
 
     //스킬 사용 여부 체크
     private bool _hasUsedSkillThisTurn = false;
@@ -334,6 +334,26 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         }
     }
 
+    /// <summary>
+    /// 기권 정보를 네트워크로 전송
+    /// </summary>
+    public void SendSurrender(StoneType winner)
+    {
+        photonView.RPC(nameof(RPC_Surrender), RpcTarget.All, winner);
+    }
+
+    /// <summary>
+    /// 기권 정보를 받아서 게임 종료 처리
+    /// </summary>
+    [PunRPC]
+    private void RPC_Surrender(StoneType winner)
+    {
+        Debug.Log($"<color=orange>[Surrender] 플레이어가 기권했습니다. {winner} 승리!</color>");
+
+        // 게임 종료 이벤트 발생
+        OmokManager.Instance.TriggerGameOver(winner);
+    }
+
     // 게임 종료 시 승자 정보를 받아서 UI를 띄워주는 함수
     private void ShowGameOverUI(StoneType winner)
     {
@@ -352,7 +372,8 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     }
     public void ReturnToMainMenu()
     {
-        IsReturningFromGame = true;
+        // 로그인 되어있는지 체크하는 식으로 변경
+        //IsReturningFromGame = true;
 
         AchievementManager.Instance.achievementTracker.UpdatePlayerGameCount(); //민정추가
 
