@@ -386,9 +386,7 @@ public class ReplayManager : MonoBehaviour
             int skinIndex = stoneType == StoneType.Black ? 0 : 1;
 
             if (skinIndex < StoneSkinRegistry.Instance.GetStoneSkinCount())
-            {
                 renderer.sprite = StoneSkinRegistry.Instance.GetStoneSkin(skinIndex);
-            }
         }
 
         // 행동 기록

@@ -4,11 +4,12 @@ using Photon.Pun;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using Unity.VisualScripting;
 
 public class NetworkOmokManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private BoardInteraction _boardInteraction;
-
+    
     // 전달 데이터: x좌표, y좌표, 진영번호
     public static event Action<int, int, StoneType> OnStonePlaced;
 
@@ -55,6 +56,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
             OmokManager.Instance.OnGameOver -= ShowGameOverUI;
     }
 
+
     private void Start()
     {
         // AI모드면 무시
@@ -94,6 +96,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             _myPlayerType = StoneType.Black;
+
             _mySkinIndex = 0;
         }
         else
@@ -101,7 +104,11 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
             _myPlayerType = StoneType.White;
             _mySkinIndex = 1;
         }
-        _boardInteraction.ChangeStoneSkin(StoneSkinRegistry.Instance.GetStoneSkin(_mySkinIndex));
+        if(PlayerEquipItem.Instance.customStone != null)
+             _boardInteraction.ChangeStoneSkin(PlayerEquipItem.Instance.customStone); //민정추가
+        else
+            _boardInteraction.ChangeStoneSkin(StoneSkinRegistry.Instance.GetStoneSkin(_mySkinIndex));
+
         CheckAndApplyTurn();
     }
 
@@ -152,6 +159,9 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         }
         else
         {
+            if (PlayerEquipItem.Instance.customStone != null) //민정추가
+                _mySkinIndex = StoneSkinRegistry.Instance.GetEquipStoneSkin(PlayerEquipItem.Instance.customStone);
+
             // 장전된 스킬이 없다면 평소처럼 돌 두는 통신
             photonView.RPC("RPC_ReceiveAndDrawStone", RpcTarget.All, x, y, _myPlayerType, _mySkinIndex);
         }
@@ -283,6 +293,9 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         PlayerType myType = (_myPlayerType == StoneType.Black) ? PlayerType.Black : PlayerType.White;
         string path = "Skills/" + skillName;
 
+        if(PlayerEquipItem.Instance.customStone != null) //민정추가
+            _mySkinIndex = StoneSkinRegistry.Instance.GetEquipStoneSkin(PlayerEquipItem.Instance.customStone);
+
         // _mySkinIndex 를 맨 뒤에 추가해서 전송
         photonView.RPC("RPC_ExecuteSkill", RpcTarget.All, path, x, y, myType, _mySkinIndex);
     }
@@ -290,7 +303,9 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void RPC_ReceiveAndDrawStone(int x, int y, StoneType playerType, int skinID)
     {
+
         Sprite stoneSkin = StoneSkinRegistry.Instance.GetStoneSkin(skinID);
+
         _boardInteraction.PlaceStoneRemote(x, y, stoneSkin);
 
         _isMasterTurn = !_isMasterTurn;
@@ -360,6 +375,8 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         // 로그인 되어있는지 체크하는 식으로 변경
         //IsReturningFromGame = true;
 
+        AchievementManager.Instance.achievementTracker.UpdatePlayerGameCount(); //민정추가
+
         // 방이 존재할때만
         if (PhotonNetwork.CurrentRoom != null)
         {
@@ -370,6 +387,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         {
             SceneManager.LoadScene("LobbyScene");
         }
+
     }
 
     public override void OnLeftRoom()

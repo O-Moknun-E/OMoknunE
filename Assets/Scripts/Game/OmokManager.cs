@@ -313,7 +313,10 @@ public class OmokManager : SceneSingleton<OmokManager>
         }
 
         // 플레이어 돌 스킨 설정 (임시로 흑돌. 스킨 적용 기능이 생기면 변경)
-        _playerStone = StoneSkinRegistry.Instance.GetStoneSkin(0);
+        if (PlayerEquipItem.Instance.customStone != null)
+            _playerStone = PlayerEquipItem.Instance.customStone; //민정추가
+        else
+            _playerStone = StoneSkinRegistry.Instance.GetStoneSkin(0);
 
         if (_playerStone == null)
         {
@@ -321,6 +324,7 @@ public class OmokManager : SceneSingleton<OmokManager>
             return;
         }
 
+        Debug.Log(_playerStone);
         _boardInteraction.ChangeStoneSkin(_playerStone);
 
         // 플레이어 턴 활성화
