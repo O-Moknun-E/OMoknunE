@@ -19,7 +19,7 @@ public class TimeOverloadEffect : SkillEffect
         // ========================================================
         if (overloadVfxPrefab != null)
         {
-            Vector3 vfxPos = new Vector3(0, 0, -5f);
+            Vector3 vfxPos = new Vector3(1.15f, 0.35f, -5f);
 
             // 리플레이 모드일 때는 리플레이 전용 폴더(컨테이너)
             Transform parent = context.IsReplay ? ReplayManager.ReplayEffectsContainer : null;

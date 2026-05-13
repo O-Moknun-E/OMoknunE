@@ -37,7 +37,7 @@ public class SilenceEffect : SkillEffect
             if (context.Caster != myType || context.IsReplay)
             {
                 Transform parent = context.IsReplay ? ReplayManager.ReplayEffectsContainer : null;
-                Vector3 centerPos = new Vector3(0f, 0f, -2f);
+                Vector3 centerPos = new Vector3(1.15f, 0.35f, -2f);
 
                 // 1. 턴을 몰래 계산할 보이지 않는 빈 오브젝트(추적기) 생성
                 GameObject trackerObj = new GameObject("SilenceTracker");

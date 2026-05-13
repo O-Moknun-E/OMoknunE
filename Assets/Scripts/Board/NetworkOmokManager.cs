@@ -33,7 +33,9 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
 
     //스킬 사용 여부 체크
     private bool _hasUsedSkillThisTurn = false;
-    
+
+    private GameObject _loadedSkillCardObj; 
+
     public override void OnEnable()
     {
         base.OnEnable();
@@ -140,29 +142,33 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
             Debug.LogWarning("상대방이 아직 입장하지 않았습니다.");
             return;
         }
-        // 핵심 분기: 장전된 스킬 존재 확인
+
+        // 1. 장전된 스킬이 있는지 확인
         if (!string.IsNullOrEmpty(_loadedSkillName))
         {
             if (_loadedSkillName == "SilenceSkill" || _loadedSkillName == "TimeOverloadSkill")
-            {
-                Debug.Log("<color=yellow>[System] 이 스킬은 오목판 클릭이 아니라 <Enter> 키를 눌러 발동해야 합니다</color>");
-                return;
-            }
-            // 1. 장전된 스킬이 있다면 클릭한 좌표로 생성
-            UseSkill(_loadedSkillName, x, y);
+                UseSkill(_loadedSkillName, -1, -1);
+            else
+                UseSkill(_loadedSkillName, x, y);
 
             _hasUsedSkillThisTurn = true;
-
-            // 2. 쏘고 나면 빈손으로 만들기 (연발 방지)
             _loadedSkillName = "";
+
+            // 스킬 발사 성공 시 카드를 화면에서 영원히 파괴
+            if (_loadedSkillCardObj != null)
+            {
+                Destroy(_loadedSkillCardObj);
+                _loadedSkillCardObj = null;
+            }
+
             if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(false);
         }
         else
         {
-            if (PlayerEquipItem.Instance.customStone != null) //민정추가
+            // 장전된 스킬이 없다면 평소처럼 돌 두기
+            if (PlayerEquipItem.Instance.customStone != null)
                 _mySkinIndex = StoneSkinRegistry.Instance.GetEquipStoneSkin(PlayerEquipItem.Instance.customStone);
 
-            // 장전된 스킬이 없다면 평소처럼 돌 두는 통신
             photonView.RPC("RPC_ReceiveAndDrawStone", RpcTarget.All, x, y, _myPlayerType, _mySkinIndex);
         }
     }
@@ -174,7 +180,25 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         _loadedSkillName = "";
         if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(false);
 
-        Debug.Log($"<color=red>[System] 침묵에 걸렸습니다! 앞으로 {_silencedTurnsLeft}턴 동안 스킬을 사용할 수 없습니다.</color>");
+        Debug.Log($"<color=red>[System] 침묵에 걸렸습니다 앞으로 {_silencedTurnsLeft}턴 동안 스킬을 사용할 수 없습니다.</color>");
+
+        SkillCardSilenceUI[] mySkillCards = FindObjectsByType<SkillCardSilenceUI>(FindObjectsSortMode.None);
+
+        foreach (SkillCardSilenceUI card in mySkillCards)
+        {
+            card.ApplySilence();
+        }
+    }
+
+    public void ReleaseSilenceUI()
+    {
+        // 침묵이 풀릴 때 UI도 같이 풀어주는 함수
+        SkillCardSilenceUI[] mySkillCards = FindObjectsByType<SkillCardSilenceUI>(FindObjectsSortMode.None);
+
+        foreach (SkillCardSilenceUI card in mySkillCards)
+        {
+            card.ReleaseSilence();
+        }
     }
 
     // 나중에 UI 상점 버튼이 누를 함수
@@ -184,111 +208,48 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         Debug.Log($"{skillName} 장전 완료!");
     }
 
-    //// UI제작 시 스킬 장전 방식 변경
-    //public void LoadSkill(string skillName)
-    //{
-    //    _loadedSkillName = skillName;
-
-    //    // 오목판에게 스킬 장전 상태라고 알려줌 (반투명 돌 사라짐)
-    //    if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(true);
-
-    //    Debug.Log($"<color=cyan>[System] {skillName} 장전 완료! 오목판을 클릭하세요.</color>");
-    //}
-    //public void CancelLoadedSkill()
-    //{
-    //    _loadedSkillName = "";
-    //    if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(false);
-    //    Debug.Log("<color=red>[System] 스킬 장전 취소! 일반 착수 모드로 돌아갑니다.</color>");
-    //}
-
-    //== 스킬 테스트용 Update 메서드 ==
-    //UI가 완성되면 위의 함수로 변경 예정
     private void Update()
     {
-        // 스킬 테스트 로직 정리
+        // 스킬 테스트 로직 정리 (키보드 입력 삭제)
         if (!PhotonNetwork.InRoom || PhotonNetwork.CurrentRoom.PlayerCount < 2) return;
 
-        // 내 턴일 때만 키보드 입력 허용
         bool isMyTurnNow = (_isMasterTurn && _myPlayerType == StoneType.Black) ||
                            (!_isMasterTurn && _myPlayerType == StoneType.White);
 
         if (!isMyTurnNow) return;
 
-        // 마우스 우클릭(1)을 누르면 스킬 장전 취소 (일반 돌 두기로 복귀)
+        // 마우스 우클릭(1)을 누르면 스킬 장전 취소 로직만 남김
         if (Input.GetMouseButtonDown(1) && !string.IsNullOrEmpty(_loadedSkillName))
         {
             _loadedSkillName = "";
+            _loadedSkillCardObj = null; // [추가됨] 카드 파괴 취소
             if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(false);
-            Debug.Log("<color=red>[System] 스킬 장전 취소 일반 착수 모드로 돌아갑니다</color>");
-        }
-
-        // 스킬 장전 (TryLoadSkill 함수를 사용해 마나, 침묵, 사용 여부를 한 번에 검사)
-        if (Input.GetKeyDown(KeyCode.Alpha1)) TryLoadSkill("FogSkill");
-        if (Input.GetKeyDown(KeyCode.Alpha2)) TryLoadSkill("FakeStoneSkill");
-        if (Input.GetKeyDown(KeyCode.Alpha3)) TryLoadSkill("SealSkill");
-        if (Input.GetKeyDown(KeyCode.Alpha4)) TryLoadSkill("SilenceSkill");
-        if (Input.GetKeyDown(KeyCode.Alpha5)) TryLoadSkill("ManaTrapSkill");
-        if (Input.GetKeyDown(KeyCode.Alpha6)) TryLoadSkill("TimeOverloadSkill");
-
-        // 엔터키 입력 시 스킬 사용 (침묵 스킬은 좌표 필요 없으므로 바로 발동)
-        if (Input.GetKeyDown(KeyCode.Return) && (_loadedSkillName == "SilenceSkill" || _loadedSkillName == "TimeOverloadSkill"))
-        {
-            // 좌표가 필요 없는 스킬이므로 -1, -1 이라는 가짜 좌표를 던짐
-            UseSkill(_loadedSkillName, -1, -1);
-
-            _hasUsedSkillThisTurn = true;
-            _loadedSkillName = "";
-            if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(false);
-
-            Debug.Log("<color=yellow>[System] 엔터 키 입력 즉발 스킬 발동 완료</color>");
         }
     }
 
-    // 스킬 장전 조건을 미리 검사하는 함수
-    private void TryLoadSkill(string skillName)
+    // 덱에서 카드를 클릭했을 때 실행될 함수
+    public void LoadSkillFromDeck(string skillName, GameObject cardObj)
     {
-        // 침묵 상태인지 먼저 검사
+        // 침묵 상태 검사
         if (_silencedTurnsLeft > 0)
         {
             Debug.Log($"<color=red>[System] 침묵 상태입니다 남은 턴: {_silencedTurnsLeft}</color>");
             return;
         }
 
-        // 이미 이번 턴에 스킬을 썼는지 검사
+        // 이번 턴에 스킬을 썼는지 검사
         if (_hasUsedSkillThisTurn)
         {
-            Debug.Log("<color=red>[System] 이미 이번 턴에 스킬을 사용했습니다 오목을 두세요.</color>");
+            Debug.Log("<color=red>[System] 이미 이번 턴에 스킬을 사용했습니다</color>");
             return;
         }
 
-        // 마나가 충분한지 검사
-        SkillBase skill = Resources.Load<SkillBase>("Skills/" + skillName);
-        if (skill != null && OmokManager.Instance != null)
-        {
-            PlayerType myType = (_myPlayerType == StoneType.Black) ? PlayerType.Black : PlayerType.White;
-            Player myPlayer = OmokManager.Instance.GetPlayer(myType);
-
-            // 현재 마나가 스킬 코스트보다 적다면 장전 거부
-            if (myPlayer != null && myPlayer.CurrentMana < skill.Cost)
-            {
-                Debug.Log($"<color=red>[System] 마나가 부족합니다 (필요 마나: {skill.Cost} / 현재 마나: {myPlayer.CurrentMana})</color>");
-                return;
-            }
-        }
-
-        // 스킬 장전
+        // 장전 처리 및 카드 기억하기
         _loadedSkillName = skillName;
-        if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(true);
+        _loadedSkillCardObj = cardObj; 
 
-        // 스킬 종류에 따라 알맞은 안내 로그 출력
-        if (skillName == "SilenceSkill" || skillName == "TimeOverloadSkill")
-        {
-            Debug.Log($"<color=cyan>[System] {skillName} 장전 완료 <Enter> 키를 눌러 발동하세요</color>");
-        }
-        else
-        {
-            Debug.Log($"<color=cyan>[System] {skillName} 스킬 장전 완료 오목판을 클릭하세요.</color>");
-        }
+        if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(true);
+        Debug.Log($"{skillName} 장전 완료");
     }
 
     public void UseSkill(string skillName, int x, int y)
@@ -317,6 +278,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
             if (_silencedTurnsLeft == 0)
             {
                 Debug.Log("<color=green>[System] 침묵이 해제되었습니다 이제 스킬을 사용할 수 있습니다.</color>");
+                ReleaseSilenceUI();
             }
         }
 
