@@ -139,6 +139,13 @@ public class CreateroomUI : MonoBehaviour
     // =====================================================
     public void CreateRoom()
     {
+        // 로비 접속 확인
+        if(!NetworkManager.Instance.IsInLobby)
+        {
+            Debug.LogWarning("로비 접속 중입니다. 잠시 후 다시 시도해주세요.");
+            return;
+        }
+
         string roomName = roomNameInput.text;
 
         // 방 이름 비어있으면 자동 생성

@@ -46,6 +46,8 @@ public class FakeStoneEffect : SkillEffect
             else
             {
                 if (anim != null) anim.enabled = false;
+
+
                 sr.sprite = StoneSkinRegistry.Instance.GetStoneSkin(context.SkinID);
                 sr.color = new Color(1f, 1f, 1f, 1f);
 
