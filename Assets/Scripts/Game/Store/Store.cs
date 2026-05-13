@@ -8,10 +8,10 @@ public class Store : MonoBehaviour
 {
    
     public Action<List<CatalogItem>> OnStoreLoaded;
+    public Action OnBuyItem;
 
     [SerializeField]
     private Inventory inven;
-
     private string catalogVersion = "Main";
     private string moneyCode = "SD";
 
@@ -25,6 +25,7 @@ public class Store : MonoBehaviour
             return;
         }
 
+
         var request = new PurchaseItemRequest
         {
             CatalogVersion = catalogVersion,
@@ -34,6 +35,7 @@ public class Store : MonoBehaviour
         };
 
         PlayFabClientAPI.PurchaseItem(request, result =>{ inven.LoadItem(); Debug.Log($"{itemId}구매완료"); }, error => Debug.LogError(error.GenerateErrorReport()));
+        OnBuyItem?.Invoke();
     }
 
     public List<CatalogItem> LoadStoreCatalog()
