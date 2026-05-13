@@ -24,6 +24,13 @@ public class PrivateroomUI : MonoBehaviour
     // 2. 실제 방 생성 (확인 버튼용)
     public void ConfirmPrivateRoom()
     {
+        // 로비 접속 확인
+        if(!NetworkManager.Instance.IsInLobby)
+        {
+            Debug.LogWarning("로비 접속 중입니다. 잠시 후 다시 시도해주세요.");
+            return;
+        }
+
         string password = passwordInput.text;
 
         if (password == "")

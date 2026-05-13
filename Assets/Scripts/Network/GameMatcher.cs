@@ -5,12 +5,21 @@ using Photon.Realtime;
 
 public class GameMatcher : MonoBehaviourPunCallbacks
 {
-
+    [SerializeField] private GameObject _watingPanel;   // 매칭 대기 패널
     int maxCount = 2;
 
     public void OnClickQuickMatch() //매칭시도
     {
+        if (!NetworkManager.Instance.IsInLobby)
+        {
+            Debug.LogWarning("로비 접속 중입니다. 잠시 후 다시 시도해주세요.");
+            return;
+        }
+
+        _watingPanel.SetActive(true);
+
         Debug.Log("랜덤 매칭 시도 중...");
+
         Hashtable expectedProps = new Hashtable { { RoomKeys.IsRandomMatch, true } };
         PhotonNetwork.JoinRandomRoom(expectedProps, (byte)maxCount);
     }

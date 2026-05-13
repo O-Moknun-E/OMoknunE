@@ -113,8 +113,8 @@ public class BoardInteraction : MonoBehaviour
 
             Vector3 snapPos = GetWorldPositionFromIndex(xIdx, yIdx);
 
-            // 스킬이 장전되지 않았을 때만 반투명 돌을 보여줌
-            if (!_isSkillLoaded)
+            // 스킬이 장전되지 않았을 때만 반투명 돌을 보여줌 + UI 위에 있으면 미리보기 X
+            if (!_isSkillLoaded && !GameUIManager.Instance.IsPointerOverUI())
             {
                 UpdatePreview(snapPos);
             }
@@ -124,7 +124,8 @@ public class BoardInteraction : MonoBehaviour
                 ClearPreview();
             }
 
-            if (Input.GetMouseButtonDown(0))
+            // UI 위에 있으면 착수 X
+            if (Input.GetMouseButtonDown(0) && !GameUIManager.Instance.IsPointerOverUI())
             {
                 OnStoneClicked?.Invoke(xIdx, yIdx);
             }
