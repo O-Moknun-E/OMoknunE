@@ -159,6 +159,9 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         }
         else
         {
+            if (PlayerEquipItem.Instance.customStone != null) //민정추가
+                _mySkinIndex = StoneSkinRegistry.Instance.GetEquipStoneSkin(PlayerEquipItem.Instance.customStone);
+
             // 장전된 스킬이 없다면 평소처럼 돌 두는 통신
             photonView.RPC("RPC_ReceiveAndDrawStone", RpcTarget.All, x, y, _myPlayerType, _mySkinIndex);
         }
@@ -290,6 +293,9 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         PlayerType myType = (_myPlayerType == StoneType.Black) ? PlayerType.Black : PlayerType.White;
         string path = "Skills/" + skillName;
 
+        if(PlayerEquipItem.Instance.customStone != null) //민정추가
+            _mySkinIndex = StoneSkinRegistry.Instance.GetEquipStoneSkin(PlayerEquipItem.Instance.customStone);
+
         // _mySkinIndex 를 맨 뒤에 추가해서 전송
         photonView.RPC("RPC_ExecuteSkill", RpcTarget.All, path, x, y, myType, _mySkinIndex);
     }
@@ -297,12 +303,8 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void RPC_ReceiveAndDrawStone(int x, int y, StoneType playerType, int skinID)
     {
-        Sprite stoneSkin;
-        
-        if(PlayerEquipItem.Instance.customStone != null)  //민정추가  수정해야함
-            stoneSkin = PlayerEquipItem.Instance.customStone;
-        else
-            stoneSkin = StoneSkinRegistry.Instance.GetStoneSkin(skinID);
+
+        Sprite stoneSkin = StoneSkinRegistry.Instance.GetStoneSkin(skinID);
 
         _boardInteraction.PlaceStoneRemote(x, y, stoneSkin);
 

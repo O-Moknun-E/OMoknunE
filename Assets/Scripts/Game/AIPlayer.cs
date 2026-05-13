@@ -41,11 +41,7 @@ public class AIPlayer : MonoBehaviour
             Debug.LogError("BoardInteraction 컴포넌트를 찾을 수 없습니다. AIPlayer 초기화 실패.");
             return;
         }
-
-        if (PlayerEquipItem.Instance.customStone != null)
-            _aiStoneSprite = PlayerEquipItem.Instance.customStone; //민정추가
-        else
-            _aiStoneSprite = StoneSkinRegistry.Instance.GetStoneSkin(1);
+        _aiStoneSprite = StoneSkinRegistry.Instance.GetStoneSkin(1);
 
 
 

@@ -62,8 +62,6 @@ public class OmokManager : SceneSingleton<OmokManager>
     public StoneType GetBoardData(int x, int y) => _board[y, x];
     public Player GetPlayer(PlayerType type) => _players[(int)type];
 
-    public StoneType _CurrentTurn => _currentTurn;
-
     ///////////////////////////////////////////////////////////////////////////////////
 
     public bool IsMyTurn
@@ -281,6 +279,7 @@ public class OmokManager : SceneSingleton<OmokManager>
             return;
         }
 
+        Debug.Log(_playerStone);
         _boardInteraction.ChangeStoneSkin(_playerStone);
 
         // 플레이어 턴 활성화
