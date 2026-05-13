@@ -1084,6 +1084,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonInfo
+  ItemID: 0
+  PriceTxt: {fileID: 0}
+  QuantityTxt: {fileID: 0}
+  ShopManager: {fileID: 0}
 --- !u!114 &228295069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3607,7 +3611,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &664921385
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4147,7 +4151,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1978095625}
   m_Father: {fileID: 8865773040491299459}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -4168,14 +4173,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -4854969995201809608, guid: 1f221621f6da6224ba5f1f9e0a897484, type: 3}
+  m_Sprite: {fileID: 5760202260919997367, guid: 4da69cc82b473744597e3ff546da31a6, type: 3}
   m_Type: 2
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4184,7 +4189,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 0.87
+  m_PixelsPerUnitMultiplier: 2.3
 --- !u!222 &779982648
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4323,6 +4328,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonInfo
+  ItemID: 0
+  PriceTxt: {fileID: 0}
+  QuantityTxt: {fileID: 0}
+  ShopManager: {fileID: 0}
 --- !u!114 &815240164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6889,6 +6898,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonInfo
+  ItemID: 0
+  PriceTxt: {fileID: 0}
+  QuantityTxt: {fileID: 0}
+  ShopManager: {fileID: 0}
 --- !u!114 &1118161506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7010,7 +7023,7 @@ RectTransform:
   m_GameObject: {fileID: 1125011927}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 82972999}
@@ -7040,7 +7053,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 4582806900247545062, guid: ab74b751567b0e14594273294dbe82e7, type: 3}
+  m_Sprite: {fileID: 7320906411373716286, guid: 35ce9f32a21980042977a4c97de341be, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8214,6 +8227,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonInfo
+  ItemID: 0
+  PriceTxt: {fileID: 0}
+  QuantityTxt: {fileID: 0}
+  ShopManager: {fileID: 0}
 --- !u!114 &1356115124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8900,7 +8917,7 @@ RectTransform:
   m_GameObject: {fileID: 1476414531}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2035440725}
@@ -8930,7 +8947,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 4582806900247545062, guid: ab74b751567b0e14594273294dbe82e7, type: 3}
+  m_Sprite: {fileID: 8790154677910664958, guid: 9398de60704d1bd42ae50f7c4e7d262d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9293,6 +9310,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonInfo
+  ItemID: 0
+  PriceTxt: {fileID: 0}
+  QuantityTxt: {fileID: 0}
+  ShopManager: {fileID: 0}
 --- !u!114 &1531353370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10751,7 +10772,7 @@ RectTransform:
   m_GameObject: {fileID: 1749983570}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1356053478}
@@ -10781,7 +10802,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 4582806900247545062, guid: ab74b751567b0e14594273294dbe82e7, type: 3}
+  m_Sprite: {fileID: 6802414005993490869, guid: 90e5826105d0b6a4ca9da3f6909aee6b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12546,6 +12567,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonInfo
+  ItemID: 0
+  PriceTxt: {fileID: 0}
+  QuantityTxt: {fileID: 0}
+  ShopManager: {fileID: 0}
 --- !u!114 &1930084432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12947,8 +12972,8 @@ RectTransform:
   m_GameObject: {fileID: 1965792749}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 723674187}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -13011,7 +13036,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 6003057123245913516, guid: 8ab454e099b46c14cbb73aaaafcce35e, type: 3}
+  m_Sprite: {fileID: 8790154677910664958, guid: 9398de60704d1bd42ae50f7c4e7d262d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13029,6 +13054,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1965792749}
   m_CullTransparentMesh: 0
+--- !u!1 &1978095624
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1978095625}
+  - component: {fileID: 1978095627}
+  - component: {fileID: 1978095626}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1978095625
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1978095624}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 779982646}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1920, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1978095626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1978095624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 1b3f6cfdde380784591efaacc543992d, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1978095627
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1978095624}
+  m_CullTransparentMesh: 1
 --- !u!1 &1978267018
 GameObject:
   m_ObjectHideFlags: 0
@@ -15407,6 +15507,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonInfo
+  ItemID: 0
+  PriceTxt: {fileID: 0}
+  QuantityTxt: {fileID: 0}
+  ShopManager: {fileID: 0}
 --- !u!224 &281809724670974717
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15416,8 +15520,8 @@ RectTransform:
   m_GameObject: {fileID: 8163367809494697994}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1828287799}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15957,6 +16061,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlot
+  itemID: 0
+  itemImage: {fileID: 0}
+  quantityText: {fileID: 0}
+  quantityBackground: {fileID: 0}
 --- !u!1 &590434963476802881
 GameObject:
   m_ObjectHideFlags: 0
@@ -16057,6 +16165,8 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
+  giveUpPopup: {fileID: 0}
+  settingsPopup: {fileID: 0}
 --- !u!114 &629058720454171702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16518,6 +16628,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonInfo
+  ItemID: 0
+  PriceTxt: {fileID: 0}
+  QuantityTxt: {fileID: 0}
+  ShopManager: {fileID: 0}
 --- !u!224 &808201524187986246
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16753,6 +16867,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlot
+  itemID: 0
+  itemImage: {fileID: 0}
+  quantityText: {fileID: 0}
+  quantityBackground: {fileID: 0}
 --- !u!114 &924624461063717954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17221,14 +17339,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.7735849, g: 0.60275835, b: 0.48531505, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 5402330433776459417, guid: cd42443122791b942a73d1509ccec9ee, type: 3}
+  m_Sprite: {fileID: 6495943319018875221, guid: a8a1c4f9736caae47a5e8d15aeef4a72, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -17631,10 +17749,10 @@ RectTransform:
   - {fileID: 607760122}
   m_Father: {fileID: 2787231191122486034}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 71.064735, y: -143.91815}
+  m_SizeDelta: {x: 84.11, y: 91.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1369706884465101950
 RectTransform:
@@ -17672,10 +17790,10 @@ RectTransform:
   - {fileID: 627060157}
   m_Father: {fileID: 2787231191122486034}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 249.28473, y: -143.91815}
+  m_SizeDelta: {x: 84.11, y: 91.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1426079528202765339
 RectTransform:
@@ -17747,6 +17865,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlot
+  itemID: 0
+  itemImage: {fileID: 0}
+  quantityText: {fileID: 0}
+  quantityBackground: {fileID: 0}
 --- !u!114 &1539623978092638120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18059,6 +18181,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonInfo
+  ItemID: 0
+  PriceTxt: {fileID: 0}
+  QuantityTxt: {fileID: 0}
+  ShopManager: {fileID: 0}
 --- !u!222 &1666490705899398545
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -18227,7 +18353,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 5275952812963398122, guid: 1cdf6ad85383d344b8350d54b3b8b6b5, type: 3}
+  m_Sprite: {fileID: 4715612874868211733, guid: 8d1001065c876df4192bfaa85a546bf0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -19196,7 +19322,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 2574722035660519353, guid: 0770fd75d5b051f4186e148ff436df06, type: 3}
+  m_Sprite: {fileID: 1581051445878840994, guid: 1281d399ce4a28045867ee1940a62fac, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -19623,7 +19749,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -3396013953647934848, guid: 928f590eb6038254487fedf6002700a3, type: 3}
+  m_Sprite: {fileID: 7320906411373716286, guid: 35ce9f32a21980042977a4c97de341be, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -19858,10 +19984,10 @@ RectTransform:
   - {fileID: 1040438081}
   m_Father: {fileID: 2787231191122486034}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 71.064735, y: -59.118153}
+  m_SizeDelta: {x: 84.11, y: 91.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2926567774507144590
 MonoBehaviour:
@@ -20535,7 +20661,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -8286694971105976662, guid: 4447cd7698bd4de46969058adc592cd5, type: 3}
+  m_Sprite: {fileID: 7178341657827451841, guid: 18fc121473d587a4586e9db103de030d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -20709,6 +20835,8 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveHistoryUI
+  content: {fileID: 0}
+  moveItemPrefab: {fileID: 0}
 --- !u!222 &3348327663401873252
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -20756,8 +20884,8 @@ RectTransform:
   m_GameObject: {fileID: 543384302744815475}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1736946975}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -21030,6 +21158,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonInfo
+  ItemID: 0
+  PriceTxt: {fileID: 0}
+  QuantityTxt: {fileID: 0}
+  ShopManager: {fileID: 0}
 --- !u!224 &3557350166212567174
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21180,6 +21312,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlot
+  itemID: 0
+  itemImage: {fileID: 0}
+  quantityText: {fileID: 0}
+  quantityBackground: {fileID: 0}
 --- !u!1 &3714537396861652621
 GameObject:
   m_ObjectHideFlags: 0
@@ -21399,6 +21535,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
+  inventoryPanel: {fileID: 0}
+  slots: []
+  itemIcons: []
+  shopPanel: {fileID: 0}
 --- !u!4 &3899339803793887076
 Transform:
   m_ObjectHideFlags: 0
@@ -21888,6 +22028,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlot
+  itemID: 0
+  itemImage: {fileID: 0}
+  quantityText: {fileID: 0}
+  quantityBackground: {fileID: 0}
 --- !u!1 &4085960807748930262
 GameObject:
   m_ObjectHideFlags: 0
@@ -21967,6 +22111,8 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Timer
+  timerText: {fileID: 0}
+  remainingTime: 0
 --- !u!114 &4117016836501620439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21979,6 +22125,8 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopManagerScript
+  coins: 0
+  CoinsTXT: {fileID: 0}
 --- !u!1 &4117647669328446855
 GameObject:
   m_ObjectHideFlags: 0
@@ -22245,8 +22393,8 @@ RectTransform:
   m_GameObject: {fileID: 7588148382204173697}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1734285512}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -22523,8 +22671,8 @@ RectTransform:
   m_GameObject: {fileID: 4563399577090405507}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2059279874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -22783,6 +22931,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlot
+  itemID: 0
+  itemImage: {fileID: 0}
+  quantityText: {fileID: 0}
+  quantityBackground: {fileID: 0}
 --- !u!222 &4554138671342163278
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -23161,10 +23313,10 @@ RectTransform:
   - {fileID: 1470430240}
   m_Father: {fileID: 2787231191122486034}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 160.17474, y: -59.118153}
+  m_SizeDelta: {x: 84.11, y: 91.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4746248597570086866
 GameObject:
@@ -23519,7 +23671,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 75, y: 58.174}
+  m_AnchoredPosition: {x: 88, y: 67}
   m_SizeDelta: {x: 918.75, y: 918.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &4878003139525429945
@@ -24574,7 +24726,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &4957072443285051564
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -25244,6 +25396,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonInfo
+  ItemID: 0
+  PriceTxt: {fileID: 0}
+  QuantityTxt: {fileID: 0}
+  ShopManager: {fileID: 0}
 --- !u!114 &5335476184052048338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25502,10 +25658,10 @@ RectTransform:
   - {fileID: 770077639}
   m_Father: {fileID: 2787231191122486034}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 160.17474, y: -228.71815}
+  m_SizeDelta: {x: 84.11, y: 91.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5492195325686367661
 MonoBehaviour:
@@ -26638,6 +26794,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonInfo
+  ItemID: 0
+  PriceTxt: {fileID: 0}
+  QuantityTxt: {fileID: 0}
+  ShopManager: {fileID: 0}
 --- !u!114 &5957500051411161291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26959,6 +27119,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlot
+  itemID: 0
+  itemImage: {fileID: 0}
+  quantityText: {fileID: 0}
+  quantityBackground: {fileID: 0}
 --- !u!114 &6189507293944031672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27046,6 +27210,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EmojiManager
+  emojiPanel: {fileID: 0}
+  emojiBtns: []
+  emojiSprites: []
+  displayArea: {fileID: 0}
 --- !u!224 &6244662497174322096
 RectTransform:
   m_ObjectHideFlags: 0
@@ -27278,8 +27446,8 @@ RectTransform:
   m_GameObject: {fileID: 4753169508479762160}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 129032563}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -28100,10 +28268,10 @@ RectTransform:
   - {fileID: 1273627203}
   m_Father: {fileID: 2787231191122486034}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 249.28473, y: -228.71815}
+  m_SizeDelta: {x: 84.11, y: 91.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6761085632866728584
 MonoBehaviour:
@@ -28312,6 +28480,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlot
+  itemID: 0
+  itemImage: {fileID: 0}
+  quantityText: {fileID: 0}
+  quantityBackground: {fileID: 0}
 --- !u!222 &6906472583378336301
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -28650,8 +28822,8 @@ RectTransform:
   m_GameObject: {fileID: 9021554687456710732}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 970087819}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -30067,6 +30239,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonInfo
+  ItemID: 0
+  PriceTxt: {fileID: 0}
+  QuantityTxt: {fileID: 0}
+  ShopManager: {fileID: 0}
 --- !u!224 &7951868462300169607
 RectTransform:
   m_ObjectHideFlags: 0
@@ -30568,8 +30744,8 @@ RectTransform:
   m_GameObject: {fileID: 224780343683804265}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1683931573}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -31255,6 +31431,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonInfo
+  ItemID: 0
+  PriceTxt: {fileID: 0}
+  QuantityTxt: {fileID: 0}
+  ShopManager: {fileID: 0}
 --- !u!222 &8702617243362014113
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -31395,10 +31575,10 @@ RectTransform:
   - {fileID: 1554232316}
   m_Father: {fileID: 2787231191122486034}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 249.28473, y: -59.118153}
+  m_SizeDelta: {x: 84.11, y: 91.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &8790602943250080610
 RectTransform:
@@ -31665,10 +31845,10 @@ RectTransform:
   - {fileID: 998641994}
   m_Father: {fileID: 2787231191122486034}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 160.17474, y: -143.91815}
+  m_SizeDelta: {x: 84.11, y: 91.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8898893563371175049
 CanvasRenderer:
@@ -31690,6 +31870,8 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Timer
+  timerText: {fileID: 0}
+  remainingTime: 0
 --- !u!114 &8902644362285668672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31963,7 +32145,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 4582806900247545062, guid: ab74b751567b0e14594273294dbe82e7, type: 3}
+  m_Sprite: {fileID: 6802414005993490869, guid: 90e5826105d0b6a4ca9da3f6909aee6b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
