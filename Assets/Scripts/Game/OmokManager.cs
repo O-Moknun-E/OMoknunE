@@ -757,6 +757,14 @@ public class OmokManager : SceneSingleton<OmokManager>
         }
 
     }
+    // ##########################################################
+    // 상점에서 구매 후 강제로 UI를 갱신하기 위한 함수
+    public void ForceUpdateManaUI()
+    {
+        int pIndex = (MyPlayerType == PlayerType.Black) ? 0 : 1;
+        OnManaChanged?.Invoke(_players[pIndex].CurrentMana);
+    }
+    // ###########################################################
 
     // ######################## 완성된 게임씬 연동 후 주석 #########################
     ////======유니티 내장 UI 이용 테스틑 시간/마나======

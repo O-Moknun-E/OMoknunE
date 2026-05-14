@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: SilenceEffect_Data
   m_EditorClassIdentifier: Assembly-CSharp::SilenceEffect
   durationTurns: 3
+  silencePrefab: {fileID: 8654033229042175133, guid: 891d68dbd9bbe2145a289513dffdf1ad, type: 3}

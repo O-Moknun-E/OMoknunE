@@ -9,12 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7156d39803f9d4847a13bb3f82c54207, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e62262fe64174749a44fd6b91d8c453, type: 3}
   m_Name: SealSkill
-  m_EditorClassIdentifier: Assembly-CSharp::SkillBase
+  m_EditorClassIdentifier: Assembly-CSharp::NormalSkill
+  _icon: {fileID: 8790154677910664958, guid: 2cc425c3dd04ab141834557a9ea9ce76, type: 3}
+  _displayName: "\uACB0\uACC4"
+  _description: "\uACB0\uACC4\uB97C \uC0DD\uC131\uD574 \uB204\uAD6C\uB3C4 \uB458
+    \uC218 \uC5C6\uB2E4"
+  _skillName: Seal
   _id: 2
-  _skillName: "\uBD09\uC778\uACB0\uACC4 \uC0DD\uC131"
-  _description: 
-  _cost: 5
+  _cost: 3
   _effects:
   - {fileID: 11400000, guid: 1ed38ac84b2a4be4ba963aacea72148d, type: 2}
