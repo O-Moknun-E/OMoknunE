@@ -4046,14 +4046,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EmojiPanel
   _emojiButtons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1678705872}
+  - {fileID: 1693761286}
+  - {fileID: 879990862}
+  - {fileID: 1581300063}
+  - {fileID: 983564736}
+  - {fileID: 1207929645}
+  - {fileID: 896871680}
+  - {fileID: 1016260637}
   _cooldownTime: 1
 --- !u!1001 &1187112376
 PrefabInstance:
