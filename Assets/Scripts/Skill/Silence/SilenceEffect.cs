@@ -39,13 +39,12 @@ public class SilenceEffect : SkillEffect
                 Transform parent = context.IsReplay ? ReplayManager.ReplayEffectsContainer : null;
                 Vector3 centerPos = new Vector3(1.15f, 0.35f, -2f);
 
-                // 1. 턴을 몰래 계산할 보이지 않는 빈 오브젝트(추적기) 생성
+                // 턴을 몰래 계산할 보이지 않는 빈 오브젝트) 생성
                 GameObject trackerObj = new GameObject("SilenceTracker");
                 if (parent != null) trackerObj.transform.SetParent(parent);
                 trackerObj.transform.position = centerPos;
 
-                // 2. 시전 즉시 잠기는 연출을 보여줄 자물쇠를 화면에 생성
-                // (생성되자마자 애니메이터의 기본 상태인 lock이 자동으로 재생됩니다)
+                // 시전 즉시 잠기는 연출을 보여줄 자물쇠를 화면에 생성
                 GameObject lockAnimObj = Instantiate(silencePrefab, centerPos, Quaternion.identity, parent);
                 
                 float lockDelay = 1.0f;
