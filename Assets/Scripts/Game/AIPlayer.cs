@@ -227,7 +227,7 @@ public class AIPlayer : MonoBehaviour
 
     #endregion
 
-    #region Hard 난이도: 미니맥스(알파베타 가지치기) (5수 탐색)
+    #region Hard 난이도: 미니맥스(알파베타 가지치기) (4수 탐색)
 
     /// <summary>
     /// 어려움: 탐색 깊이 4인 미니맥스(알파베타 가지치기) 알고리즘
