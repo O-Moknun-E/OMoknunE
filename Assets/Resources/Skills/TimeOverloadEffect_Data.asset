@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: TimeOverloadEffect_Data
   m_EditorClassIdentifier: Assembly-CSharp::TimeOverloadEffect
   durationTurns: 2
+  overloadVfxPrefab: {fileID: 7808343037719406050, guid: c9237d6b5f9765b47a94b9409f137140, type: 3}
+  vfxDuration: 2

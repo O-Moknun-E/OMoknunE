@@ -47,14 +47,35 @@ public class CreateroomUI : MonoBehaviour
     // =====================================================
     void Start()
     {
-        // private/public UI 초기화
         UpdatePrivacyUI();
 
-        // =====================================================
-        // 비밀번호 입력할 때마다 숫자만 남기기
-        // 한글/영어 자동 제거
-        // =====================================================
+        // 한글 IME 조합 입력은 ContentType 검증을 우회하므로
+        // onValueChanged에서 정규식으로 한 번 더 걸러준다
         passwordInput.onValueChanged.AddListener(OnlyNumber);
+
+        // 키 입력 단계에서 숫자가 아니면 아예 받지 않음
+        passwordInput.onValidateInput = (text, index, addedChar) =>
+            (addedChar >= '0' && addedChar <= '9') ? addedChar : '\0';
+
+        // ForceLabelUpdate로 설정 적용
+        passwordInput.ForceLabelUpdate();
+    }
+
+    // =====================================================
+    // 비밀번호 입력창이 포커스된 동안 한글 IME 강제 OFF
+    // (onSelect 한 번만으론 OS가 다시 켤 수 있어 매 프레임 보장)
+    // =====================================================
+    void Update()
+    {
+        if (passwordInput != null && passwordInput.isFocused)
+        {
+            if (Input.imeCompositionMode != IMECompositionMode.Off)
+                Input.imeCompositionMode = IMECompositionMode.Off;
+
+            // 혹시 조합 중인 한글이 남아있으면 즉시 비움
+            if (!string.IsNullOrEmpty(Input.compositionString))
+                Input.imeCompositionMode = IMECompositionMode.Off;
+        }
     }
 
     // =====================================================
@@ -139,6 +160,13 @@ public class CreateroomUI : MonoBehaviour
     // =====================================================
     public void CreateRoom()
     {
+        // 로비 접속 확인
+        if(!NetworkManager.Instance.IsInLobby)
+        {
+            Debug.LogWarning("로비 접속 중입니다. 잠시 후 다시 시도해주세요.");
+            return;
+        }
+
         string roomName = roomNameInput.text;
 
         // 방 이름 비어있으면 자동 생성

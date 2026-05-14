@@ -5,12 +5,21 @@ using Photon.Realtime;
 
 public class GameMatcher : MonoBehaviourPunCallbacks
 {
-
+    [SerializeField] private GameObject _watingPanel;   // 매칭 대기 패널
     int maxCount = 2;
 
     public void OnClickQuickMatch() //매칭시도
     {
+        if (!NetworkManager.Instance.IsInLobby)
+        {
+            Debug.LogWarning("로비 접속 중입니다. 잠시 후 다시 시도해주세요.");
+            return;
+        }
+
+        _watingPanel.SetActive(true);
+
         Debug.Log("랜덤 매칭 시도 중...");
+
         Hashtable expectedProps = new Hashtable { { RoomKeys.IsRandomMatch, true } };
         PhotonNetwork.JoinRandomRoom(expectedProps, (byte)maxCount);
     }
@@ -19,10 +28,18 @@ public class GameMatcher : MonoBehaviourPunCallbacks
     {
         Debug.Log("랜덤 방 없음, 전용 방 생성함");
         RoomOptions options = new RoomOptions { MaxPlayers = (byte)maxCount };
-        Hashtable props = new Hashtable { { RoomKeys.IsRandomMatch, true } };
+        Hashtable props = new Hashtable
+        {
+            { RoomKeys.IsRandomMatch, true },
+            { RoomKeys.HostName, PlayFabManager.Instance.UserNickName }
+        };
 
         options.CustomRoomProperties = props;
-        options.CustomRoomPropertiesForLobby = new string[] { RoomKeys.IsRandomMatch };
+        options.CustomRoomPropertiesForLobby = new string[]
+        { 
+            RoomKeys.IsRandomMatch,
+            RoomKeys.HostName
+        };
 
         PhotonNetwork.CreateRoom(null, options);
     }

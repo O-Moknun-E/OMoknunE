@@ -77,4 +77,23 @@ public class MagicRegistry : PersistentSingleton<MagicRegistry>
         Debug.LogWarning($"마법 ID {magicID}에 해당하는 마법이 없습니다.");
         return null;
     }
+
+    /// <summary>
+    /// 이름으로 마법 가져오기
+    /// </summary>
+    /// <param name="magicName">마법 명</param>
+    /// <returns>해당 이름의 마법 객체</returns>
+    public IMagic GetMagicByName(string magicName)
+    {
+        foreach (var magic in _magicDictionary.Values)
+        {
+            if (magic.Name == magicName)
+            {
+                return magic;
+            }
+        }
+
+        Debug.LogWarning($"마법 이름 {magicName}에 해당하는 마법이 없습니다.");
+        return null;
+    }
 }

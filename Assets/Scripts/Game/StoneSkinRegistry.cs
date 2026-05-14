@@ -22,6 +22,20 @@ public class StoneSkinRegistry : PersistentSingleton<StoneSkinRegistry>
         return _stoneSkins[skinID];
     }
 
+    public int GetEquipStoneSkin(Sprite targetSprite)
+    {
+        for (int i = 0; i < _stoneSkins.Length; i++)
+        {
+            if (_stoneSkins[i] == targetSprite)
+            {
+                Debug.Log("찾음");
+                return i;
+
+            }
+        }
+            return 0;
+    }
+
     /// <summary>
     /// 돌 스킨의 총 개수 반환
     /// </summary>

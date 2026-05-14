@@ -10,7 +10,6 @@ public class RewardManager : PersistentSingleton<RewardManager>
 
     private const string rewardCord = "SD";
 
-    private int dailyRewardAmount = 20;
     private int winRewardAmount = 100;
     private int loseRewardAmount = 40;
 
@@ -19,12 +18,6 @@ public class RewardManager : PersistentSingleton<RewardManager>
         int rewardAmount = isWin ? winRewardAmount : loseRewardAmount;
         GiveReward(rewardAmount);
     }
-
-    public void GrantDailyBonus()//데일리 보너스 재화
-    {
-        GiveReward(dailyRewardAmount);
-    }
-
 
     public void GiveReward(int amount)
     {
@@ -36,6 +29,16 @@ public class RewardManager : PersistentSingleton<RewardManager>
 
         OnRewardGranted?.Invoke();
         PlayFabClientAPI.AddUserVirtualCurrency(request, OnRewardSuccess, OnRewardFailure);
+
+    } 
+
+    public void UseReward(int amount)
+    {
+        var request = new AddUserVirtualCurrencyRequest
+        {
+            VirtualCurrency = rewardCord,
+            Amount = amount
+        };
 
     }
 

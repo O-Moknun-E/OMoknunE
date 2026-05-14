@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26d5fad9ae13f5a4f8d0625d0b629ad7, type: 3}
   m_Name: FogEffect_Data
   m_EditorClassIdentifier: Assembly-CSharp::FogEffect
-  fogPrefab: {fileID: 8056359585070895723, guid: 7563a83a71de23b4ca7bc8eb2c788949, type: 3}
+  fogPrefab: {fileID: 5518971706983064032, guid: 021f65a2e6199c345b53512110e7170a, type: 3}

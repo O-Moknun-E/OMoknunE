@@ -41,8 +41,9 @@ public class AIPlayer : MonoBehaviour
             Debug.LogError("BoardInteraction 컴포넌트를 찾을 수 없습니다. AIPlayer 초기화 실패.");
             return;
         }
+        _aiStoneSprite = SkinRegistry.Instance.GetStoneSkin(1);
 
-        _aiStoneSprite = StoneSkinRegistry.Instance.GetStoneSkin(1);
+
 
         if (_aiStoneSprite == null)
         {
@@ -114,17 +115,18 @@ public class AIPlayer : MonoBehaviour
         });
 
         // Task 완료까지 대기 (프레임마다 체크)
-        while(!aiTask.IsCompleted)
+        while (!aiTask.IsCompleted)
         {
             yield return null;
         }
 
         // 결과 가져오기
-        if(aiTask.Status == TaskStatus.RanToCompletion)
+        if (aiTask.Status == TaskStatus.RanToCompletion)
         {
             bestMove = aiTask.Result;
             moveFound = true;
-        } else
+        }
+        else
         {
             Debug.LogError("<color=red>[AI] Task 실행 실패</color>");
         }
