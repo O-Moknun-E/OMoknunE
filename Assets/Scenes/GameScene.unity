@@ -13726,6 +13726,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerInfo
       objectReference: {fileID: 0}
+    - target: {fileID: 7287664062789456348, guid: 6aa6453e5db861141bf76f3b740c6132, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -3420002341934151136, guid: b5b79b1406033df4ca6b8fe2311f410e, type: 3}
     - target: {fileID: 8425690215025126248, guid: 6aa6453e5db861141bf76f3b740c6132, type: 3}
       propertyPath: m_Pivot.x
       value: 1
@@ -14339,10 +14343,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1180395634}
     m_Modifications:
-    - target: {fileID: 5133488167192108176, guid: 62f33f804e377434fa1f0af3adecb637, type: 3}
-      propertyPath: m_Name
-      value: OpponentTurnTimerText
-      objectReference: {fileID: 0}
     - target: {fileID: 6858225252710319833, guid: 62f33f804e377434fa1f0af3adecb637, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -14422,10 +14422,6 @@ PrefabInstance:
     - target: {fileID: 6858225252710319833, guid: 62f33f804e377434fa1f0af3adecb637, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7509122969246429997, guid: 62f33f804e377434fa1f0af3adecb637, type: 3}
-      propertyPath: m_Name
-      value: OpponentNicknameText
       objectReference: {fileID: 0}
     - target: {fileID: 7656828985983282388, guid: 62f33f804e377434fa1f0af3adecb637, type: 3}
       propertyPath: m_Name
