@@ -256,7 +256,10 @@ public class GameUIManager : SceneSingleton<GameUIManager>
             myPortraitID = SkinRegistry.Instance.GetPictureID(pm.customPicture);
 
 
-        _photonView.RPC("ReceivePortraitID", RpcTarget.Others, myPortraitID);
+        // PvP에서만
+        if(OmokManager.Instance.GameMode == GameMode.PvP)
+            _photonView.RPC("ReceivePortraitID", RpcTarget.Others, myPortraitID);
+
         UpdatePortraitUI(OmokManager.Instance.MyPlayerType, myPortraitID);
     }
 
@@ -264,10 +267,33 @@ public class GameUIManager : SceneSingleton<GameUIManager>
     {
         Sprite portraitSprite = SkinRegistry.Instance.GetPictureSkin(portraitID);
 
+        // portraitID에 해당하는 animator controller 가져오기
+        RuntimeAnimatorController animatorController = SkinRegistry.Instance.GetAnimatorController(portraitID);
+
         if (playerType == OmokManager.Instance.MyPlayerType)
+        {
             _myPortraitImage.sprite = portraitSprite;
+
+            // 해당 이미지가 달려있는 게임오브젝트의 Animator 컴포넌트 가져오기
+            Animator animator = _myPortraitImage.GetComponent<Animator>();
+
+            if (animator != null & animatorController != null)
+            {
+                animator.runtimeAnimatorController = animatorController;
+            }
+        }
         else
+        {
+            // 해당 이미지가 달려있는 게임오브젝트의 Animator 컴포넌트 가져오기
+            Animator animator = _opponentPortraitImage.GetComponent<Animator>();
+
+            if (animator != null & animatorController != null)
+            {
+                animator.runtimeAnimatorController = animatorController;
+            }
+
             _opponentPortraitImage.sprite = portraitSprite;
+        }
     }
 
     /// <summary>

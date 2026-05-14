@@ -475,6 +475,13 @@ MonoBehaviour:
   bordSkins:
   - {fileID: -7739398390872675866, guid: cc42b4413ed376a4d9f9fdfce580edaa, type: 3}
   - {fileID: 6657739203594880187, guid: ac6e6379f2612fd4aa8727d0a5202576, type: 3}
+  animatorControllers:
+  - {fileID: 9100000, guid: 65a5fdd6afd80504081921c1094e8fa8, type: 2}
+  - {fileID: 9100000, guid: c8b91272294d84b4d8823407bad463de, type: 2}
+  - {fileID: 9100000, guid: 92b3441d20a38704292231b6cf11e2d2, type: 2}
+  - {fileID: 9100000, guid: a9b97de051a3cdc4497fb1640f3d31c2, type: 2}
+  - {fileID: 9100000, guid: 3f449c76f8cbf5942a9b131b3da108b2, type: 2}
+  - {fileID: 9100000, guid: 087fe6fd7826e7a48bb12e7ad9efaeea, type: 2}
 --- !u!4 &672786659
 Transform:
   m_ObjectHideFlags: 0
