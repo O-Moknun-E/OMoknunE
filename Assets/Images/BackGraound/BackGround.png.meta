@@ -1,43 +1,10 @@
 fileFormatVersion: 2
-guid: 118b0c4ae46c04f45bc748d8367c5bec
+guid: 361b2182e74a4ef4fab4d1b742606a05
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -447093098438978552
-    second: BackGround_Object_0
-  - first:
-      213: 3248610617262118828
-    second: BackGround_Object_1
-  - first:
-      213: -6210226036255955160
-    second: BackGround_Object_2
-  - first:
-      213: 4130784990898254870
-    second: BackGround_Object_3
-  - first:
-      213: 8748591934837092675
-    second: BackGround_Object_4
-  - first:
-      213: -5787332229283141654
-    second: BackGround_Object_5
-  - first:
-      213: 8867113838614501875
-    second: BackGround_Object_6
-  - first:
-      213: 6587408202927092528
-    second: BackGround_Object_7
-  - first:
-      213: 8358930366913987647
-    second: BackGround_Object_8
-  - first:
-      213: -4858196468241267832
-    second: BackGround_Object_9
-  - first:
-      213: -7953373793211177405
-    second: BackGround_Object_10
-  - first:
-      213: -7447786741599207425
-    second: BackGround_Object_11
+      213: 5760202260919997367
+    second: BackGround_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -70,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -84,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -172,23 +139,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BackGround_Object_0
+      name: BackGround_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 240
-        height: 135
+        width: 1672
+        height: 941
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 804140e123b9bc9f0800000000000000
-      internalID: -447093098438978552
+      spriteID: 7b3d98cff6950ff40800000000000000
+      internalID: 5760202260919997367
       vertices: []
       indices: 
       edges: []
@@ -197,7 +164,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: aeb42e1aa17c48946b766d74d812f024
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -205,11 +172,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries:
-      - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":240.0,"y":135.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+      entries: []
     nameFileIdTable:
-      BackGround_Object_0: -447093098438978552
+      BackGround_0: 5760202260919997367
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
