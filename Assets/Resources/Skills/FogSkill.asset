@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e62262fe64174749a44fd6b91d8c453, type: 3}
+  m_Name: FogSkill
+  m_EditorClassIdentifier: Assembly-CSharp::NormalSkill
+  _icon: {fileID: 6802414005993490869, guid: a31880d489506df4aa12c0645e4deb2b, type: 3}
+  _displayName: "\uBA39\uAD6C\uB984"
+  _description: "\uC548\uAC1C\uB97C \uC0DD\uC131\uD574 3X3 \uCE78\uC744 \uAC00\uB9BC"
+  _skillName: Fog
+  _id: 0
+  _cost: 3
+  _effects:
+  - {fileID: 11400000, guid: d748144252631534d8ab64a713d623ad, type: 2}

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e62262fe64174749a44fd6b91d8c453, type: 3}
+  m_Name: ManaTrapSkill
+  m_EditorClassIdentifier: Assembly-CSharp::NormalSkill
+  _icon: {fileID: 4715612874868211733, guid: cfe3fec18e52f43438aba76d1a54a645, type: 3}
+  _displayName: "\uB9C8\uB098 \uB048\uB048\uC774"
+  _description: "\uC0C1\uB300\uAC00 \uB9C8\uB098 \uB36B\uC5D0 \uCC29\uC218 \uC2DC
+    \uB9C8\uB098 3\uC744 \uAE4E\uC2B5\uB2C8\uB2E4"
+  _skillName: ManaTrap
+  _id: 4
+  _cost: 3
+  _effects:
+  - {fileID: 11400000, guid: 10737c6b9d4ce2a46823ea37613e126b, type: 2}
