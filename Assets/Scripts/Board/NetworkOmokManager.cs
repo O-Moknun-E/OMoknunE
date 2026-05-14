@@ -160,7 +160,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         else
         {
             if (PlayerEquipItem.Instance.customStone != null) //민정추가
-                _mySkinIndex = StoneSkinRegistry.Instance.GetEquipStoneSkin(PlayerEquipItem.Instance.customStone);
+                 _mySkinIndex = StoneSkinRegistry.Instance.GetEquipStoneSkin(PlayerEquipItem.Instance.customStone);
 
             // 장전된 스킬이 없다면 평소처럼 돌 두는 통신
             photonView.RPC("RPC_ReceiveAndDrawStone", RpcTarget.All, x, y, _myPlayerType, _mySkinIndex);

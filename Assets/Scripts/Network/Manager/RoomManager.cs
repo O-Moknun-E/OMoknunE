@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 
 public enum RoomFilter { All, Public, Private }
@@ -14,6 +13,9 @@ public class RoomManager : MonoBehaviourPunCallbacks
 {
 
     public static RoomManager Instance;
+
+    [Header("Waring UI")]
+    public GameObject waringPopup;
 
     [Header("Password UI")]
     public GameObject passwordPanel;
@@ -89,14 +91,13 @@ public class RoomManager : MonoBehaviourPunCallbacks
             var info = cachedRoomList.FirstOrDefault(r => r.Name == entry.Key);
             if (info == null) continue;
 
-            // 조건문을 데이터 기반으로 최적화 (LINQ 식 활용)
             bool hasPassword = info.CustomProperties.ContainsKey(RoomKeys.Password);
 
             bool isVisible = currentFilter switch
             {
                 RoomFilter.Public => !hasPassword,
                 RoomFilter.Private => hasPassword,
-                _ => true // All인 경우
+                _ => true 
             };
 
             entry.Value.SetActive(isVisible);
