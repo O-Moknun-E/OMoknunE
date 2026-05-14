@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7658f03bc854a0d45bdb357f1fd768f4, type: 3}
   m_Name: SealEffect_Data
   m_EditorClassIdentifier: Assembly-CSharp::SealEffect
-  sealPrefab: {fileID: 2129482346656458405, guid: d9440c095672f6141b6597daa90e6aa3, type: 3}
+  sealPrefab: {fileID: 228554569177016585, guid: d9440c095672f6141b6597daa90e6aa3, type: 3}
   durationTurns: 3

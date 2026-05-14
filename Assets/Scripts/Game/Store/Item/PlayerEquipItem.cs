@@ -30,7 +30,7 @@ public class PlayerEquipItem : PersistentSingleton<PlayerEquipItem>
     public void StoneItem(Sprite stone = null)
     {
         this.customStone = stone;
-        int skinID = StoneSkinRegistry.Instance.GetEquipStoneSkin(stone);
+        int skinID = SkinRegistry.Instance.GetStoneID(stone);
 
         SaveEquippedSkinToServer(skinID);
     }
@@ -62,7 +62,7 @@ public class PlayerEquipItem : PersistentSingleton<PlayerEquipItem>
                 if (int.TryParse(result.Data[StoneKey].Value, out int skinID))
                 {
                     // 기존 Registry의 GetStoneSkin을 써서 스프라이트 복구
-                    customStone = StoneSkinRegistry.Instance.GetStoneSkin(skinID);
+                    customStone = SkinRegistry.Instance.GetStoneSkin(skinID);
                     Debug.Log($"서버에서 스킨 ID {skinID} 로드 완료");
                 }
             }

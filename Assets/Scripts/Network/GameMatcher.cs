@@ -28,10 +28,18 @@ public class GameMatcher : MonoBehaviourPunCallbacks
     {
         Debug.Log("랜덤 방 없음, 전용 방 생성함");
         RoomOptions options = new RoomOptions { MaxPlayers = (byte)maxCount };
-        Hashtable props = new Hashtable { { RoomKeys.IsRandomMatch, true } };
+        Hashtable props = new Hashtable
+        {
+            { RoomKeys.IsRandomMatch, true },
+            { RoomKeys.HostName, PlayFabManager.Instance.UserNickName }
+        };
 
         options.CustomRoomProperties = props;
-        options.CustomRoomPropertiesForLobby = new string[] { RoomKeys.IsRandomMatch };
+        options.CustomRoomPropertiesForLobby = new string[]
+        { 
+            RoomKeys.IsRandomMatch,
+            RoomKeys.HostName
+        };
 
         PhotonNetwork.CreateRoom(null, options);
     }

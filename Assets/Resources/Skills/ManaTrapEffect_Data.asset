@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b26762ab54848cd43ae30833e7d135a8, type: 3}
   m_Name: ManaTrapEffect_Data
   m_EditorClassIdentifier: Assembly-CSharp::ManaTrapEffect
-  trapPrefab: {fileID: 1314909383438826212, guid: f9236c3f9f635824c93f5400a5c8daf5, type: 3}
+  trapPrefab: {fileID: 3902864645402262791, guid: f9236c3f9f635824c93f5400a5c8daf5, type: 3}
   manaPenalty: 3

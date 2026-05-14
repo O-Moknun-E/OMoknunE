@@ -7,27 +7,34 @@ public class SkinRegistry : PersistentSingleton<SkinRegistry>
     [SerializeField] private Sprite[] pictureSkins;
     [SerializeField] private Sprite[] bordSkins;
 
-    public Sprite GetStoneSkin(int id) => GetSkin(stoneSkins, id);
-    public int GetStoneID(Sprite sprite) => GetID(stoneSkins, sprite);
 
-    public Sprite GetPictureSkin(int id) => GetSkin(pictureSkins, id);
-    public int GetPictureID(Sprite sprite) => GetID(pictureSkins, sprite);
+    public Sprite GetPictureSkin(int id) => GetSkinFromArray(pictureSkins, id);
+    public int GetPictureID(Sprite sprite) => GetIDFromArray(pictureSkins, sprite);
 
-    public Sprite GetBordSkin(int id) => GetSkin(bordSkins, id);
-    public int GetBordID(Sprite sprite) => GetID(bordSkins, sprite);
+    public Sprite GetBordSkin(int id) => GetSkinFromArray(bordSkins, id);
+    public int GetBordID(Sprite sprite) => GetIDFromArray(bordSkins, sprite);
 
-    private Sprite GetSkin(Sprite[] array, int id)
+    public Sprite GetStoneSkin(int id) => GetSkinFromArray(stoneSkins, id);
+    public int GetStoneID(Sprite sprite) => GetIDFromArray(stoneSkins, sprite);
+
+    private Sprite GetSkinFromArray(Sprite[] array, int id)
     {
-        if (array == null || id < 0 || id >= array.Length) return null;
+        if (array == null || id < 0 || id >= array.Length)
+        {
+            Debug.LogWarning($"[SkinRegistry] ID {id}가 범위를 벗어남.");
+            return null;
+        }
         return array[id];
     }
 
-    private int GetID(Sprite[] array, Sprite sprite)
+    private int GetIDFromArray(Sprite[] array, Sprite sprite)
     {
+        if (array == null || sprite == null) return -1;
+
         for (int i = 0; i < array.Length; i++)
         {
             if (array[i] == sprite) return i;
         }
-        return 0; 
+        return -1; // 찾지 못했을 때는 -1 반환이 정석임
     }
 }

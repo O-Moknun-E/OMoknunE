@@ -9,12 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7156d39803f9d4847a13bb3f82c54207, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e62262fe64174749a44fd6b91d8c453, type: 3}
   m_Name: TimeOverloadSkill
-  m_EditorClassIdentifier: Assembly-CSharp::SkillBase
+  m_EditorClassIdentifier: Assembly-CSharp::NormalSkill
+  _icon: {fileID: 7320906411373716286, guid: 15a36f86a1e3ed94e934495c426fd9a9, type: 3}
+  _displayName: "\uD0C0\uC784 \uD31D"
+  _description: "\uC0C1\uB300\uBC29\uC758 \uCC29\uC218\uC2DC\uAC04\uC744 2\uD134\uAC04
+    \uC808\uBC18\uC73C\uB85C \uC904\uC785\uB2C8\uB2E4"
+  _skillName: TimeOverload
   _id: 5
-  _skillName: "\uC2DC\uAC04 \uAC10\uC18C"
-  _description: 
   _cost: 3
   _effects:
   - {fileID: 11400000, guid: f685ed233b7b0d44d82217806e710177, type: 2}
