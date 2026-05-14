@@ -4103,25 +4103,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2729647223407587430, guid: f95116843f116c14f953c956edf4295d, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 6495943319018875221, guid: 5a4aeb1d8b6668e42b961cd97cb591d9, type: 3}
-    - target: {fileID: 7070411724715356131, guid: f95116843f116c14f953c956edf4295d, type: 3}
-      propertyPath: sceneViewId
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7447299432726326190, guid: f95116843f116c14f953c956edf4295d, type: 3}
       propertyPath: m_Name
       value: OmokEnvironment_Group
-      objectReference: {fileID: 0}
-    - target: {fileID: 7447299432726326190, guid: f95116843f116c14f953c956edf4295d, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8410165839057069982, guid: f95116843f116c14f953c956edf4295d, type: 3}
-      propertyPath: _blindPanel
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
