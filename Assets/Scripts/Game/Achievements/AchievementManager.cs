@@ -59,12 +59,14 @@ public class AchievementManager : MonoBehaviour
 
     public void CheckAchievements(string statName, int currentValue) //업적을 달성했는지 확인
     {
+
         foreach (var pair in achievementConfigs)
         {
             string achievementId = pair.Key;
             AchievementData config = pair.Value;
 
-            if (completedAchievements.Contains(achievementId)) continue;
+            if (completedAchievements.Contains(achievementId))
+                continue;
  
             if (config.StatName == statName && currentValue >= config.Target)
             {
