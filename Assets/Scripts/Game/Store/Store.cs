@@ -6,7 +6,8 @@ using System;
 
 public class Store : MonoBehaviour
 {
-   
+    public bool IsPurchased { get; private set; }
+
     public Action<List<CatalogItem>> OnStoreLoaded;
     public Action OnBuyItem;
 
@@ -21,7 +22,8 @@ public class Store : MonoBehaviour
     {
         if (inven.HasItem(itemId))
         {
-            Debug.Log($"{itemId}는 이미 소유 중임!");
+            IsPurchased = false;
+            OnBuyItem?.Invoke();
             return;
         }
 
@@ -33,9 +35,19 @@ public class Store : MonoBehaviour
             VirtualCurrency = moneyCode,
             Price = (int)price
         };
+        IsPurchased = true;
 
-        PlayFabClientAPI.PurchaseItem(request, result =>{ inven.LoadItem(); Debug.Log($"{itemId}구매완료"); }, error => Debug.LogError(error.GenerateErrorReport()));
-        OnBuyItem?.Invoke();
+        PlayFabClientAPI.PurchaseItem(request, result =>
+        {
+            inven.LoadItem();
+            Debug.Log($"{itemId}구매완료");
+
+            OnBuyItem?.Invoke();
+        },
+    error =>
+    {
+        Debug.LogError(error.GenerateErrorReport());
+    });
     }
 
     public List<CatalogItem> LoadStoreCatalog()

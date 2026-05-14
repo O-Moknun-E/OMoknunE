@@ -258,7 +258,7 @@ public class OmokManager : SceneSingleton<OmokManager>
 
         // 플레이어 초기화(흑: 플레이어, 백: AI)
         _players[0] = new Player(PhotonNetwork.NickName ?? "플레이어", _manaBlack);
-        _players[1] = new Player($"AI ({_aiDifficulty})", _manaWhite);
+        _players[1] = new Player($"AI ({_aiDifficulty})", _manaWhite); //민정수정
 
         // AI 플레이어 초기화
         GameObject aiObject = new GameObject("AIPlayer");

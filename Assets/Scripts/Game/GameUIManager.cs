@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -15,6 +16,17 @@ public class GameUIManager : SceneSingleton<GameUIManager>
     [SerializeField] private TextMeshProUGUI _myNicknameText;        // 내 닉네임 텍스트 UI
     [SerializeField] private TextMeshProUGUI _opponentNicknameText;  // 상대 닉네임 텍스트 UI
     [SerializeField] private Button _surrenderButton;                // 기권 버튼 UI
+    
+    [Header("초상화 UI")]
+    [SerializeField] private Image _myPortraitImage;       // 내 초상화 이미지
+    [SerializeField] private Image _opponentPortraitImage; // 상대 초상화 이미지
+
+    private PhotonView _photonView;
+
+    private void Awake()
+    {
+        _photonView = GetComponent<PhotonView>();
+    }
 
     [Header("Emoji Settings")]
     [SerializeField] private GameObject _mySpeechBubble;              // 내 말풍선
@@ -228,12 +240,60 @@ public class GameUIManager : SceneSingleton<GameUIManager>
     /// </summary>
     private void UpdateInitUI()
     {
+
+
         PlayerType myPlayerType = OmokManager.Instance.MyPlayerType;
         PlayerType opponentPlayerType = OmokManager.Instance.MyPlayerType == PlayerType.Black ? PlayerType.White : PlayerType.Black;
 
         // 닉네임 UI 업데이트
         _myNicknameText.text = OmokManager.Instance.GetPlayer(myPlayerType).Name;
         _opponentNicknameText.text = OmokManager.Instance.GetPlayer(opponentPlayerType).Name;
+
+        int myPortraitID = 0;  //민정추가
+        PlayerEquipItem pm = PlayerEquipItem.Instance;
+
+        if (pm.customPicture != null)
+            myPortraitID = SkinRegistry.Instance.GetPictureID(pm.customPicture);
+
+
+        // PvP에서만
+        if(OmokManager.Instance.GameMode == GameMode.PvP)
+            _photonView.RPC("ReceivePortraitID", RpcTarget.Others, myPortraitID);
+
+        UpdatePortraitUI(OmokManager.Instance.MyPlayerType, myPortraitID);
+    }
+
+    public void UpdatePortraitUI(PlayerType playerType, int portraitID) //민정추가
+    {
+        Sprite portraitSprite = SkinRegistry.Instance.GetPictureSkin(portraitID);
+
+        // portraitID에 해당하는 animator controller 가져오기
+        RuntimeAnimatorController animatorController = SkinRegistry.Instance.GetAnimatorController(portraitID);
+
+        if (playerType == OmokManager.Instance.MyPlayerType)
+        {
+            _myPortraitImage.sprite = portraitSprite;
+
+            // 해당 이미지가 달려있는 게임오브젝트의 Animator 컴포넌트 가져오기
+            Animator animator = _myPortraitImage.GetComponent<Animator>();
+
+            if (animator != null & animatorController != null)
+            {
+                animator.runtimeAnimatorController = animatorController;
+            }
+        }
+        else
+        {
+            // 해당 이미지가 달려있는 게임오브젝트의 Animator 컴포넌트 가져오기
+            Animator animator = _opponentPortraitImage.GetComponent<Animator>();
+
+            if (animator != null & animatorController != null)
+            {
+                animator.runtimeAnimatorController = animatorController;
+            }
+
+            _opponentPortraitImage.sprite = portraitSprite;
+        }
     }
 
     /// <summary>
@@ -276,4 +336,14 @@ public class GameUIManager : SceneSingleton<GameUIManager>
     {
         OmokManager.Instance.Surrender();
     }
+
+    [PunRPC]
+    public void ReceivePortraitID(int portraitID) //민정추가
+    {
+        PlayerType opponentType = (OmokManager.Instance.MyPlayerType == PlayerType.Black)
+                                  ? PlayerType.White : PlayerType.Black;
+
+        UpdatePortraitUI(opponentType, portraitID);
+    }
+
 }

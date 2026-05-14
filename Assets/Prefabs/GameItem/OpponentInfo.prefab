@@ -303,7 +303,7 @@ GameObject:
   - component: {fileID: 66219066637877746}
   - component: {fileID: 5947895379376492377}
   m_Layer: 5
-  m_Name: TimerText
+  m_Name: OpponentTurnTimerText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -439,6 +439,7 @@ GameObject:
   - component: {fileID: 4919719390387127956}
   - component: {fileID: 3757461938315138209}
   - component: {fileID: 7797436062042845501}
+  - component: {fileID: 7830980344961102889}
   m_Layer: 5
   m_Name: PlayerAvatar
   m_TagString: Untagged
@@ -503,6 +504,28 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &7830980344961102889
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5810992530815397241}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 65a5fdd6afd80504081921c1094e8fa8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5909829542709016544
 GameObject:
   m_ObjectHideFlags: 0
@@ -667,7 +690,7 @@ GameObject:
   - component: {fileID: 8715982983161954800}
   - component: {fileID: 7813843828595383009}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: OpponentNicknameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

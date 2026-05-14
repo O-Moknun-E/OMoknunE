@@ -25,48 +25,72 @@ public class PlayerEquipItem : PersistentSingleton<PlayerEquipItem>
     {
         PlayFabManager.Instance.OnLogin -= LoadEquippedSkinsFromServer;
     }
-    public void PictureItem(Sprite picture) => this.customPicture = picture;
+    public void PictureItem(Sprite picture)
+    {
+        this.customPicture = picture;
+        int skinID = SkinRegistry.Instance.GetPictureID(picture);
+        SaveEquippedSkinToServer(skinID, PictureKey);
+    }
 
     public void StoneItem(Sprite stone = null)
     {
         this.customStone = stone;
         int skinID = SkinRegistry.Instance.GetStoneID(stone);
 
-        SaveEquippedSkinToServer(skinID);
+        SaveEquippedSkinToServer(skinID, StoneKey);
     }
 
-    public void BordItem(Sprite bord) => this.customBord = bord;
+    public void BordItem(Sprite bord)
+    {
+        this.customBord = bord; // [중요] customStone이 아님봄!
 
-    private void SaveEquippedSkinToServer(int skinID)
+        // [중요] GetStoneID가 아니라 GetBordID를 호출해야 함봄!
+        int skinID = SkinRegistry.Instance.GetBordID(bord);
+
+        SaveEquippedSkinToServer(skinID, BordKey);
+    }
+
+    private void SaveEquippedSkinToServer(int skinID, string key)
     {
         var request = new UpdateUserDataRequest
         {
-            Data = new Dictionary<string, string> { { StoneKey, skinID.ToString() } }
+            Data = new Dictionary<string, string> { { key, skinID.ToString() } }
         };
 
         PlayFabClientAPI.UpdateUserData(request,
-            result => Debug.Log("스킨 저장 성공"),
-            error => Debug.LogError("스킨 저장 실패"));
+            result => Debug.Log($"{key} 저장 성공"),
+            error => Debug.LogError($"{key} 저장 실패"));
     }
+    
 
-    // [추가] 서버에서 숫자 ID 불러와서 적용
     public void LoadEquippedSkinsFromServer()
     {
+        if(!PlayFabManager.Instance.SuccessLogin)
+            return;
+
         var request = new GetUserDataRequest();
 
         PlayFabClientAPI.GetUserData(request, result =>
         {
-            if (result.Data != null && result.Data.ContainsKey(StoneKey))
-            {
-                // 문자열로 온 밸류를 숫자로 바꿈
-                if (int.TryParse(result.Data[StoneKey].Value, out int skinID))
-                {
-                    // 기존 Registry의 GetStoneSkin을 써서 스프라이트 복구
-                    customStone = SkinRegistry.Instance.GetStoneSkin(skinID);
-                    Debug.Log($"서버에서 스킨 ID {skinID} 로드 완료");
-                }
-            }
+            if (result.Data == null) return;
+
+            customStone = LoadSkinFromData(result.Data, StoneKey, SkinRegistry.Instance.GetStoneSkin);
+            customPicture = LoadSkinFromData(result.Data, PictureKey, SkinRegistry.Instance.GetPictureSkin);
+            customBord = LoadSkinFromData(result.Data, BordKey, SkinRegistry.Instance.GetBordSkin);
+
+            Debug.Log("서버 데이터 로드 프로세스 완료");
         }, error => Debug.LogError("서버 데이터 로드 실패"));
+    }
+
+
+    private Sprite LoadSkinFromData(Dictionary<string, UserDataRecord> data, string key, System.Func<int, Sprite> getSkinFunc)
+    {
+        // TryGetValue로 키 존재 확인과 값 추출을 동시에 수행 (가독성 UP)
+        if (data.TryGetValue(key, out var record) && int.TryParse(record.Value, out int id))
+        {
+            return getSkinFunc(id);
+        }
+        return null;
     }
 
 }

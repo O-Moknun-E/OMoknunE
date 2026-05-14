@@ -21,12 +21,14 @@ public class StoreUI : MonoBehaviour
         store.OnStoreLoaded += StoreLoaded;
         store.LoadStoreCatalog(); // 상점 열 때 로드
         store.OnBuyItem += GetUserMoney;
+        store.OnBuyItem += CheckBuy;
     }
 
     private void OnDisable()
     {
         store.OnStoreLoaded -= StoreLoaded;
         store.OnBuyItem -= GetUserMoney;
+        store.OnBuyItem -= CheckBuy;
     }
 
     private void StoreLoaded(List<CatalogItem> catalog)
@@ -96,6 +98,7 @@ public class StoreUI : MonoBehaviour
 
     public void GetUserMoney()
     {
+
         var request = new GetUserInventoryRequest();
 
         PlayFabClientAPI.GetUserInventory(request,
@@ -103,10 +106,17 @@ public class StoreUI : MonoBehaviour
                 if (result.VirtualCurrency.TryGetValue("SD", out int balance))
                 {
                     currnteMoney.text = $"{balance} SD";
-                    Debug.Log("금액변경");
                 }
             },
             error => Debug.LogError(error.GenerateErrorReport())
         );
+    }
+
+    public void CheckBuy()
+    {
+        if(store.IsPurchased)
+            return ;
+
+        CheckPopup.gameObject.SetActive(true);
     }
 }
