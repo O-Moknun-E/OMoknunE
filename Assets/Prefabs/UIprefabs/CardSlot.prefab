@@ -433,7 +433,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -8566028455312386561, guid: 8a8fcba6a26aa764983763466d32713e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1166,8 +1166,9 @@ MonoBehaviour:
   cardButton: {fileID: 3478632479758904159}
   chainVisualImage: {fileID: 6564146298661062895}
   chainAnimator: {fileID: 8987936011507707113}
+  chainAnimSpeed: 0.8
   cardMoveWait: 0.25
-  lockAnimWait: 0.6
+  syncDisplayTime: 2
   openAnimWait: 0.6
 --- !u!114 &914342247234399399
 MonoBehaviour:
@@ -1181,7 +1182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d27581be700d09945ad450ee84cac8f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardHoverEffect
-  _hoverHeight: 250
+  _hoverHeight: 270
   _hoverDuration: 0.2
 --- !u!114 &8020367547164956086
 MonoBehaviour:
