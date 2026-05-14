@@ -1,3 +1,4 @@
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class SkinRegistry : PersistentSingleton<SkinRegistry>
@@ -6,6 +7,7 @@ public class SkinRegistry : PersistentSingleton<SkinRegistry>
     [SerializeField] private Sprite[] stoneSkins;
     [SerializeField] private Sprite[] pictureSkins;
     [SerializeField] private Sprite[] bordSkins;
+    [SerializeField] private RuntimeAnimatorController[] animatorControllers;
 
 
     public Sprite GetPictureSkin(int id) => GetSkinFromArray(pictureSkins, id);
@@ -36,5 +38,15 @@ public class SkinRegistry : PersistentSingleton<SkinRegistry>
             if (array[i] == sprite) return i;
         }
         return -1; // 찾지 못했을 때는 -1 반환이 정석임
+    }
+
+    public RuntimeAnimatorController GetAnimatorController(int id)
+    {
+        if (animatorControllers == null || id < 0 || id >= animatorControllers.Length)
+        {
+            Debug.LogWarning($"[SkinRegistry] AnimatorController ID {id}가 범위를 벗어남.");
+            return null;
+        }
+        return animatorControllers[id];
     }
 }
