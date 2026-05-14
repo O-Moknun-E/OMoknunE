@@ -74,7 +74,6 @@ public class Inventory : MonoBehaviour
                     Item newItem = obj.GetComponent<Item>();
                     newItem.Initialize(instance, data);
                     items.Add(newItem);
-                    Debug.Log($"신규 생성: {newItem.displayName}");
                 }
             }
         }

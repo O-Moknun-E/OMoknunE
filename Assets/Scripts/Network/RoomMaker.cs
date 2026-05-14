@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
@@ -36,12 +35,10 @@ public class RoomMaker : MonoBehaviourPunCallbacks
 
     public void CreateRoom() //방만들기
     {
+
         // 로비 접속 확인
-        if(!NetworkManager.Instance.IsInLobby)
-        {
-            Debug.LogWarning("로비 접속 중입니다. 잠시 후 다시 시도해주세요.");
-            return;
-        }
+        if (!NetworkManager.Instance.IsInLobby)
+            RoomManager.Instance.waringPopup.gameObject.SetActive(true);
 
         if (string.IsNullOrEmpty(roomNameInput.text)) return;
 

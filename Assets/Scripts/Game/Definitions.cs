@@ -47,3 +47,18 @@ public enum GameMode
     PvP,    // 플레이어 vs 플레이어
     PvE,    // 플레이어 vs AI
 }
+
+/// <summary>
+/// 이모지 종류
+/// </summary>
+public enum EmojiType
+{
+    Hello,
+    Good,
+    Sad,
+    LOL,
+    Wait,
+    Angry,
+    Smirk,
+    Hmm
+}

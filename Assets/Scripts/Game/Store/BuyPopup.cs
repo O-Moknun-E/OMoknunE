@@ -18,7 +18,7 @@ public class BuyPopup : MonoBehaviour
     {
         currentId = id;
         currentPrice = price;
-        confirmText.text = $"{name}을(를) {price}원에 구매하시겠습니까?";
+        confirmText.text = $"{name}을(를) \n{price}원에 구매하시겠습니까?";
         panel.SetActive(true);
     }
 

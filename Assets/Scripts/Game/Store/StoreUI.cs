@@ -6,25 +6,27 @@ using UnityEngine;
 
 public class StoreUI : MonoBehaviour
 {
-    public Slot slotPrefab; // 상점용 슬롯 프리팹 (가격 표시 기능 포함 추천)
+    public Slot slotPrefab; 
     public GameObject itemBox;
     public GameObject CheckPopup;
     public TextMeshProUGUI currnteMoney;
 
     [SerializeField] private Store store;
     private List<Slot> slotPool = new List<Slot>();
-    private List<CatalogItem> allStoreItems = new List<CatalogItem>(); // 전체 리스트 저장
+    private List<CatalogItem> allStoreItems = new List<CatalogItem>(); 
     private ITEM_TYPE currentFilter = ITEM_TYPE.All;
 
     private void OnEnable()
     {
         store.OnStoreLoaded += StoreLoaded;
         store.LoadStoreCatalog(); // 상점 열 때 로드
+        store.OnBuyItem += GetUserMoney;
     }
 
     private void OnDisable()
     {
         store.OnStoreLoaded -= StoreLoaded;
+        store.OnBuyItem -= GetUserMoney;
     }
 
     private void StoreLoaded(List<CatalogItem> catalog)
@@ -57,7 +59,6 @@ public class StoreUI : MonoBehaviour
                 uint price = catalogItem.VirtualCurrencyPrices.ContainsKey("SD")
                              ? catalogItem.VirtualCurrencyPrices["SD"] : 0;
 
-               // slot.button.onClick.AddListener(() => { store.BuyItem(data.itemId, price); });
                 slot.SetStoreSlot(data.itemIcon, $"{data.itemName}\n{price} SD", data.itemId, (int)price);
                 slot.gameObject.SetActive(true);
             }
@@ -101,7 +102,8 @@ public class StoreUI : MonoBehaviour
             result => {
                 if (result.VirtualCurrency.TryGetValue("SD", out int balance))
                 {
-                    currnteMoney.text = balance.ToString();
+                    currnteMoney.text = $"{balance} SD";
+                    Debug.Log("금액변경");
                 }
             },
             error => Debug.LogError(error.GenerateErrorReport())

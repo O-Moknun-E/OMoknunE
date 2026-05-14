@@ -160,7 +160,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         else
         {
             if (PlayerEquipItem.Instance.customStone != null) //민정추가
-                _mySkinIndex = StoneSkinRegistry.Instance.GetEquipStoneSkin(PlayerEquipItem.Instance.customStone);
+                 _mySkinIndex = StoneSkinRegistry.Instance.GetEquipStoneSkin(PlayerEquipItem.Instance.customStone);
 
             // 장전된 스킬이 없다면 평소처럼 돌 두는 통신
             photonView.RPC("RPC_ReceiveAndDrawStone", RpcTarget.All, x, y, _myPlayerType, _mySkinIndex);
@@ -352,6 +352,29 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
 
         // 게임 종료 이벤트 발생
         OmokManager.Instance.TriggerGameOver(winner);
+    }
+
+    /// <summary>
+    /// 이모지를 상대방에게 전송
+    /// </summary>
+    /// <param name="emojiType"></param>
+    public void SendEmojiToOpponent(EmojiType emojiType)
+    {
+        photonView.RPC("RPC_ReceiveEmoji", RpcTarget.Others, emojiType);
+    }
+
+    /// <summary>
+    /// 상대방으로부터 이모지 수신
+    /// </summary>
+    /// <param name="emojiType">수신한 이모지 타입</param>
+    [PunRPC]
+    private void RPC_ReceiveEmoji(EmojiType emojiType)
+    {
+        // 상대방 위치에 표시
+        if (GameUIManager.Instance != null)
+        {
+            GameUIManager.Instance.ReceiveEmojiFromOpponent(emojiType);
+        }
     }
 
     // 게임 종료 시 승자 정보를 받아서 UI를 띄워주는 함수
