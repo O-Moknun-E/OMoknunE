@@ -9,12 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7156d39803f9d4847a13bb3f82c54207, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e62262fe64174749a44fd6b91d8c453, type: 3}
   m_Name: ManaTrapSkill
-  m_EditorClassIdentifier: Assembly-CSharp::SkillBase
+  m_EditorClassIdentifier: Assembly-CSharp::NormalSkill
+  _icon: {fileID: 4715612874868211733, guid: cfe3fec18e52f43438aba76d1a54a645, type: 3}
+  _displayName: "\uB9C8\uB098 \uB048\uB048\uC774"
+  _description: "\uC0C1\uB300\uAC00 \uB9C8\uB098 \uB36B\uC5D0 \uCC29\uC218 \uC2DC
+    \uB9C8\uB098 3\uC744 \uAE4E\uC2B5\uB2C8\uB2E4"
+  _skillName: ManaTrap
   _id: 4
-  _skillName: "\uB9C8\uB098 \uB36B"
-  _description: 
   _cost: 3
   _effects:
   - {fileID: 11400000, guid: 10737c6b9d4ce2a46823ea37613e126b, type: 2}

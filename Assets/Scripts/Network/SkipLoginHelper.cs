@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using PlayFab;
 
 public class SkipLoginHelper : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class SkipLoginHelper : MonoBehaviour
         // 게임을 끝내고 돌아온 상태라면 즉시 로비로 이동
         // 수정: 로그인이 되어있는 상태라면 즉시 로비로 이동
         //if (NetworkOmokManager.IsReturningFromGame)
-        if (PlayFabManager.Instance.SuccessLogin)
+        if (PlayFabClientAPI.IsClientLoggedIn())
         {
             if (startPanel != null) startPanel.SetActive(false);//민정추가
             if (loginPanel != null) loginPanel.SetActive(false);

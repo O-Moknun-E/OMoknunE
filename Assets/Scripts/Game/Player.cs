@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Player
 {
-    [Tooltip("한 게임당 사용할 수 있는 최대 마법 갯수")]
-    [SerializeField] private int MaxMagicLimit = 3;
+    //[Tooltip("한 게임당 사용할 수 있는 최대 마법 갯수")]
+    //[SerializeField] private int MaxMagicLimit = 3;
     [Tooltip("최대 마나")]
     [SerializeField] private int MaxMana = 100;
 
@@ -63,11 +63,11 @@ public class Player
     {
         // 사용 조건 체크
         if (UsedMagicThisTurn) return false;
-        if (UsedMagicCount >= MaxMagicLimit) return false;
-        if (CurrentMana < cost) return false;
+        //if (UsedMagicCount >= MaxMagicLimit) return false;
+        //if (CurrentMana < cost) return false;
 
         // 전부 만족했다면
-        AddMana(-cost);
+        //AddMana(-cost);
         UsedMagicCount++;
         UsedMagicThisTurn = true;
 
