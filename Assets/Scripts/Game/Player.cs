@@ -19,7 +19,7 @@ public class Player
     private Action<int, int, StoneType> _resetTurnHandler; // 구독 해제용 참조
 
     // 초기 마나를 지정하는 생성자
-    public Player(string name, int initialMana)
+    public Player(string name, int initialMana, string playFabId)
     {
         Name = name;
         CurrentMana = initialMana;

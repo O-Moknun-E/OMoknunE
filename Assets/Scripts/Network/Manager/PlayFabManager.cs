@@ -1,6 +1,7 @@
 using PlayFab.ClientModels;
 using PlayFab;
 using UnityEngine;
+using Photon.Realtime;
 using Photon.Pun;
 using System;
 
@@ -106,6 +107,7 @@ public class PlayFabManager : PersistentSingleton<PlayFabManager>
         RankingManager.Instance.GetScore();
         NetworkManager.Instance.Connect();
         UImanager.Instance.ShowLobby();
+        PhotonNetwork.AuthValues = new AuthenticationValues(result.PlayFabId);
 
         OnLogin?.Invoke();
     }

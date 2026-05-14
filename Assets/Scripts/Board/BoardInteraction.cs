@@ -13,7 +13,7 @@ public class BoardInteraction : MonoBehaviour
 
     [Header("프리팹 설정")]
     [SerializeField] private GameObject _baseStonePrefab;
-
+    
     private Sprite _currentStoneSprite;
     private SpriteRenderer _boardRenderer;
     private GameObject _previewStone;
@@ -35,6 +35,11 @@ public class BoardInteraction : MonoBehaviour
         _boardRenderer = GetComponent<SpriteRenderer>();
         // 15x15 크기에 맞게 bool 배열 생성
         _isStonePlaced = new bool[_gridSize, _gridSize];
+
+        if (PlayerEquipItem.Instance.customBord != null) //민정추가
+            _boardRenderer.sprite = PlayerEquipItem.Instance.customBord;
+
+
     }
 
     private void Update()

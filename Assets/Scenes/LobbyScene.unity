@@ -466,16 +466,15 @@ MonoBehaviour:
   - {fileID: 3373568495408583166, guid: cea53cf4cf17a934896ed93460eff589, type: 3}
   - {fileID: 1805158079502305607, guid: 08ee980fd8fcc634cbe75c8533c00f3a, type: 3}
   pictureSkins:
+  - {fileID: -1738824142, guid: 197e718f37058a84992ad3f118b32697, type: 3}
+  - {fileID: 1717440953, guid: e0b8e1e2cf0676f41b526f04b8f7c4ec, type: 3}
+  - {fileID: 3633352463325796807, guid: 56a3b2b2f74f60d468271d3b60f16ece, type: 3}
   - {fileID: -3420002341934151136, guid: 41ca3ccab2c4f354c962d8ca42163575, type: 3}
   - {fileID: 2116839158027798604, guid: cec1d1e78487af347bedc42229c56aae, type: 3}
-  - {fileID: -4163379685437471103, guid: 197e718f37058a84992ad3f118b32697, type: 3}
-  - {fileID: 8047554686329738542, guid: e0b8e1e2cf0676f41b526f04b8f7c4ec, type: 3}
-  - {fileID: 3633352463325796807, guid: 56a3b2b2f74f60d468271d3b60f16ece, type: 3}
-  - {fileID: -7777177641172106769, guid: 41c5284ed059a6044a63a541c61bd776, type: 3}
+  - {fileID: 1163170737, guid: 41c5284ed059a6044a63a541c61bd776, type: 3}
   bordSkins:
-  - {fileID: 6995054206817250416, guid: 08e3387050ff46646805559bbd033791, type: 3}
-  - {fileID: -746826018897910787, guid: 4952f62ef7696924e9403ef2261732ec, type: 3}
-  - {fileID: -4146219125763478199, guid: 0593b0aa6b903c14bbeb17c2aa35b671, type: 3}
+  - {fileID: -7739398390872675866, guid: cc42b4413ed376a4d9f9fdfce580edaa, type: 3}
+  - {fileID: 6657739203594880187, guid: ac6e6379f2612fd4aa8727d0a5202576, type: 3}
 --- !u!4 &672786659
 Transform:
   m_ObjectHideFlags: 0
@@ -1374,6 +1373,10 @@ PrefabInstance:
     - target: {fileID: 8000491528755194054, guid: 5a18a7124fb1b8848aa306d9ba7dc71c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8387942183516136552, guid: 5a18a7124fb1b8848aa306d9ba7dc71c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
