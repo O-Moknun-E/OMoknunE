@@ -204,7 +204,7 @@ public class OmokManager : SceneSingleton<OmokManager>
 
             int playerColor = (index == 0) ? _manaBlack : _manaWhite;
 
-            _players[index] = new Player(photonPlayer.NickName, playerColor, PlayFabManager.Instance.UserID);
+            _players[index] = new Player(photonPlayer.NickName, playerColor);
 
             index++;
         }
