@@ -46,7 +46,7 @@ public class FakeStoneEffect : SkillEffect
                 sr.sprite = SkinRegistry.Instance.GetStoneSkin(context.SkinID);
                 sr.color = new Color(1f, 1f, 1f, 1f);
 
-                GameObject blind = Instantiate(blindPrefab, new Vector3(0f, 0f, -0.2f), Quaternion.identity);
+                GameObject blind = Instantiate(blindPrefab, new Vector3(1.15f, 0.35f, -0.2f), Quaternion.identity);
                 Destroy(blind, 1.5f);
             }
         }

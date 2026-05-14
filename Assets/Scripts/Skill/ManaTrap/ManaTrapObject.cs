@@ -27,12 +27,12 @@ public class ManaTrapObject : MonoBehaviour
 
                 if (caster != myType)
                 {
-                    // 상대방 화면에서는 마나 덫을 숨김 처리합니다
+                    // 상대방 화면에서는 마나 덫을 숨김 처리
                     sr.enabled = false;
                 }
                 else
                 {
-                    // 시전자 화면에서는 반투명하게 표시합니다
+                    // 시전자 화면에서는 반투명하게 표시
                     sr.color = new Color(1f, 1f, 1f, 0.5f);
                 }
             }
@@ -63,7 +63,12 @@ public class ManaTrapObject : MonoBehaviour
                     {
                         int deduction = Mathf.Min(victim.CurrentMana, _manaPenalty);
                         victim.AddMana(-deduction);
-                        Debug.Log($"<color=magenta>[System] {placedPlayer}가 마나 덫을 밟아 마나를 {deduction} 잃었습니다</color>");
+                        Debug.Log($"<color=magenta>[System] {placedPlayer}가 마나 덫을 밟아 마나 상실: {deduction}</color>");
+
+                        // ==========================================
+                        // 마나 차감 후 즉시 UI 갱신 강제 호출
+                        OmokManager.Instance.ForceUpdateManaUI();
+                        // ==========================================
                     }
                 }
                 else
@@ -72,7 +77,7 @@ public class ManaTrapObject : MonoBehaviour
                 }
             }
 
-            // 시각적 연출을 위한 코루틴을 시작합니다
+            // 시각적 연출을 위한 코루틴을 시작
             StartCoroutine(RevealAndDestroyTrap());
         }
     }
@@ -83,22 +88,21 @@ public class ManaTrapObject : MonoBehaviour
 
         if (sr != null)
         {
-            // 숨겨져 있던 마나 덫을 활성화합니다
+            // 숨겨져 있던 마나 덫을 활성화
             sr.enabled = true;
 
-            // 시전자가 보는 모습과 동일하게 색상을 원상 복구하고 렌더링 순서를 위해 제트축을 조절합니다
             sr.color = new Color(1f, 1f, 1f, 1f);
             transform.position = new Vector3(transform.position.x, transform.position.y, -1f);
         }
 
-        // 오브젝트의 크기를 1.2배로 확대합니다
+        // 오브젝트의 크기를 1.2배로 확대
         Vector3 targetScale = new Vector3(1.2f, 1.2f, 1f);
         transform.localScale = targetScale;
 
-        // 설정된 애니메이션 재생 시간인 1.02초 동안 대기합니다
+        // 설정된 애니메이션 재생 시간인 1.02초 동안 대기
         yield return new WaitForSeconds(1.02f);
 
-        // 0.2초 동안 크기를 줄이며 소멸하는 연출을 진행합니다
+        // 0.2초 동안 크기를 줄이며 소멸하는 연출을 진행
         float shrinkDuration = 0.2f;
         float elapsedTime = 0f;
 
@@ -111,7 +115,7 @@ public class ManaTrapObject : MonoBehaviour
             yield return null;
         }
 
-        // 연출 완료 후 오브젝트를 파괴합니다
+        // 연출 완료 후 오브젝트를 파괴
         Destroy(gameObject);
     }
 
