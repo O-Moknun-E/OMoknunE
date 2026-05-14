@@ -32,6 +32,10 @@ public class SkipLoginHelper : MonoBehaviour
             // 다음번을 위해 초기화
             // 수정: 로그인되어있는지로 체크했으므로 불필요
             //NetworkOmokManager.IsReturningFromGame = false;
+            AchievementManager.Instance.LoadAchievementDatas();
+            ItemManager.Instance.LoadItemDatas();
+            RankingManager.Instance.GetScore();
+            NetworkManager.Instance.Connect();
 
             Debug.Log("로그인 스킵 성공!");
         }
