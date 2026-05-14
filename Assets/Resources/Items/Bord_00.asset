@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   itemPrice: 0
   itemId: Bord_00
-  itemName: Bord_00
+  itemName: "\uBBF8\uC219\uD14C\uB9AD"
   itemPrefab: {fileID: 3849769465234785040, guid: 2f6a891839b9d9540bee0b98cd4e0434, type: 3}
   itemIcon: {fileID: -7739398390872675866, guid: cc42b4413ed376a4d9f9fdfce580edaa, type: 3}
   itemType: 2

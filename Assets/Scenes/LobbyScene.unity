@@ -879,6 +879,11 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1 &1048618378 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5622613502975898589, guid: 5a18a7124fb1b8848aa306d9ba7dc71c, type: 3}
+  m_PrefabInstance: {fileID: 1193126843014907309}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1056630978
 GameObject:
   m_ObjectHideFlags: 0
@@ -1335,6 +1340,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3270772624807867446, guid: 5a18a7124fb1b8848aa306d9ba7dc71c, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3387301475107065473, guid: 5a18a7124fb1b8848aa306d9ba7dc71c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[5].m_Target
+      value: 
+      objectReference: {fileID: 1048618378}
+    - target: {fileID: 3417155318177243956, guid: 5a18a7124fb1b8848aa306d9ba7dc71c, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3920760609718749349, guid: 5a18a7124fb1b8848aa306d9ba7dc71c, type: 3}

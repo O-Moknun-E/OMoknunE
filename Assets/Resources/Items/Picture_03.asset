@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   itemPrice: 0
   itemId: Picture_03
-  itemName: Picture_03
+  itemName: "\uD544\uB9AD\uC2A4"
   itemPrefab: {fileID: 1672987080683482776, guid: 96d87d10c57db5a4180c83768ef97ee1, type: 3}
   itemIcon: {fileID: -1322765157, guid: 75fbd9e042cffe74f8cffea1edcd3544, type: 3}
   itemType: 4
