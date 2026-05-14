@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b55c6d9b95fbef48a6323bfa5fa2b81, type: 3}
+  m_Name: Picture_04
+  m_EditorClassIdentifier: Assembly-CSharp::ItemData
+  itemPrice: 0
+  itemId: Picture_04
+  itemName: Picture_04
+  itemPrefab: {fileID: 1672987080683482776, guid: c17f20a24a3b2ba498ddef11d25edb0c, type: 3}
+  itemIcon: {fileID: 3633352463325796807, guid: 56a3b2b2f74f60d468271d3b60f16ece, type: 3}
+  itemType: 4

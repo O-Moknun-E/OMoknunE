@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b55c6d9b95fbef48a6323bfa5fa2b81, type: 3}
+  m_Name: Bord_00
+  m_EditorClassIdentifier: Assembly-CSharp::ItemData
+  itemPrice: 0
+  itemId: Bord_00
+  itemName: Bord_00
+  itemPrefab: {fileID: 3849769465234785040, guid: 2f6a891839b9d9540bee0b98cd4e0434, type: 3}
+  itemIcon: {fileID: -7739398390872675866, guid: cc42b4413ed376a4d9f9fdfce580edaa, type: 3}
+  itemType: 2

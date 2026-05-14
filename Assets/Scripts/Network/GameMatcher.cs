@@ -12,7 +12,7 @@ public class GameMatcher : MonoBehaviourPunCallbacks
     {
         if (!NetworkManager.Instance.IsInLobby)
         {
-            Debug.LogWarning("로비 접속 중입니다. 잠시 후 다시 시도해주세요.");
+           RoomManager.Instance.waringPopup.gameObject.SetActive(true);
             return;
         }
 

@@ -42,8 +42,7 @@ MonoBehaviour:
   - RPC_ReceiveAndDrawStone
   - RPC_ExecuteSkill
   - RPC_Surrender
-  - ReceiveEmoji
-  - RPC_ReceiveEmoji
+  - ReceivePortraitID
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
