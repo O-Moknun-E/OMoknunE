@@ -107,7 +107,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         if(PlayerEquipItem.Instance.customStone != null)
              _boardInteraction.ChangeStoneSkin(PlayerEquipItem.Instance.customStone); //민정추가
         else
-            _boardInteraction.ChangeStoneSkin(StoneSkinRegistry.Instance.GetStoneSkin(_mySkinIndex));
+            _boardInteraction.ChangeStoneSkin(SkinRegistry.Instance.GetStoneSkin(_mySkinIndex));
 
         CheckAndApplyTurn();
     }
@@ -160,7 +160,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         else
         {
             if (PlayerEquipItem.Instance.customStone != null) //민정추가
-                 _mySkinIndex = StoneSkinRegistry.Instance.GetEquipStoneSkin(PlayerEquipItem.Instance.customStone);
+                 _mySkinIndex = SkinRegistry.Instance.GetStoneID(PlayerEquipItem.Instance.customStone);
 
             // 장전된 스킬이 없다면 평소처럼 돌 두는 통신
             photonView.RPC("RPC_ReceiveAndDrawStone", RpcTarget.All, x, y, _myPlayerType, _mySkinIndex);
@@ -294,7 +294,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
         string path = "Skills/" + skillName;
 
         if(PlayerEquipItem.Instance.customStone != null) //민정추가
-            _mySkinIndex = StoneSkinRegistry.Instance.GetEquipStoneSkin(PlayerEquipItem.Instance.customStone);
+            _mySkinIndex = SkinRegistry.Instance.GetStoneID(PlayerEquipItem.Instance.customStone);
 
         // _mySkinIndex 를 맨 뒤에 추가해서 전송
         photonView.RPC("RPC_ExecuteSkill", RpcTarget.All, path, x, y, myType, _mySkinIndex);
@@ -304,7 +304,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     public void RPC_ReceiveAndDrawStone(int x, int y, StoneType playerType, int skinID)
     {
 
-        Sprite stoneSkin = StoneSkinRegistry.Instance.GetStoneSkin(skinID);
+        Sprite stoneSkin = SkinRegistry.Instance.GetStoneSkin(skinID);
 
         _boardInteraction.PlaceStoneRemote(x, y, stoneSkin);
 
