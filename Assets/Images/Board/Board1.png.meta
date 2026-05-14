@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: bd9edce11efeb234ba1d94814c4da765
+guid: 5a4aeb1d8b6668e42b961cd97cb591d9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8047483149409759377
-    second: "Clipboard - 2026\uB144 4\uC6D4 23\uC77C \uC624\uD6C4 1_42_0"
+      213: 6495943319018875221
+    second: Magic_Panttegi_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "Clipboard - 2026\uB144 4\uC6D4 23\uC77C \uC624\uD6C4 1_42_0"
+      name: Magic_Panttegi_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 16
-        width: 294
-        height: 294
+        x: 0
+        y: 0
+        width: 292
+        height: 292
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 190b28879476eaf60800000000000000
-      internalID: 8047483149409759377
+      spriteID: 559213b180a362a50800000000000000
+      internalID: 6495943319018875221
       vertices: []
       indices: 
       edges: []
@@ -174,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "Clipboard - 2026\uB144 4\uC6D4 23\uC77C \uC624\uD6C4 1_42_0": 8047483149409759377
+      Magic_Panttegi_0: 6495943319018875221
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

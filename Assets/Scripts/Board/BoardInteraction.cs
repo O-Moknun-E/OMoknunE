@@ -39,6 +39,11 @@ public class BoardInteraction : MonoBehaviour
         _boardRenderer = GetComponent<SpriteRenderer>();
         // 15x15 크기에 맞게 bool 배열 생성
         _isStonePlaced = new bool[_gridSize, _gridSize];
+
+        if (PlayerEquipItem.Instance.customBord != null) //민정추가
+            _boardRenderer.sprite = PlayerEquipItem.Instance.customBord;
+
+
     }
 
     private void Update()
