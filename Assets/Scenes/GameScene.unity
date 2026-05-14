@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5059893}
   - component: {fileID: 5059892}
+  - component: {fileID: 5059894}
   m_Layer: 0
   m_Name: GameUIManager
   m_TagString: Untagged
@@ -154,6 +155,8 @@ MonoBehaviour:
   _myNicknameText: {fileID: 8298639562522733109}
   _opponentNicknameText: {fileID: 9070435456884307997}
   _surrenderButton: {fileID: 3815632396774854963}
+  _myPortraitImage: {fileID: 8066482039120418738}
+  _opponentPortraitImage: {fileID: 9070435456884307998}
   _mySpeechBubble: {fileID: 292208360}
   _opponentSpeechBubble: {fileID: 1501219982}
   _emojiSprites:
@@ -181,6 +184,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5059894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5059891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonUnityNetworking::Photon.Pun.PhotonView
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &10778534
 GameObject:
   m_ObjectHideFlags: 0
@@ -13815,6 +13840,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6aa6453e5db861141bf76f3b740c6132, type: 3}
+--- !u!114 &8066482039120418738 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7144216494899718635, guid: 6aa6453e5db861141bf76f3b740c6132, type: 3}
+  m_PrefabInstance: {fileID: 8066482039120418737}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!222 &8095501165897812918
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14454,6 +14490,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &9070435456884307998 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1205969920031352000, guid: 62f33f804e377434fa1f0af3adecb637, type: 3}
+  m_PrefabInstance: {fileID: 9070435456884307995}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!114 &9084491197909249432
 MonoBehaviour:
   m_ObjectHideFlags: 0
