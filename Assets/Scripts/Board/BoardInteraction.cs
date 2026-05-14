@@ -13,7 +13,11 @@ public class BoardInteraction : MonoBehaviour
 
     [Header("프리팹 설정")]
     [SerializeField] private GameObject _baseStonePrefab;
-    
+
+    [Header("사운드 설정")]
+    public AudioSource boardAudioSource; // 오목판 스피커
+    public AudioClip placeStoneSound;    // 소리 파일
+
     private Sprite _currentStoneSprite;
     private SpriteRenderer _boardRenderer;
     private GameObject _previewStone;
@@ -82,6 +86,11 @@ public class BoardInteraction : MonoBehaviour
         stone.GetComponent<SpriteRenderer>().sprite = stoneSprite;
 
         _isStonePlaced[x, y] = true;
+        //돌 착수음 
+        if (boardAudioSource != null && placeStoneSound != null)
+        {
+            boardAudioSource.PlayOneShot(placeStoneSound);
+        }
     }
 
     // 외부(매니저)에서 스킬 장전 상태를 켜고 끌 수 있는 함수
