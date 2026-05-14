@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NormalSkill
   _icon: {fileID: 7320906411373716286, guid: 15a36f86a1e3ed94e934495c426fd9a9, type: 3}
   _displayName: "\uD0C0\uC784 \uD31D"
-  _description: "\uC0C1\uB300\uBC29\uC758 \uCC29\uC218\uC2DC\uAC04\uC744 3\uD134\uAC04
+  _description: "\uC0C1\uB300\uBC29\uC758 \uCC29\uC218\uC2DC\uAC04\uC744 2\uD134\uAC04
     \uC808\uBC18\uC73C\uB85C \uC904\uC785\uB2C8\uB2E4"
   _skillName: TimeOverload
   _id: 5

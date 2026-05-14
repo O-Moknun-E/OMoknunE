@@ -19,6 +19,9 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
     //외부(스킬 효과 등)에서 내 진영을 확인할 수 있게 열어줍니다.
     public StoneType MyPlayerType => _myPlayerType;
 
+    public string LoadedSkillName => _loadedSkillName;              // [추가됨] 현재 장전된 스킬 이름에 대한 공개 프로퍼티
+    public GameObject LoadedSkillCardObj => _loadedSkillCardObj;    // [추가됨] 현재 장전된 마법 카드 오브젝트에 대한 공개 프로퍼티
+
     private bool _isMasterTurn = true;
 
     private string _loadedSkillName = "";
@@ -152,13 +155,11 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
                 UseSkill(_loadedSkillName, x, y);
 
             _hasUsedSkillThisTurn = true;
-            _loadedSkillName = "";
 
             // 스킬 발사 성공 시 카드를 화면에서 영원히 파괴
             if (_loadedSkillCardObj != null)
             {
-                Destroy(_loadedSkillCardObj);
-                _loadedSkillCardObj = null;
+                ClearLoadedSkillCard();
             }
 
             if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(false);
@@ -170,6 +171,16 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
 
             photonView.RPC("RPC_ReceiveAndDrawStone", RpcTarget.All, x, y, _myPlayerType, _mySkinIndex);
         }
+    }
+
+    /// <summary>
+    /// 장전된 스킬 카드 정보를 초기화하는 메서드
+    /// </summary>
+    public void ClearLoadedSkillCard()
+    {
+        _loadedSkillName = "";
+        Destroy(_loadedSkillCardObj);
+        _loadedSkillCardObj = null;
     }
 
     public void ApplySilence(int turns)
@@ -245,7 +256,7 @@ public class NetworkOmokManager : MonoBehaviourPunCallbacks
 
         // 장전 처리 및 카드 기억하기
         _loadedSkillName = skillName;
-        _loadedSkillCardObj = cardObj; 
+        _loadedSkillCardObj = cardObj;
 
         if (_boardInteraction != null) _boardInteraction.SetSkillLoadedState(true);
         Debug.Log($"{skillName} 장전 완료");

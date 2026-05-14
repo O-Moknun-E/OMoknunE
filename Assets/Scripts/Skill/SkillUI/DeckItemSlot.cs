@@ -27,6 +27,7 @@ public class DeckItemSlot : MonoBehaviour
         if (_skill == null) return;
 
         NetworkOmokManager netManager = FindFirstObjectByType<NetworkOmokManager>();
+
         if (netManager != null)
         {
             netManager.LoadSkillFromDeck(_skill.name, transform.parent.gameObject);

@@ -147,12 +147,6 @@ public class OmokManager : SceneSingleton<OmokManager>
 
         IncomeMana();
         CheckTurnTimer();
-
-        // AI 모드 스킬 입력
-        if (_gameMode == GameMode.PvE && _currentTurn == StoneType.Black)
-        {
-            HandleSkillInput();
-        }
     }
 
     /// <summary>
@@ -346,12 +340,33 @@ public class OmokManager : SceneSingleton<OmokManager>
         // 플레이어가 아니면 무시
         if (_currentTurn != StoneType.Black) return;
 
+        NetworkOmokManager netManager = FindFirstObjectByType<NetworkOmokManager>();
+
+        if(netManager != null && netManager.LoadedSkillName != "")
+        {
+            // LoadedeSkillName의 문자열에서 Skill 제거
+            string skillName = netManager.LoadedSkillName.Replace("Skill", "");
+
+            _loadedSkill = MagicRegistry.Instance.GetMagicByName(skillName);
+        }
+
         // 스킬 장전 상태일 때
         if (_loadedSkill != null)
         {
-            UseSkillAI(x, y);
+            if (_loadedSkill.Name == "SilenceSkill" || _loadedSkill.Name == "TimeOverloadSkill")
+                UseSkillAI(-1, -1);
+            else
+                UseSkillAI(x, y);
+
             _loadedSkill = null;
             _boardInteraction.SetSkillLoadedState(false);
+
+            // 스킬 발사 성공 시 카드를 화면에서 영원히 파괴
+            if (netManager != null && netManager.LoadedSkillCardObj != null)
+            {
+                netManager.ClearLoadedSkillCard();
+            }
+
             return;
         }
 
@@ -359,48 +374,6 @@ public class OmokManager : SceneSingleton<OmokManager>
         if (TryPlaceStoneLocal(y, x))
         {
             _boardInteraction.PlaceStoneRemote(x, y, _playerStone);
-        }
-    }
-
-    /// <summary>
-    /// AI 모드 스킬 입력 처리
-    /// </summary>
-    private void HandleSkillInput()
-    {
-        // 스킬 사용 안했을때만
-        if (!_players[0].UsedMagicThisTurn)
-        {
-            // 스킬 장전
-            if (Input.GetKeyDown(KeyCode.Alpha1)) LoadSkill(0);
-            else if (Input.GetKeyDown(KeyCode.Alpha2)) LoadSkill(1);
-            else if (Input.GetKeyDown(KeyCode.Alpha3)) LoadSkill(2);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            Debug.Log("<color=red>이번 턴에 이미 스킬을 사용했습니다.</color>");
-        }
-
-        // 우클릭으로 스킬 장전 취소
-        if (Input.GetMouseButtonDown(1) && _loadedSkill != null)
-        {
-            _loadedSkill = null;
-            _boardInteraction.SetSkillLoadedState(false);
-            Debug.Log("<color=red>스킬 장전 취소</color>");
-        }
-    }
-
-    /// <summary>
-    /// 스킬 ID로 마법 장전
-    /// </summary>
-    private void LoadSkill(int skillID)
-    {
-        IMagic skill = MagicRegistry.Instance.GetMagicByID(skillID);
-
-        if (skill != null)
-        {
-            _loadedSkill = skill;
-            _boardInteraction.SetSkillLoadedState(true);
-            Debug.Log($"<color=cyan>{skill.Name} 장전 완료</color>");
         }
     }
 
