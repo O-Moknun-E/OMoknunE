@@ -708,9 +708,11 @@ public class OmokManager : SceneSingleton<OmokManager>
         string winnerName = (winner == StoneType.Black) ? _players[0].Name : _players[1].Name;
         Debug.Log($"<color=yellow><b>[SERVER INFO] {winnerName} 승리 모든 착수가 금지됩니다.</b></color>");
 
+        RewardManager.Instance.GrantGameEndReward(winnerName == PhotonNetwork.NickName);
+
         // PvP 모드 일때만
         if (_gameMode == GameMode.PvP)
-            RankingManager.Instance.AddScoreAndSync(winnerName == PlayFabManager.Instance.UserNickName); //민정추가
+            RewardManager.Instance.GrantGameEndReward(winnerName == PhotonNetwork.NickName); //민정추가
 
         // 리플레이 - 현재 턴 종료 및 기록 종료
         _replay.EndTurn();

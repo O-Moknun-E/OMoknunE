@@ -12,7 +12,7 @@ public class AchievementManager : MonoBehaviour
     public AchievementTracker achievementTracker;
     public AchievementsPopup achievementsPopup;
 
-    private Dictionary<string, AchievementData> achievementConfigs = new Dictionary<string, AchievementData>();
+    private static Dictionary<string, AchievementData> achievementConfigs = new Dictionary<string, AchievementData>();
     private HashSet<string> completedAchievements = new HashSet<string>();
 
     private string achievementKey = "AchievementList";
@@ -65,7 +65,7 @@ public class AchievementManager : MonoBehaviour
             AchievementData config = pair.Value;
 
             if (completedAchievements.Contains(achievementId)) continue;
-
+ 
             if (config.StatName == statName && currentValue >= config.Target)
             {
                 completedAchievements.Add(achievementId);
